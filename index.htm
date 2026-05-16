@@ -1,1 +1,196 @@
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德國杜塞道夫出差回憶錄 - 詩與光影</title>
+    <style>
+        body {
+            font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #faf9f6;
+            color: #2c3e50;
+            margin: 0;
+            padding: 50px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        h1 {
+            color: #1a252f;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        p.subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (max-width: 450px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+        .gallery-item {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 20px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        .image-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        .content {
+            padding: 25px 10px 10px 10px;
+            text-align: center;
+        }
+        .title {
+            font-size: 1.3em;
+            color: #34495e;
+            margin-bottom: 18px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #d35400;
+        }
+        .poem {
+            font-family: 'Georgia', 'Noto Serif TC', serif;
+            font-style: italic;
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre-line;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>杜塞道夫的光影詩篇</h1>
+        <p class="subtitle">德國出差隨手紀錄的城市意象與新詩獨白</p>
+    </header>
+
+    <div class="gallery">
+        <!-- 照片 1 -->
+        <div class="gallery-item">
+            <div class="image-container">
+                <img src="20220911_162427.jpg" alt="國王大道運河 午後">
+            </div>
+            <div class="content">
+                <div class="title">Königsallee 的午後</div>
+                <div class="poem">在金色與碧綠交織的午後，
+杜塞道夫的 Königsallee 運河，
+是一面不說謊的鏡子。
+溫柔地收納了懸鈴木的嘆息，
+與天空湛藍的凝望。
+遠處的小橋，是連接此刻與永恆的門扉。
+落葉鋪陳著時光的步履，
+城市在水中，比腳下的石板路更加清澈。
+這是一首，由光與水共同譜寫的，
+寧靜奏鳴曲。</div>
+            </div>
+        </div>
+
+        <!-- 照片 2 -->
+        <div class="gallery-item">
+            <div class="image-container">
+                <img src="IMG_0348.jpg" alt="工業城市與黃昏天際線">
+            </div>
+            <div class="content">
+                <div class="title">鋼鐵與晚霞的交界</div>
+                <div class="poem">枯枝的骨架，是黃昏最堅硬的框。
+杜塞道夫的天空，
+在蔚藍與燃燒的橙色之間，
+編織著凝結的飛逝。
+工業煙囪寂靜如史前巨獸，
+萊茵河塔，是孤獨的守望者，
+將城市的剪影，釘在光與影的邊界。
+這是世界的沉思，
+在晝夜交替的瞬間，
+我看見了歷史與未來的對話。</div>
+            </div>
+        </div>
+
+        <!-- 照片 3 -->
+        <div class="gallery-item">
+            <div class="image-container">
+                <img src="IMG_0436.jpg" alt="萊茵河畔夕陽">
+            </div>
+            <div class="content">
+                <div class="title">萊茵河畔的狂舞</div>
+                <div class="poem">萊茵河畔，雲朵是天空的舞者，
+身披深藍與金色的盛裝。
+夕陽在最後的謝幕中，
+爆發出太陽的怒火，
+將城市剪影，Rheinturm 與斜張橋，
+深深地刻入光明的核心。
+腳下的草地已歸於沉寂，
+但天空的火焰，依然照亮，
+這場關於光與時間的，
+宏大祭典。</div>
+            </div>
+        </div>
+
+        <!-- 照片 4 -->
+        <div class="gallery-item">
+            <div class="image-container">
+                <img src="IMG_8628.jpg" alt="國王大道運河 夜景">
+            </div>
+            <div class="content">
+                <div class="title">Königsallee 的金色夢境</div>
+                <div class="poem">當夜色垂下，Königsallee 換上了金色的輕紗。
+懸鈴木的枝葉被燈火點亮，
+編織出一座金色的神殿拱門。
+運河是一面魔幻的鏡子，
+在寂靜中，創造了另一個顛倒的世界。
+金色的光柱垂直地沒入水中，
+是光明的根鬚，向下延伸。
+這裡是夢與現實的邊界，
+連岸邊的車輛也沉思不語，
+成為這場華麗演出的，
+寂靜證人。</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
