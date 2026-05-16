@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Düsseldorf One-Minute Memoir - Slideshow Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #000000; color: #ffffff;
+            font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; overflow: hidden; padding: 20px;
+        }
+        .page-header { text-align: center; margin-bottom: 20px; z-index: 10; }
+        .page-header h1 { font-size: 1.8em; font-weight: 300; letter-spacing: 2px; color: #e0e0e0; margin-bottom: 5px; }
+        .page-header p { font-size: 0.9em; color: #777; }
+        #theater-container {
+            position: relative; width: 100%; max-width: 1120px; aspect-ratio: 16 / 9;
+            background-color: #000000; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            overflow: hidden; border: 1px solid #1a1a1a; border-radius: 4px;
+        }
+        #viewport {
+            position: absolute; top: 50%; left: 50%; width: 1920px; height: 1080px;
+            transform: translate(-50%, -50%); transform-origin: center center;
+            background: #000000; overflow: hidden;
+        }
+        .scene-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; overflow: hidden; will-change: opacity;
+        }
+        .asset-wrapper { width: 100%; height: 100%; position: absolute; top: 0; left: 0; will-change: transform; }
+        .asset-media { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .placeholder-asset {
+            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #111e2e 0%, #080f18 100%); color: rgba(255, 255, 255, 0.4);
+            font-size: 44px; letter-spacing: 2px; text-align: center; line-height: 1.6; border: 4px solid rgba(255,255,255,0.03);
+        }
+        .placeholder-asset span { font-size: 24px; color: rgba(255, 255, 255, 0.2); margin-top: 15px; font-family: monospace; }
+        #subtitle-overlay {
+            position: absolute; left: 50%; transform: translateX(-50%); bottom: 12%;
+            width: 100%; max-width: 70%; display: flex; justify-content: center; align-items: center;
+            z-index: 500; pointer-events: none; min-height: 120px;
+        }
+        .subtitle-text {
+            font-family: 'Noto Serif TC', serif; font-size: 42px; color: #FFFFFF;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6); text-align: center; line-height: 1.6;
+            white-space: pre-line; opacity: 0; transition: opacity 0.2s ease;
+        }
+        .subtitle-text.title-style { font-size: 56px; line-height: 1.8; letter-spacing: 4px; font-weight: 600; }
+        #control-bar {
+            width: 100%; max-width: 1120px; margin-top: 25px; background: rgba(15, 15, 15, 0.85);
+            border: 1px solid #222; padding: 15px 25px; border-radius: 6px; display: flex; align-items: center; gap: 20px; z-index: 10;
+        }
+        .btn {
+            background: #d35400; color: #ffffff; border: none; padding: 10px 22px; border-radius: 4px;
+            cursor: pointer; font-size: 15px; font-weight: 600; letter-spacing: 1px; transition: all 0.2s ease;
+            min-width: 110px; box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2);
+        }
+        .btn:hover { background: #e67e22; transform: translateY(-1px); box-shadow: 0 6px 15px rgba(211, 84, 0, 0.3); }
+        .btn:active { transform: translateY(1px); }
+        #timeline-slider-container {
+            flex-grow: 1; height: 6px; background: #2a2a2a; border-radius: 3px; position: relative; cursor: pointer; transition: height 0.2s ease;
+        }
+        #timeline-slider-container:hover { height: 10px; }
+        #timeline-progress { height: 100%; background: linear-gradient(90deg, #d35400, #ff7f32); width: 0%; border-radius: 3px; pointer-events: none; }
+        #time-code { font-family: 'Courier New', Courier, monospace; font-size: 15px; color: #aaa; min-width: 115px; text-align: right; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-track" src="bgm.mp3" loop></audio>
+
+    <div class="page-header">
+        <h1>Düsseldorf One-Minute Memoir</h1>
+        <p>時序驅動浮動影音劇本實驗版本</p>
+    </div>
+
+    <div id="theater-container">
+        <div id="viewport">
+            <div id="scene-container"></div>
+            <div id="subtitle-overlay">
+                <div id="subtitle-box" class="subtitle-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="control-bar">
+        <button id="play-trigger" class="btn">播放影片</button>
+        <div id="timeline-slider-container" onclick="scrubTimeline(event)">
+            <div id="timeline-progress"></div>
+        </div>
+        <div id="time-code">00:00 / 01:00</div>
+    </div>
+
+    <script>
+        const movieScript = {
+            "project": { "title": "Düsseldorf One-Minute Memoir", "duration_sec": 60, "background": "#000000" },
+            "assets": {
+                "img_01_ko_day": "20220911_162427.jpg",
+                "img_02_selfie": "placeholder_selfie", 
+                "video_03_transition": "placeholder_video", 
+                "img_04_rhine_dusk": "IMG_0348.JPG",
+                "img_05_rheinturm": "IMG_0436.JPG",
+                "img_06_ko_night": "IMG_8628.JPG"
+            },
+            "timeline": [
+                { "id": "scene_01", "in": 0.0, "out": 9.0, "layer": { "asset": "img_01_ko_day", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.08, "x": -30, "y": 0 }, "easing": "easeOutQuad" }, "subtitles": [ { "in": 1.0, "out": 4.0, "text": "走進國王大道，梧桐把午後的陽光，篩成一地碎金。" }, { "in": 4.5, "out": 8.5, "text": "運河是這座城市的一面鏡，收著行人、樹影，與一整片秋天。" } ], "transition_out": { "type": "crossfade", "duration": 0.8 } },
+                { "id": "scene_02", "in": 9.0, "out": 17.0, "layer": { "asset": "img_02_selfie", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.05, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 10 }, "easing": "easeInOutQuad" }, "subtitles": [ { "in": 9.5, "out": 12.5, "text": "我在一棵老樹下歇腳。風從十九世紀走來。" }, { "in": 13.0, "out": 16.5, "text": "葉子落在肩上——像這座城，輕輕地與我打了個招呼。" } ], "transition_out": { "type": "crossfade", "duration": 0.6 } },
+                { "id": "scene_03", "in": 17.0, "out": 26.0, "layer": { "asset": "video_03_transition", "fit": "cover" }, "motion": { "type": "none" }, "subtitles": [ { "in": 18.0, "out": 21.0, "text": "沿著河走。萊茵河沒有聲音，它只是流著。" }, { "in": 21.5, "out": 25.5, "text": "把整個歐洲的故事，帶向遠方。" } ], "transition_out": { "type": "dip_to_black", "duration": 0.5 } },
+                { "id": "scene_04", "in": 26.0, "out": 36.0, "layer": { "asset": "img_04_rhine_dusk", "fit": "cover" }, "motion": { "type": "pan", "from": { "scale": 1.10, "x": 40, "y": 0 }, "to": { "scale": 1.10, "x": -40, "y": 0 }, "easing": "linear" }, "subtitles": [ { "in": 26.5, "out": 30.0, "text": "煙囪靜靜站在天邊。一架飛機劃過。" }, { "in": 30.5, "out": 35.5, "text": "留下一道白色的句點——而我還在這裡，捨不得結束這一天。" } ], "transition_out": { "type": "crossfade", "duration": 0.8 } },
+                { "id": "scene_05", "in": 36.0, "out": 46.0, "layer": { "asset": "img_05_rheinturm", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.12, "x": 20, "y": -15 }, "easing": "easeInOutQuad" }, "subtitles": [ { "in": 36.5, "out": 40.0, "text": "萊茵塔守著最後一抹金黃。" }, { "in": 40.5, "out": 45.5, "text": "雲彩像被誰打翻的茶，慢慢暈開，整座城市，沉入河水。" } ], "transition_out": { "type": "crossfade", "duration": 1.0 } },
+                { "id": "scene_06", "in": 46.0, "out": 55.0, "layer": { "asset": "img_06_ko_night", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.08, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 0 }, "easing": "easeOutCubic" }, "subtitles": [ { "in": 46.5, "out": 50.0, "text": "夜回到國王大道。燈火把梧桐染成一幅油畫。" }, { "in": 50.5, "out": 54.5, "text": "水面靜得像一首寫完的詩——沒有人朗讀，卻句句清晰。" } ], "transition_out": { "type": "fade_to_black", "duration": 1.0 } },
+                { "id": "scene_07_outro", "in": 55.0, "out": 60.0, "layer": { "type": "solid", "color": "#000000" }, "motion": { "type": "none" }, "subtitles": [ { "in": 55.5, "out": 59.5, "text": "杜塞道夫\n我把這幾天的風景，折進記憶的口袋，帶回家。", "align": "center", "style": "title" } ] }
+            ]
+        };
+
+        const EasingFunctions = {
+            linear: t => t,
+            easeOutQuad: t => t * (2 - t),
+            easeInOutQuad: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+            easeOutCubic: t => (--t) * t * t + 1
+        };
+
+        let currentClockTime = 0;
+        let isEngineRunning = false;
+        let previousTimestamp = 0;
+        let animationFrameRequestId = null;
+
+        const audioTrack = document.getElementById('audio-track');
+        const sceneContainer = document.getElementById('scene-container');
+        const subtitleBox = document.getElementById('subtitle-box');
+        const subtitleOverlay = document.getElementById('subtitle-overlay');
+        const playButton = document.getElementById('play-trigger');
+        const timelineProgress = document.getElementById('timeline-progress');
+        const timeCodeDisplay = document.getElementById('time-code');
+
+        function optimizeViewportScaling() {
+            const container = document.getElementById('theater-container');
+            const viewport = document.getElementById('viewport');
+            const scaleFactor = Math.max(0.05, Math.min(container.clientWidth / 1920, container.clientHeight / 1080));
+            viewport.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+        }
+        window.addEventListener('resize', optimizeViewportScaling);
+        setTimeout(optimizeViewportScaling, 100);
+
+        function buildTheaterDOM() {
+            movieScript.timeline.forEach((scene, index) => {
+                const layer = document.createElement('div');
+                layer.className = 'scene-layer';
+                layer.id = `layer_${scene.id}`;
+                layer.style.zIndex = index + 10;
+
+                let layerHTML = '';
+                if (scene.layer.type === 'solid') {
+                    layer.style.backgroundColor = scene.layer.color;
+                } else {
+                    const mediaSrc = movieScript.assets[scene.layer.asset];
+                    if (mediaSrc.startsWith('placeholder')) {
+                        const hintText = mediaSrc === 'placeholder_selfie' ? '【照片素材空缺】<br>樹下自拍, 人物中右' : '【MOV影片片段】<br>動態轉場 (0.75x 速率)';
+                        layerHTML = `<div class="asset-wrapper"><div class="placeholder-asset"><div>${hintText}</div><span>腳本識別碼: ${scene.layer.asset}</span></div></div>`;
+                    } else {
+                        layerHTML = `<div class="asset-wrapper"><div class="placeholder-asset" style="position:absolute; top:0; left:0; z-index:1; background:#111;"><div>【無法載入影像】</div><span style="font-size:18px;">請確認照片 [ ${mediaSrc} ] 是否已與此網頁放在同一個資料夾。</span></div><img class="asset-media" src="${mediaSrc}" style="position:absolute; top:0; left:0; z-index:2;" onerror="this.style.display='none';"></div>`;
+                    }
+                }
+                layer.innerHTML = layerHTML;
+                sceneContainer.appendChild(layer);
+            });
+            optimizeViewportScaling();
+        }
+
+        function executeTimelineEngine(timestamp) {
+            if (!previousTimestamp) previousTimestamp = timestamp;
+            const elapsedDelta = (timestamp - previousTimestamp) / 1000;
+            previousTimestamp = timestamp;
+
+            if (isEngineRunning) {
+                currentClockTime += elapsedDelta;
+                if (currentClockTime >= movieScript.project.duration_sec) {
+                    currentClockTime = movieScript.project.duration_sec;
+                    toggleEnginePlayback(false);
+                }
+                if (Math.abs(audioTrack.currentTime - currentClockTime) > 0.4) {
+                    audioTrack.currentTime = currentClockTime;
+                }
+                let dynamicVolume = 1.0;
+                if (currentClockTime < 1.5) { dynamicVolume = currentClockTime / 1.5; } 
+                else if (currentClockTime > movieScript.project.duration_sec - 3.0) { dynamicVolume = (movieScript.project.duration_sec - currentClockTime) / 3.0; }
+                audioTrack.volume = Math.max(0, Math.min(1, dynamicVolume));
+            }
+
+            renderCurrentFrame(currentClockTime);
+            refreshControlUI(currentClockTime);
+
+            if (isEngineRunning) { animationFrameRequestId = requestAnimationFrame(executeTimelineEngine); }
+        }
+
+        function renderCurrentFrame(time) {
+            movieScript.timeline.forEach((scene, index) => {
+                const layerDOM = document.getElementById(`layer_${scene.id}`);
+                const wrapperDOM = layerDOM.querySelector('.asset-wrapper');
+                let displayStart = scene.in;
+                let displayEnd = scene.out;
+                let outTransitionDuration = scene.transition_out ? scene.transition_out.duration : 0;
+
+                if (scene.transition_out && scene.transition_out.type === 'crossfade') { displayEnd += outTransitionDuration; }
+
+                if (time >= displayStart && time <= displayEnd) {
+                    layerDOM.style.display = 'block';
+                    let frameOpacity = 1.0;
+
+                    if (index > 0 && movieScript.timeline[index - 1].transition_out) {
+                        const prevTrans = movieScript.timeline[index - 1].transition_out;
+                        if (time < displayStart + prevTrans.duration) { frameOpacity = (time - displayStart) / prevTrans.duration; }
+                    }
+
+                    if (scene.transition_out && scene.transition_out.type === 'crossfade') {
+                        if (time > scene.out) { frameOpacity = 1.0 - ((time - scene.out) / outTransitionDuration); }
+                    }
+
+                    if (scene.transition_out && (scene.transition_out.type === 'dip_to_black' || scene.transition_out.type === 'fade_to_black')) {
+                        if (time > scene.out - outTransitionDuration) { frameOpacity = (scene.out - time) / outTransitionDuration; }
+                    }
+
+                    layerDOM.style.opacity = Math.max(0, Math.min(1, frameOpacity));
+
+                    if (wrapperDOM && scene.motion && scene.motion.type !== 'none') {
+                        let motionProgress = Math.max(0, Math.min(1, (time - scene.in) / (scene.out - scene.in)));
+                        const interpolatedProgress = (EasingFunctions[scene.motion.easing] || EasingFunctions.linear)(motionProgress);
+                        const mFrom = scene.motion.from; const mTo = scene.motion.to;
+                        wrapperDOM.style.transform = `translate(${mFrom.x + (mTo.x - mFrom.x) * interpolatedProgress}px, ${mFrom.y + (mTo.y - mFrom.y) * interpolatedProgress}px) scale(${mFrom.scale + (mTo.scale - mFrom.scale) * interpolatedProgress})`;
+                    }
+                } else { layerDOM.style.display = 'none'; }
+            });
+
+            let targetSubtitle = null;
+            for (let scene of movieScript.timeline) {
+                if (scene.subtitles) {
+                    for (let sub of scene.subtitles) {
+                        if (time >= sub.in && time <= sub.out) { targetSubtitle = sub; break; }
+                    }
+                }
+                if (targetSubtitle) break;
+            }
+
+            if (targetSubtitle) {
+                // 安全的字串替換
+                subtitleBox.innerHTML = targetSubtitle.text.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+                
+                if (targetSubtitle.style === 'title') {
+                    subtitleBox.classList.add('title-style');
+                    subtitleOverlay.style.bottom = '50%';
+                    subtitleOverlay.style.transform = 'translate(-50%, 50%)';
+                } else {
+                    subtitleBox.classList.remove('title-style');
+                    subtitleOverlay.style.bottom = '12%';
+                    subtitleOverlay.style.transform = 'translateX(-50%)';
+                }
+                subtitleBox.style.opacity = 1;
+            } else { subtitleBox.style.opacity = 0; }
+        }
+
+        function formatSecondsToTimeCode(seconds) {
+            return `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
+        }
+
+        function refreshControlUI(time) {
+            const totalDuration = movieScript.project.duration_sec;
+            timelineProgress.style.width = `${(time / totalDuration) * 100}%`;
+            timeCodeDisplay.innerText = `${formatSecondsToTimeCode(time)} / ${formatSecondsToTimeCode(totalDuration)}`;
+        }
+
+        function toggleEnginePlayback(forcePlayState) {
+            isEngineRunning = forcePlayState !== undefined ? forcePlayState : !isEngineRunning;
+            if (isEngineRunning) {
+                if (currentClockTime >= movieScript.project.duration_sec) { currentClockTime = 0; }
+                audioTrack.play().catch(() => console.log("等待互動"));
+                playButton.innerText = '暫停影片';
+                previousTimestamp = performance.now();
+                animationFrameRequestId = requestAnimationFrame(executeTimelineEngine);
+            } else {
+                audioTrack.pause();
+                playButton.innerText = '播放影片';
+                cancelAnimationFrame(animationFrameRequestId);
+            }
+        }
+
+        function scrubTimeline(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            currentClockTime = (event.clientX - rect.left) / rect.width * movieScript.project.duration_sec;
+            audioTrack.currentTime = currentClockTime;
+            renderCurrentFrame(currentClockTime);
+            refreshControlUI(currentClockTime);
+        }
+
+        playButton.addEventListener('click', () => toggleEnginePlayback());
+        buildTheaterDOM(); renderCurrentFrame(0); refreshControlUI(0);
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@
         }
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 30px; /* 稍微縮小間距留給 Banner */
         }
         h1 {
             color: #1a252f;
@@ -28,6 +28,86 @@
             font-size: 1.2em;
             letter-spacing: 1px;
         }
+        
+        /* --- 新增：微電影 Banner 樣式 --- */
+        .movie-banner {
+            display: block;
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+            text-decoration: none;
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 20px 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .movie-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('20220911_162427.jpg') center/cover;
+            opacity: 0.15; /* 微微透出第一張照片作為背景紋理 */
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+        .movie-banner:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+        .movie-banner:hover::before {
+            opacity: 0.25;
+        }
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        .banner-icon {
+            font-size: 2.5em;
+            margin-right: 20px;
+            background: rgba(255,255,255,0.1);
+            width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+        .banner-text {
+            flex-grow: 1;
+        }
+        .banner-text h3 {
+            margin: 0 0 6px 0;
+            font-size: 1.4em;
+            color: #ffffff;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .banner-text p {
+            margin: 0;
+            color: #bdc3c7;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+        .banner-arrow {
+            font-size: 1.5em;
+            color: #d35400;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            background: #ffffff;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+        .movie-banner:hover .banner-arrow {
+            transform: translateX(8px);
+            background: #d35400;
+            color: #ffffff;
+        }
+        /* ------------------------------ */
+
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -153,6 +233,18 @@
         <p class="subtitle">德國出差隨手紀錄的城市意象與新詩獨白</p>
     </header>
 
+    <!-- 微電影 Banner 連結 -->
+    <a href="index_slideshow_fixed.htm" class="movie-banner" title="前往觀看動態微電影">
+        <div class="banner-content">
+            <div class="banner-icon">🎬</div>
+            <div class="banner-text">
+                <h3>觀看動態微電影 (One-Minute Memoir)</h3>
+                <p>點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</p>
+            </div>
+            <div class="banner-arrow">➔</div>
+        </div>
+    </a>
+
     <div class="gallery">
         <!-- 照片 1 -->
         <div class="gallery-item">
@@ -177,7 +269,7 @@
         <!-- 照片 2 -->
         <div class="gallery-item">
             <div class="image-container">
-                <img src="IMG_0348.jpg" alt="工業城市與黃昏天際線">
+                <img src="IMG_0348.JPG" alt="工業城市與黃昏天際線">
             </div>
             <div class="content">
                 <div class="title">鋼鐵與晚霞的交界</div>
@@ -197,7 +289,7 @@
         <!-- 照片 3 -->
         <div class="gallery-item">
             <div class="image-container">
-                <img src="IMG_0436.jpg" alt="萊茵河畔夕陽">
+                <img src="IMG_0436.JPG" alt="萊茵河畔夕陽">
             </div>
             <div class="content">
                 <div class="title">萊茵河畔的狂舞</div>
@@ -217,7 +309,7 @@
         <!-- 照片 4 -->
         <div class="gallery-item">
             <div class="image-container">
-                <img src="IMG_8628.jpg" alt="國王大道運河 夜景">
+                <img src="IMG_8628.JPG" alt="國王大道運河 夜景">
             </div>
             <div class="content">
                 <div class="title">Königsallee 的金色夢境</div>
