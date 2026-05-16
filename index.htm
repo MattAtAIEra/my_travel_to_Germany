@@ -34,6 +34,7 @@
             gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
+            margin-bottom: 60px;
         }
         @media (max-width: 450px) {
             .gallery {
@@ -100,9 +101,52 @@
             white-space: pre-line;
             letter-spacing: 0.5px;
         }
+
+        /* 音樂控制按鈕樣式 */
+        #music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #music-control:hover {
+            background-color: rgba(211, 84, 0, 0.9);
+            transform: scale(1.05);
+        }
+        .music-icon {
+            display: inline-block;
+        }
+        .rotating {
+            animation: rotate 3s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- 背景音樂 -->
+    <audio id="bgm" src="bgm.mp3" loop></audio>
+
+    <!-- 浮動控制按鈕 -->
+    <div id="music-control" onclick="toggleMusic()">
+        <span class="music-icon" id="music-icon">🎵</span>
+        <span id="music-text">播放音樂</span>
+    </div>
 
     <header>
         <h1>杜塞道夫的光影詩篇</h1>
@@ -192,5 +236,53 @@
         </div>
     </div>
 
+    <script>
+        const audio = document.getElementById('bgm');
+        const controlBtn = document.getElementById('music-control');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+
+        // 嘗試自動播放
+        window.addEventListener('DOMContentLoaded', () => {
+            // 現代瀏覽器通常會阻擋未互動的自動播放，這裡用 Promise 捕捉
+            audio.play().then(() => {
+                updateUI(true);
+            }).catch(error => {
+                console.log("瀏覽器阻擋了自動播放，等待使用者點擊後播放。");
+                updateUI(false);
+                
+                // 額外機制：使用者首次點擊頁面任何地方時嘗試播放
+                const startPlayOnInteraction = () => {
+                    audio.play().then(() => {
+                        updateUI(true);
+                        document.removeEventListener('click', startPlayOnInteraction);
+                    });
+                };
+                document.addEventListener('click', startPlayOnInteraction);
+            });
+        });
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                updateUI(true);
+            } else {
+                audio.pause();
+                updateUI(false);
+            }
+        }
+
+        function updateUI(isPlaying) {
+            if (isPlaying) {
+                musicText.innerText = "暫停音樂";
+                musicIcon.innerText = "💿";
+                musicIcon.classList.add('rotating');
+            } else {
+                musicText.innerText = "播放音樂";
+                musicIcon.innerText = "🎵";
+                musicIcon.classList.remove('rotating');
+            }
+        }
+    </script>
 </body>
 </html>
