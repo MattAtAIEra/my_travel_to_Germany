@@ -3,5 +3,4 @@
 User-agent: *
 Allow: /
 
-# 部署後請將 REPLACE-WITH-YOUR-DOMAIN 換成實際網域，Sitemap 才會生效
-Sitemap: https://REPLACE-WITH-YOUR-DOMAIN/sitemap.xml
+Sitemap: https://matt-at-dusseldorf.netlify.app/sitemap.xml

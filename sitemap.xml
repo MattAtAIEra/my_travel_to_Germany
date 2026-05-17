@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 部署前請將 REPLACE-WITH-YOUR-DOMAIN 換成實際部署網域 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://REPLACE-WITH-YOUR-DOMAIN/index.htm</loc>
+    <loc>https://matt-at-dusseldorf.netlify.app/index.htm</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-YOUR-DOMAIN/index_slideshow_v3.htm</loc>
+    <loc>https://matt-at-dusseldorf.netlify.app/index_slideshow_v3.htm</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
