@@ -16,6 +16,16 @@
         .page-header { text-align: center; margin-bottom: 20px; z-index: 10; }
         .page-header h1 { font-size: 1.8em; font-weight: 300; letter-spacing: 2px; color: #e0e0e0; margin-bottom: 5px; }
         .page-header p { font-size: 0.9em; color: #777; }
+        #lang-switcher {
+            position: fixed; top: 18px; right: 18px; z-index: 1000; display: flex; gap: 6px;
+        }
+        #lang-switcher button {
+            background: rgba(15, 15, 15, 0.85); color: #999; border: 1px solid #333;
+            padding: 6px 13px; border-radius: 4px; cursor: pointer;
+            font-family: inherit; font-size: 13px; letter-spacing: 0.5px; transition: all 0.2s ease;
+        }
+        #lang-switcher button:hover { color: #fff; border-color: #d35400; }
+        #lang-switcher button.active { background: #d35400; color: #fff; border-color: #d35400; }
         #theater-container {
             position: relative; width: 100%; max-width: 1120px; aspect-ratio: 16 / 9;
             background-color: #000000; box-shadow: 0 20px 50px rgba(0,0,0,0.9); overflow: hidden;
@@ -66,9 +76,16 @@
 
     <audio id="audio-track" src="bgm.mp3" loop></audio>
 
+    <div id="lang-switcher">
+        <button data-lang="zh-TW" class="active" onclick="switchLanguage('zh-TW')">繁中</button>
+        <button data-lang="ja" onclick="switchLanguage('ja')">日本語</button>
+        <button data-lang="en" onclick="switchLanguage('en')">English</button>
+        <button data-lang="de" onclick="switchLanguage('de')">Deutsch</button>
+    </div>
+
     <div class="page-header">
         <h1>Düsseldorf One-Minute Memoir</h1>
-        <p>時序驅動浮動影音劇本實驗版本</p>
+        <p id="tagline">時序驅動浮動影音劇本實驗版本</p>
     </div>
 
     <div id="theater-container">
@@ -89,24 +106,158 @@
     </div>
 
     <script>
+        // UI 介面文字（標語、播放控制按鈕）四語對照
+        const uiStrings = {
+            "zh-TW": { tagline: "時序驅動浮動影音劇本實驗版本", play: "播放影片", pause: "暫停影片" },
+            "ja":    { tagline: "時の流れが紡ぐ、光と影のメモワール", play: "再生", pause: "一時停止" },
+            "en":    { tagline: "A time-driven memoir of light and shadow", play: "Play", pause: "Pause" },
+            "de":    { tagline: "Ein zeitgesteuertes Memoir aus Licht und Schatten", play: "Abspielen", pause: "Pause" }
+        };
+
         const movieScript = {
             "project": { "title": "Düsseldorf One-Minute Memoir", "duration_sec": 60, "background": "#000000" },
             "assets": {
                 "img_01_ko_day": "20220911_162427.jpg",
-                "img_02_selfie": "02_selfie.jpg", // 替換為您的檔名
-                "video_03_transition": "IMG_0359.MOV", // 替換為您的檔名
+                "img_02_selfie": "02_selfie.jpg",
+                "video_03_transition": "IMG_0359.MOV",
                 "img_04_rhine_dusk": "IMG_0348.jpg",
                 "img_05_rheinturm": "IMG_0436.jpg",
                 "img_06_ko_night": "IMG_8628.jpg"
             },
             "timeline": [
-                { "id": "scene_01", "in": 0.0, "out": 9.0, "layer": { "asset": "img_01_ko_day", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.08, "x": -30, "y": 0 }, "easing": "easeOutQuad" }, "subtitles": [ { "in": 1.0, "out": 4.0, "text": "走進國王大道，梧桐把午後的陽光，篩成一地碎金。" }, { "in": 4.5, "out": 8.5, "text": "運河是這座城市的一面鏡，收著行人、樹影，與一整片秋天。" } ], "transition_out": { "type": "crossfade", "duration": 0.8 } },
-                { "id": "scene_02", "in": 9.0, "out": 17.0, "layer": { "asset": "img_02_selfie", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.05, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 10 }, "easing": "easeInOutQuad" }, "subtitles": [ { "in": 9.5, "out": 12.5, "text": "我在一棵老樹下歇腳。風從十九世紀走來。" }, { "in": 13.0, "out": 16.5, "text": "葉子落在肩上——像這座城，輕輕地與我打了個招呼。" } ], "transition_out": { "type": "crossfade", "duration": 0.6 } },
-                { "id": "scene_03", "in": 17.0, "out": 26.0, "layer": { "asset": "video_03_transition", "fit": "cover" }, "motion": { "type": "none" }, "subtitles": [ { "in": 18.0, "out": 21.0, "text": "沿著河走。萊茵河沒有聲音，它只是流著。" }, { "in": 21.5, "out": 25.5, "text": "把整個歐洲的故事，帶向遠方。" } ], "transition_out": { "type": "dip_to_black", "duration": 0.5 } },
-                { "id": "scene_04", "in": 26.0, "out": 36.0, "layer": { "asset": "img_04_rhine_dusk", "fit": "cover" }, "motion": { "type": "pan", "from": { "scale": 1.10, "x": 40, "y": 0 }, "to": { "scale": 1.10, "x": -40, "y": 0 }, "easing": "linear" }, "subtitles": [ { "in": 26.5, "out": 30.0, "text": "煙囪靜靜站在天邊。一架飛機劃過。" }, { "in": 30.5, "out": 35.5, "text": "留下一道白色的句點——而我還在這裡，捨不得結束這一天。" } ], "transition_out": { "type": "crossfade", "duration": 0.8 } },
-                { "id": "scene_05", "in": 36.0, "out": 46.0, "layer": { "asset": "img_05_rheinturm", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.12, "x": 20, "y": -15 }, "easing": "easeInOutQuad" }, "subtitles": [ { "in": 36.5, "out": 40.0, "text": "萊茵塔守著最後一抹金黃。" }, { "in": 40.5, "out": 45.5, "text": "雲彩像被誰打翻的茶，慢慢暈開，整座城市，沉入河水。" } ], "transition_out": { "type": "crossfade", "duration": 1.0 } },
-                { "id": "scene_06", "in": 46.0, "out": 55.0, "layer": { "asset": "img_06_ko_night", "fit": "cover" }, "motion": { "type": "ken_burns", "from": { "scale": 1.08, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 0 }, "easing": "easeOutCubic" }, "subtitles": [ { "in": 46.5, "out": 50.0, "text": "夜回到國王大道。燈火把梧桐染成一幅油畫。" }, { "in": 50.5, "out": 54.5, "text": "水面靜得像一首寫完的詩——沒有人朗讀，卻句句清晰。" } ], "transition_out": { "type": "fade_to_black", "duration": 1.0 } },
-                { "id": "scene_07_outro", "in": 55.0, "out": 60.0, "layer": { "type": "solid", "color": "#000000" }, "motion": { "type": "none" }, "subtitles": [ { "in": 55.5, "out": 59.5, "text": "杜塞道夫\n我把這幾天的風景，折進記憶的口袋，帶回家。", "align": "center", "style": "title" } ] }
+                {
+                    "id": "scene_01", "in": 0.0, "out": 9.0,
+                    "layer": { "asset": "img_01_ko_day", "fit": "cover" },
+                    "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.08, "x": -30, "y": 0 }, "easing": "easeOutQuad" },
+                    "subtitles": [
+                        { "in": 1.0, "out": 4.0, "text": {
+                            "zh-TW": "走進國王大道，梧桐把午後的陽光，篩成一地碎金。",
+                            "ja": "ケーニヒスアレーを歩けば、プラタナスが午後の陽を漉して、足もとに金の欠片を散らす。",
+                            "en": "I step onto Königsallee, where the plane trees sift the afternoon sun into a scatter of gold.",
+                            "de": "Ich betrete die Königsallee, wo die Platanen die Nachmittagssonne zu verstreutem Gold sieben."
+                        } },
+                        { "in": 4.5, "out": 8.5, "text": {
+                            "zh-TW": "運河是這座城市的一面鏡，收著行人、樹影，與一整片秋天。",
+                            "ja": "運河はこの街の鏡。行き交う人も、木々の影も、秋のすべても、そっと映している。",
+                            "en": "The canal is the city's mirror — holding passers-by, the shadows of trees, and a whole autumn.",
+                            "de": "Der Kanal ist der Spiegel der Stadt – er sammelt Passanten, Baumschatten und einen ganzen Herbst."
+                        } }
+                    ],
+                    "transition_out": { "type": "crossfade", "duration": 0.8 }
+                },
+                {
+                    "id": "scene_02", "in": 9.0, "out": 17.0,
+                    "layer": { "asset": "img_02_selfie", "fit": "cover" },
+                    "motion": { "type": "ken_burns", "from": { "scale": 1.05, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 10 }, "easing": "easeInOutQuad" },
+                    "subtitles": [
+                        { "in": 9.5, "out": 12.5, "text": {
+                            "zh-TW": "我在一棵老樹下歇腳。風從十九世紀走來。",
+                            "ja": "古い木の下で、ひと休み。風は十九世紀のほうから歩いてくる。",
+                            "en": "I rest beneath an old tree. The wind comes walking out of the nineteenth century.",
+                            "de": "Ich raste unter einem alten Baum. Der Wind kommt herüber – aus dem neunzehnten Jahrhundert."
+                        } },
+                        { "in": 13.0, "out": 16.5, "text": {
+                            "zh-TW": "葉子落在肩上——像這座城，輕輕地與我打了個招呼。",
+                            "ja": "葉が一枚、肩に落ちる——この街が、そっと挨拶をくれたように。",
+                            "en": "A leaf settles on my shoulder — as if the city had quietly said hello.",
+                            "de": "Ein Blatt sinkt auf meine Schulter – als hätte die Stadt mir leise zugenickt."
+                        } }
+                    ],
+                    "transition_out": { "type": "crossfade", "duration": 0.6 }
+                },
+                {
+                    "id": "scene_03", "in": 17.0, "out": 26.0,
+                    "layer": { "asset": "video_03_transition", "fit": "cover" },
+                    "motion": { "type": "none" },
+                    "subtitles": [
+                        { "in": 18.0, "out": 21.0, "text": {
+                            "zh-TW": "沿著河走。萊茵河沒有聲音，它只是流著。",
+                            "ja": "川に沿って歩く。ライン川は音を立てず、ただ流れている。",
+                            "en": "I follow the river. The Rhine makes no sound — it simply flows.",
+                            "de": "Ich folge dem Fluss. Der Rhein ist lautlos – er fließt einfach dahin."
+                        } },
+                        { "in": 21.5, "out": 25.5, "text": {
+                            "zh-TW": "把整個歐洲的故事，帶向遠方。",
+                            "ja": "ヨーロッパじゅうの物語を抱いて、遠くへと運んでいく。",
+                            "en": "Carrying all the stories of Europe toward somewhere far away.",
+                            "de": "Und trägt die Geschichten ganz Europas in die Ferne."
+                        } }
+                    ],
+                    "transition_out": { "type": "dip_to_black", "duration": 0.5 }
+                },
+                {
+                    "id": "scene_04", "in": 26.0, "out": 36.0,
+                    "layer": { "asset": "img_04_rhine_dusk", "fit": "cover" },
+                    "motion": { "type": "pan", "from": { "scale": 1.10, "x": 40, "y": 0 }, "to": { "scale": 1.10, "x": -40, "y": 0 }, "easing": "linear" },
+                    "subtitles": [
+                        { "in": 26.5, "out": 30.0, "text": {
+                            "zh-TW": "煙囪靜靜站在天邊。一架飛機劃過。",
+                            "ja": "煙突が、空の果てに静かに立っている。飛行機が一機、横切っていく。",
+                            "en": "Smokestacks stand quietly at the edge of the sky. A plane cuts across.",
+                            "de": "Schornsteine stehen still am Rand des Himmels. Ein Flugzeug zieht vorüber."
+                        } },
+                        { "in": 30.5, "out": 35.5, "text": {
+                            "zh-TW": "留下一道白色的句點——而我還在這裡，捨不得結束這一天。",
+                            "ja": "白い句点を、ひとつ残して——それでも私はまだここで、この一日を終わらせたくない。",
+                            "en": "It leaves a white full stop behind — yet here I linger, unwilling to let the day end.",
+                            "de": "Es hinterlässt einen weißen Schlusspunkt – doch ich bleibe und mag den Tag noch nicht enden lassen."
+                        } }
+                    ],
+                    "transition_out": { "type": "crossfade", "duration": 0.8 }
+                },
+                {
+                    "id": "scene_05", "in": 36.0, "out": 46.0,
+                    "layer": { "asset": "img_05_rheinturm", "fit": "cover" },
+                    "motion": { "type": "ken_burns", "from": { "scale": 1.00, "x": 0, "y": 0 }, "to": { "scale": 1.12, "x": 20, "y": -15 }, "easing": "easeInOutQuad" },
+                    "subtitles": [
+                        { "in": 36.5, "out": 40.0, "text": {
+                            "zh-TW": "萊茵塔守著最後一抹金黃。",
+                            "ja": "ラインタワーが、最後の金色を、そっと見守っている。",
+                            "en": "The Rheinturm keeps watch over the last trace of gold.",
+                            "de": "Der Rheinturm wacht über den letzten Schimmer aus Gold."
+                        } },
+                        { "in": 40.5, "out": 45.5, "text": {
+                            "zh-TW": "雲彩像被誰打翻的茶，慢慢暈開，整座城市，沉入河水。",
+                            "ja": "雲は、こぼれた紅茶のように、ゆっくりと滲み、街はまるごと、川の底へ沈んでいく。",
+                            "en": "The clouds spread like spilled tea, and the whole city sinks slowly into the river.",
+                            "de": "Die Wolken zerlaufen wie verschütteter Tee, und die ganze Stadt versinkt langsam im Fluss."
+                        } }
+                    ],
+                    "transition_out": { "type": "crossfade", "duration": 1.0 }
+                },
+                {
+                    "id": "scene_06", "in": 46.0, "out": 55.0,
+                    "layer": { "asset": "img_06_ko_night", "fit": "cover" },
+                    "motion": { "type": "ken_burns", "from": { "scale": 1.08, "x": 0, "y": 0 }, "to": { "scale": 1.00, "x": 0, "y": 0 }, "easing": "easeOutCubic" },
+                    "subtitles": [
+                        { "in": 46.5, "out": 50.0, "text": {
+                            "zh-TW": "夜回到國王大道。燈火把梧桐染成一幅油畫。",
+                            "ja": "夜が、ケーニヒスアレーに戻ってくる。灯りがプラタナスを、一枚の油絵に染めあげる。",
+                            "en": "Night returns to Königsallee. The lamplight paints the plane trees into an oil canvas.",
+                            "de": "Die Nacht kehrt in die Königsallee zurück. Das Licht malt die Platanen zu einem Ölgemälde."
+                        } },
+                        { "in": 50.5, "out": 54.5, "text": {
+                            "zh-TW": "水面靜得像一首寫完的詩——沒有人朗讀，卻句句清晰。",
+                            "ja": "水面は、書き終えた詩のように静か——誰も読みあげないのに、一行ずつ、はっきりと。",
+                            "en": "The water lies still as a finished poem — no one reads it aloud, yet every line is clear.",
+                            "de": "Das Wasser liegt still wie ein vollendetes Gedicht – niemand liest es vor, und doch ist jede Zeile klar."
+                        } }
+                    ],
+                    "transition_out": { "type": "fade_to_black", "duration": 1.0 }
+                },
+                {
+                    "id": "scene_07_outro", "in": 55.0, "out": 60.0,
+                    "layer": { "type": "solid", "color": "#000000" },
+                    "motion": { "type": "none" },
+                    "subtitles": [
+                        { "in": 55.5, "out": 59.5, "align": "center", "style": "title", "text": {
+                            "zh-TW": "杜塞道夫\n我把這幾天的風景，折進記憶的口袋，帶回家。",
+                            "ja": "デュッセルドルフ\nこの数日の景色を、記憶のポケットに折りたたんで、家へ持ち帰る。",
+                            "en": "Düsseldorf\nI fold these days of scenery into the pocket of memory, and carry them home.",
+                            "de": "Düsseldorf\nIch falte die Bilder dieser Tage in die Tasche der Erinnerung und trage sie nach Hause."
+                        } }
+                    ]
+                }
             ]
         };
 
@@ -121,6 +272,7 @@
         let isEngineRunning = false;
         let previousTimestamp = 0;
         let animationFrameRequestId = null;
+        let currentLang = 'zh-TW';
 
         const audioTrack = document.getElementById('audio-track');
         const sceneContainer = document.getElementById('scene-container');
@@ -263,8 +415,10 @@
             }
 
             if (targetSubtitle) {
-                // 修復：使用 split 和 join 替代 regex，避免編譯錯誤或意外切斷字元
-                subtitleBox.innerHTML = targetSubtitle.text.split('\\n').join('<br>').split('\n').join('<br>').split('\n').join('<br>');
+                // 依當前語系取出字幕文字，缺漏時退回繁體中文
+                const localizedText = targetSubtitle.text[currentLang] || targetSubtitle.text['zh-TW'];
+                // 使用 split 和 join 替代 regex，避免編譯錯誤或意外切斷字元
+                subtitleBox.innerHTML = localizedText.split('\\n').join('<br>').split('\n').join('<br>');
                 
                 if (targetSubtitle.style === 'title') {
                     subtitleBox.classList.add('title-style');
@@ -296,12 +450,12 @@
             if (isEngineRunning) {
                 if (currentClockTime >= movieScript.project.duration_sec) currentClockTime = 0;
                 audioTrack.play().catch(() => {});
-                playButton.innerText = '暫停影片';
+                playButton.innerText = uiStrings[currentLang].pause;
                 previousTimestamp = performance.now();
                 animationFrameRequestId = requestAnimationFrame(executeTimelineEngine);
             } else {
                 audioTrack.pause();
-                playButton.innerText = '播放影片';
+                playButton.innerText = uiStrings[currentLang].play;
                 cancelAnimationFrame(animationFrameRequestId);
                 document.querySelectorAll('video').forEach(v => v.pause());
             }
@@ -313,6 +467,19 @@
             audioTrack.currentTime = currentClockTime;
             renderCurrentFrame(currentClockTime);
             refreshControlUI(currentClockTime);
+        }
+
+        // 動態切換語系：只更新文字，不觸碰時鐘、音訊與影片狀態，因此不影響播放
+        function switchLanguage(lang) {
+            if (!uiStrings[lang]) return;
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('tagline').innerText = uiStrings[lang].tagline;
+            playButton.innerText = isEngineRunning ? uiStrings[lang].pause : uiStrings[lang].play;
+            document.querySelectorAll('#lang-switcher button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            renderCurrentFrame(currentClockTime);
         }
 
         playButton.addEventListener('click', () => toggleEnginePlayback());
