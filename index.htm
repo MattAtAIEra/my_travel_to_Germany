@@ -4,6 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>德國杜塞道夫出差回憶錄 - 詩與光影</title>
+    <meta name="description" content="德國杜塞道夫（Düsseldorf）出差期間的城市攝影與新詩創作：國王大道運河、萊茵河黃昏與夜景共四篇光影詩，並附一分鐘動態微電影，提供繁體中文、日語、英語、德語四種語言。">
+    <link rel="canonical" href="index.htm">
+
+    <!-- Open Graph / 社群分享預覽 -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="杜塞道夫（Düsseldorf）的光影詩篇 — 德國出差回憶錄">
+    <meta property="og:description" content="國王大道運河、萊茵河黃昏與夜景的城市攝影與新詩，附一分鐘動態微電影。繁中／日／英／德四語。">
+    <meta property="og:image" content="20220911_162427.jpg">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="杜塞道夫（Düsseldorf）的光影詩篇 — 德國出差回憶錄">
+    <meta name="twitter:description" content="國王大道運河、萊茵河黃昏與夜景的城市攝影與新詩，附一分鐘動態微電影。繁中／日／英／德四語。">
+    <meta name="twitter:image" content="20220911_162427.jpg">
+
+    <!-- 結構化資料：相簿 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ImageGallery",
+      "name": "杜塞道夫（Düsseldorf）的光影詩篇",
+      "description": "德國杜塞道夫出差期間的城市攝影與新詩創作，收錄國王大道運河、萊茵河黃昏與夜景共四篇光影詩。",
+      "inLanguage": ["zh-TW", "ja", "en", "de"],
+      "image": [
+        { "@type": "ImageObject", "contentUrl": "20220911_162427.jpg", "name": "Königsallee 的午後", "caption": "杜塞道夫國王大道運河的午後光影" },
+        { "@type": "ImageObject", "contentUrl": "IMG_0348.jpg", "name": "鋼鐵與晚霞的交界", "caption": "萊茵河塔與工業煙囪的黃昏天際線" },
+        { "@type": "ImageObject", "contentUrl": "IMG_0436.jpg", "name": "萊茵河畔的狂舞", "caption": "萊茵河畔的夕陽與雲彩" },
+        { "@type": "ImageObject", "contentUrl": "IMG_8628.jpg", "name": "Königsallee 的金色夢境", "caption": "杜塞道夫國王大道運河的金色夜景" }
+      ]
+    }
+    </script>
     <style>
         body {
             font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
@@ -19,7 +52,7 @@
         h1 {
             color: #1a252f;
             font-size: 2.8em;
-            margin-bottom: 15px;
+            margin: 0 0 15px;
             font-weight: 300;
             letter-spacing: 2px;
         }
@@ -27,8 +60,16 @@
             color: #7f8c8d;
             font-size: 1.2em;
             letter-spacing: 1px;
+            margin: 0;
         }
-        
+
+        /* 多語系內容區塊：預設隱藏，僅顯示與 body 當前語系相符者 */
+        .i18n-block { display: none; }
+        body.lang-zh-TW .i18n-block[lang="zh-TW"],
+        body.lang-ja    .i18n-block[lang="ja"],
+        body.lang-en    .i18n-block[lang="en"],
+        body.lang-de    .i18n-block[lang="de"] { display: block; }
+
         /* --- 新增：微電影 Banner 樣式 --- */
         .movie-banner {
             display: block;
@@ -78,7 +119,7 @@
         .banner-text {
             flex-grow: 1;
         }
-        .banner-text h3 {
+        .banner-text h2 {
             margin: 0 0 6px 0;
             font-size: 1.4em;
             color: #ffffff;
@@ -140,6 +181,7 @@
             overflow: hidden;
             border-radius: 10px;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            margin: 0;
         }
         .gallery-item img {
             width: 100%;
@@ -157,7 +199,7 @@
         .title {
             font-size: 1.3em;
             color: #34495e;
-            margin-bottom: 18px;
+            margin: 0 0 18px;
             font-weight: 600;
             position: relative;
             padding-bottom: 10px;
@@ -249,15 +291,15 @@
         }
     </style>
 </head>
-<body>
+<body class="lang-zh-TW">
 
     <!-- 多語系切換器 -->
-    <div id="lang-switcher">
+    <nav id="lang-switcher" aria-label="語言選擇 / Language">
         <button data-lang="zh-TW" class="active" onclick="switchLanguage('zh-TW')">繁中</button>
         <button data-lang="ja" onclick="switchLanguage('ja')">日本語</button>
         <button data-lang="en" onclick="switchLanguage('en')">English</button>
         <button data-lang="de" onclick="switchLanguage('de')">Deutsch</button>
-    </div>
+    </nav>
 
     <!-- 背景音樂 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
@@ -269,8 +311,14 @@
     </div>
 
     <header>
-        <h1 id="page-h1">杜塞道夫(Düsseldorf)的光影詩篇</h1>
-        <p class="subtitle" id="page-subtitle">德國出差隨手紀錄的城市意象與新詩獨白</p>
+        <h1 class="i18n-block" lang="zh-TW">杜塞道夫（Düsseldorf）的光影詩篇</h1>
+        <h1 class="i18n-block" lang="ja">デュッセルドルフ、光と影の詩篇</h1>
+        <h1 class="i18n-block" lang="en">Düsseldorf — Poems of Light and Shadow</h1>
+        <h1 class="i18n-block" lang="de">Düsseldorf – Gedichte aus Licht und Schatten</h1>
+        <p class="subtitle i18n-block" lang="zh-TW">德國出差隨手紀錄的城市意象與新詩獨白</p>
+        <p class="subtitle i18n-block" lang="ja">ドイツ出張のあいまに綴った、街の情景と自由詩の独白</p>
+        <p class="subtitle i18n-block" lang="en">City impressions and free-verse monologues, jotted down on a business trip to Germany</p>
+        <p class="subtitle i18n-block" lang="de">Stadtbilder und Monologe in freien Versen, notiert auf einer Geschäftsreise durch Deutschland</p>
     </header>
 
     <!-- 微電影 Banner 連結 -->
@@ -278,22 +326,31 @@
         <div class="banner-content">
             <div class="banner-icon">🎬</div>
             <div class="banner-text">
-                <h3 id="banner-h3">觀看動態微電影 (One-Minute Memoir)</h3>
-                <p id="banner-p">點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</p>
+                <h2 class="i18n-block" lang="zh-TW">觀看動態微電影 (One-Minute Memoir)</h2>
+                <h2 class="i18n-block" lang="ja">動く微映画を観る（One-Minute Memoir）</h2>
+                <h2 class="i18n-block" lang="en">Watch the Micro-Film (One-Minute Memoir)</h2>
+                <h2 class="i18n-block" lang="de">Den Kurzfilm ansehen (One-Minute Memoir)</h2>
+                <p class="i18n-block" lang="zh-TW">點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</p>
+                <p class="i18n-block" lang="ja">クリックして、時の流れに導かれる映像回想録へ。光と影と詩が、流れだす。</p>
+                <p class="i18n-block" lang="en">Click to enter a time-driven audiovisual memoir, where light, shadow, and verse begin to flow.</p>
+                <p class="i18n-block" lang="de">Klicken Sie für ein zeitgesteuertes Bild- und Klang-Memoir, in dem Licht, Schatten und Verse zu fließen beginnen.</p>
             </div>
             <div class="banner-arrow">➔</div>
         </div>
     </a>
 
-    <div class="gallery">
+    <main class="gallery">
         <!-- 照片 1 -->
-        <div class="gallery-item">
-            <div class="image-container">
-                <img src="20220911_162427.jpg" alt="國王大道運河 午後">
-            </div>
+        <article class="gallery-item">
+            <figure class="image-container">
+                <img src="20220911_162427.jpg" alt="杜塞道夫國王大道運河的午後，梧桐樹倒映在水面，遠處有一座小橋" loading="lazy" width="400" height="320">
+            </figure>
             <div class="content">
-                <div class="title">Königsallee 的午後</div>
-                <div class="poem">在金色與碧綠交織的午後，
+                <h2 class="title i18n-block" lang="zh-TW">Königsallee 的午後</h2>
+                <h2 class="title i18n-block" lang="ja">ケーニヒスアレーの午後</h2>
+                <h2 class="title i18n-block" lang="en">An Afternoon on Königsallee</h2>
+                <h2 class="title i18n-block" lang="de">Ein Nachmittag auf der Königsallee</h2>
+                <div class="poem i18n-block" lang="zh-TW">在金色與碧綠交織的午後，
 杜塞道夫的 Königsallee 運河，
 是一面不說謊的鏡子。
 溫柔地收納了懸鈴木的嘆息，
@@ -303,17 +360,54 @@
 城市在水中，比腳下的石板路更加清澈。
 這是一首，由光與水共同譜寫的，
 寧靜奏鳴曲。</div>
+                <div class="poem i18n-block" lang="ja">金と碧の織りなす、午後。
+デュッセルドルフ、ケーニヒスアレーの運河は、
+嘘をつかない一枚の鏡。
+プラタナスのため息も、
+空の深い青のまなざしも、やさしく抱きとめる。
+遠くの小橋は、いまと永遠をつなぐ扉。
+落ち葉が、時の歩みを敷きつめてゆく。
+水のなかの街は、足もとの石畳よりも澄んでいる。
+これは、光と水が共に書きあげた、
+静かなソナタ。</div>
+                <div class="poem i18n-block" lang="en">In an afternoon woven of gold and green,
+the Königsallee canal of Düsseldorf
+is a mirror that tells no lies.
+Tenderly it gathers the sighs of the plane trees
+and the deep blue gaze of the sky.
+The small bridge far off is a doorway
+between this moment and the eternal.
+Fallen leaves lay out the footsteps of time;
+the city in the water runs clearer
+than the cobblestones beneath my feet.
+This is a quiet sonata,
+scored by light and water as one.</div>
+                <div class="poem i18n-block" lang="de">An einem Nachmittag, gewebt aus Gold und Grün,
+ist der Kanal der Düsseldorfer Königsallee
+ein Spiegel, der niemals lügt.
+Sanft sammelt er die Seufzer der Platanen
+und den tiefblauen Blick des Himmels.
+Die kleine Brücke in der Ferne ist ein Tor
+zwischen diesem Augenblick und der Ewigkeit.
+Fallendes Laub legt die Schritte der Zeit aus;
+die Stadt im Wasser ist klarer
+als das Kopfsteinpflaster unter meinen Füßen.
+Dies ist eine stille Sonate,
+geschrieben von Licht und Wasser zugleich.</div>
             </div>
-        </div>
+        </article>
 
         <!-- 照片 2 -->
-        <div class="gallery-item">
-            <div class="image-container">
-                <img src="IMG_0348.jpg" alt="工業城市與黃昏天際線">
-            </div>
+        <article class="gallery-item">
+            <figure class="image-container">
+                <img src="IMG_0348.jpg" alt="杜塞道夫黃昏的天際線，萊茵河塔與工業煙囪在橙藍交界的天空下成為剪影" loading="lazy" width="400" height="320">
+            </figure>
             <div class="content">
-                <div class="title">鋼鐵與晚霞的交界</div>
-                <div class="poem">枯枝的骨架，是黃昏最堅硬的框。
+                <h2 class="title i18n-block" lang="zh-TW">鋼鐵與晚霞的交界</h2>
+                <h2 class="title i18n-block" lang="ja">鋼鉄と夕焼けの境</h2>
+                <h2 class="title i18n-block" lang="en">Where Steel Meets the Sunset</h2>
+                <h2 class="title i18n-block" lang="de">Wo Stahl und Abendrot sich treffen</h2>
+                <div class="poem i18n-block" lang="zh-TW">枯枝的骨架，是黃昏最堅硬的框。
 杜塞道夫的天空，
 在蔚藍與燃燒的橙色之間，
 編織著凝結的飛逝。
@@ -323,17 +417,56 @@
 這是世界的沉思，
 在晝夜交替的瞬間，
 我看見了歷史與未來的對話。</div>
+                <div class="poem i18n-block" lang="ja">枯れ枝の骨組みは、黄昏のいちばん硬い額縁。
+デュッセルドルフの空は、
+青と、燃えるような橙のあいだで、
+過ぎゆく時を、ひとつに凝らせてゆく。
+工場の煙突は、太古の獣のように静かに佇み、
+ライン塔は、孤独な見張り。
+街のシルエットを、光と影の境界に、そっと留める。
+これは、世界の物思い。
+昼と夜の入れかわる一瞬に、
+私は、歴史と未来の対話を見た。</div>
+                <div class="poem i18n-block" lang="en">The skeleton of bare branches
+is the hardest frame the dusk can hold.
+The sky of Düsseldorf,
+between azure and a burning orange,
+weaves a fleeting moment into stillness.
+Industrial chimneys stand silent
+as prehistoric beasts;
+the Rhine Tower, a lone watchman,
+pins the city's silhouette
+to the border of light and shadow.
+This is the world in contemplation —
+and in the instant day turns to night,
+I see history speaking with the future.</div>
+                <div class="poem i18n-block" lang="de">Das Gerippe kahler Äste
+ist der härteste Rahmen der Dämmerung.
+Der Himmel über Düsseldorf
+webt zwischen Azur und brennendem Orange
+das Verfließen der Zeit zu Stille.
+Industrieschlote stehen schweigend
+wie urzeitliche Tiere;
+der Rheinturm, ein einsamer Wächter,
+heftet die Silhouette der Stadt
+an die Grenze von Licht und Schatten.
+Dies ist die Versenkung der Welt –
+und im Augenblick, da Tag in Nacht übergeht,
+sehe ich Geschichte und Zukunft im Gespräch.</div>
             </div>
-        </div>
+        </article>
 
         <!-- 照片 3 -->
-        <div class="gallery-item">
-            <div class="image-container">
-                <img src="IMG_0436.jpg" alt="萊茵河畔夕陽">
-            </div>
+        <article class="gallery-item">
+            <figure class="image-container">
+                <img src="IMG_0436.jpg" alt="萊茵河畔的夕陽，深藍與金色的雲彩，遠方有萊茵塔與斜張橋的剪影" loading="lazy" width="400" height="320">
+            </figure>
             <div class="content">
-                <div class="title">萊茵河畔的狂舞</div>
-                <div class="poem">萊茵河畔，雲朵是天空的舞者，
+                <h2 class="title i18n-block" lang="zh-TW">萊茵河畔的狂舞</h2>
+                <h2 class="title i18n-block" lang="ja">ライン川のほとりの舞</h2>
+                <h2 class="title i18n-block" lang="en">A Wild Dance by the Rhine</h2>
+                <h2 class="title i18n-block" lang="de">Der wilde Tanz am Rhein</h2>
+                <div class="poem i18n-block" lang="zh-TW">萊茵河畔，雲朵是天空的舞者，
 身披深藍與金色的盛裝。
 夕陽在最後的謝幕中，
 爆發出太陽的怒火，
@@ -343,17 +476,52 @@
 但天空的火焰，依然照亮，
 這場關於光與時間的，
 宏大祭典。</div>
+                <div class="poem i18n-block" lang="ja">ライン川のほとり、雲は空の踊り手。
+深い青と金の衣装を、まとっている。
+夕陽は、最後のカーテンコールで、
+太陽の怒りを噴きあげ、
+街のシルエットを——ラインタワーと斜張橋を——
+光の核へと、深く刻みこむ。
+足もとの草地は、もう静まりかえり、
+それでも空の炎は、なお燃えつづける。
+これは、光と時をめぐる、
+壮大な祭礼。</div>
+                <div class="poem i18n-block" lang="en">By the Rhine, the clouds are dancers of the sky,
+dressed in robes of deep blue and gold.
+In its final curtain call,
+the setting sun bursts into solar fire,
+carving the city's silhouette —
+the Rheinturm and the cable-stayed bridge —
+deep into the heart of the light.
+The grass beneath my feet has fallen quiet,
+yet the flames of the sky still blaze,
+lighting this grand festival
+of light and time.</div>
+                <div class="poem i18n-block" lang="de">Am Rhein sind die Wolken Tänzer des Himmels,
+gekleidet in Gewänder aus Tiefblau und Gold.
+In ihrem letzten Vorhang
+bricht die sinkende Sonne in Feuer aus
+und gräbt die Silhouette der Stadt –
+den Rheinturm und die Schrägseilbrücke –
+tief in den Kern des Lichts.
+Das Gras zu meinen Füßen ist verstummt,
+doch die Flammen des Himmels leuchten weiter
+und erhellen dieses große Fest
+aus Licht und Zeit.</div>
             </div>
-        </div>
+        </article>
 
         <!-- 照片 4 -->
-        <div class="gallery-item">
-            <div class="image-container">
-                <img src="IMG_8628.jpg" alt="國王大道運河 夜景">
-            </div>
+        <article class="gallery-item">
+            <figure class="image-container">
+                <img src="IMG_8628.jpg" alt="夜晚的杜塞道夫國王大道運河，燈火將梧桐染成金色並倒映在水面" loading="lazy" width="400" height="320">
+            </figure>
             <div class="content">
-                <div class="title">Königsallee 的金色夢境</div>
-                <div class="poem">當夜色垂下，Königsallee 換上了金色的輕紗。
+                <h2 class="title i18n-block" lang="zh-TW">Königsallee 的金色夢境</h2>
+                <h2 class="title i18n-block" lang="ja">ケーニヒスアレーの金色の夢</h2>
+                <h2 class="title i18n-block" lang="en">The Golden Dream of Königsallee</h2>
+                <h2 class="title i18n-block" lang="de">Der goldene Traum der Königsallee</h2>
+                <div class="poem i18n-block" lang="zh-TW">當夜色垂下，Königsallee 換上了金色的輕紗。
 懸鈴木的枝葉被燈火點亮，
 編織出一座金色的神殿拱門。
 運河是一面魔幻的鏡子，
@@ -364,117 +532,73 @@
 連岸邊的車輛也沉思不語，
 成為這場華麗演出的，
 寂靜證人。</div>
+                <div class="poem i18n-block" lang="ja">夜がおりてくると、ケーニヒスアレーは、
+金色の薄衣をまとう。
+プラタナスの枝葉は灯りに照らされ、
+金の神殿のアーチを編みあげる。
+運河は、魔法の鏡。
+静寂のなかに、もうひとつの、
+さかさまの世界を生みだす。
+金色の光の柱が、まっすぐ水へ沈み、
+光の根となって、下へとのびてゆく。
+ここは、夢とうつつの境目。
+岸辺の車さえ、もの思いに沈み、
+この華やかな舞台の、
+静かな証人となる。</div>
+                <div class="poem i18n-block" lang="en">As night descends, Königsallee
+slips into a veil of gold.
+The leaves of the plane trees, lit by lamplight,
+weave a golden temple arch.
+The canal is a mirror of magic,
+conjuring, in the silence,
+another world turned upside down.
+Columns of golden light sink straight into the water,
+roots of brightness reaching downward.
+Here is the border of dream and reality;
+even the cars along the bank fall silent in thought,
+becoming the quiet witnesses
+of this magnificent performance.</div>
+                <div class="poem i18n-block" lang="de">Wenn die Nacht herabsinkt, hüllt sich
+die Königsallee in einen Schleier aus Gold.
+Das Laub der Platanen, vom Licht entzündet,
+flicht einen goldenen Tempelbogen.
+Der Kanal ist ein Zauberspiegel,
+der in der Stille eine andere,
+verkehrte Welt erschafft.
+Säulen goldenen Lichts tauchen senkrecht ins Wasser,
+Wurzeln der Helligkeit, die abwärts reichen.
+Hier verläuft die Grenze von Traum und Wirklichkeit;
+selbst die Wagen am Ufer verstummen in Gedanken
+und werden zu stillen Zeugen
+dieser prachtvollen Aufführung.</div>
             </div>
-        </div>
-    </div>
+        </article>
+    </main>
 
     <script>
         const audio = document.getElementById('bgm');
-        const controlBtn = document.getElementById('music-control');
         const musicIcon = document.getElementById('music-icon');
         const musicText = document.getElementById('music-text');
 
         let currentLang = 'zh-TW';
 
-        // 四語內容：標題、詩句並非逐字直譯，而是依每張照片的意境，
-        // 以各語言的文學語感重新創作。缺漏語系時退回繁體中文。
-        const content = {
-            "zh-TW": {
-                pageTitle: "德國杜塞道夫出差回憶錄 - 詩與光影",
-                h1: "杜塞道夫(Düsseldorf)的光影詩篇",
-                subtitle: "德國出差隨手紀錄的城市意象與新詩獨白",
-                bannerH3: "觀看動態微電影 (One-Minute Memoir)",
-                bannerP: "點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。",
-                musicPlay: "播放音樂",
-                musicPause: "暫停音樂",
-                items: [
-                    { title: "Königsallee 的午後",
-                      poem: "在金色與碧綠交織的午後，\n杜塞道夫的 Königsallee 運河，\n是一面不說謊的鏡子。\n溫柔地收納了懸鈴木的嘆息，\n與天空湛藍的凝望。\n遠處的小橋，是連接此刻與永恆的門扉。\n落葉鋪陳著時光的步履，\n城市在水中，比腳下的石板路更加清澈。\n這是一首，由光與水共同譜寫的，\n寧靜奏鳴曲。" },
-                    { title: "鋼鐵與晚霞的交界",
-                      poem: "枯枝的骨架，是黃昏最堅硬的框。\n杜塞道夫的天空，\n在蔚藍與燃燒的橙色之間，\n編織著凝結的飛逝。\n工業煙囪寂靜如史前巨獸，\n萊茵河塔，是孤獨的守望者，\n將城市的剪影，釘在光與影的邊界。\n這是世界的沉思，\n在晝夜交替的瞬間，\n我看見了歷史與未來的對話。" },
-                    { title: "萊茵河畔的狂舞",
-                      poem: "萊茵河畔，雲朵是天空的舞者，\n身披深藍與金色的盛裝。\n夕陽在最後的謝幕中，\n爆發出太陽的怒火，\n將城市剪影，Rheinturm 與斜張橋，\n深深地刻入光明的核心。\n腳下的草地已歸於沉寂，\n但天空的火焰，依然照亮，\n這場關於光與時間的，\n宏大祭典。" },
-                    { title: "Königsallee 的金色夢境",
-                      poem: "當夜色垂下，Königsallee 換上了金色的輕紗。\n懸鈴木的枝葉被燈火點亮，\n編織出一座金色的神殿拱門。\n運河是一面魔幻的鏡子，\n在寂靜中，創造了另一個顛倒的世界。\n金色的光柱垂直地沒入水中，\n是光明的根鬚，向下延伸。\n這裡是夢與現實的邊界，\n連岸邊的車輛也沉思不語，\n成為這場華麗演出的，\n寂靜證人。" }
-                ]
-            },
-            "ja": {
-                pageTitle: "ドイツ・デュッセルドルフ出張回想録 — 詩と光影",
-                h1: "デュッセルドルフ、光と影の詩篇",
-                subtitle: "ドイツ出張のあいまに綴った、街の情景と自由詩の独白",
-                bannerH3: "動く微映画を観る（One-Minute Memoir）",
-                bannerP: "クリックして、時の流れに導かれる映像回想録へ。光と影と詩が、流れだす。",
-                musicPlay: "音楽を再生",
-                musicPause: "音楽を停止",
-                items: [
-                    { title: "ケーニヒスアレーの午後",
-                      poem: "金と碧の織りなす、午後。\nデュッセルドルフ、ケーニヒスアレーの運河は、\n嘘をつかない一枚の鏡。\nプラタナスのため息も、\n空の深い青のまなざしも、やさしく抱きとめる。\n遠くの小橋は、いまと永遠をつなぐ扉。\n落ち葉が、時の歩みを敷きつめてゆく。\n水のなかの街は、足もとの石畳よりも澄んでいる。\nこれは、光と水が共に書きあげた、\n静かなソナタ。" },
-                    { title: "鋼鉄と夕焼けの境",
-                      poem: "枯れ枝の骨組みは、黄昏のいちばん硬い額縁。\nデュッセルドルフの空は、\n青と、燃えるような橙のあいだで、\n過ぎゆく時を、ひとつに凝らせてゆく。\n工場の煙突は、太古の獣のように静かに佇み、\nライン塔は、孤独な見張り。\n街のシルエットを、光と影の境界に、そっと留める。\nこれは、世界の物思い。\n昼と夜の入れかわる一瞬に、\n私は、歴史と未来の対話を見た。" },
-                    { title: "ライン川のほとりの舞",
-                      poem: "ライン川のほとり、雲は空の踊り手。\n深い青と金の衣装を、まとっている。\n夕陽は、最後のカーテンコールで、\n太陽の怒りを噴きあげ、\n街のシルエットを——ラインタワーと斜張橋を——\n光の核へと、深く刻みこむ。\n足もとの草地は、もう静まりかえり、\nそれでも空の炎は、なお燃えつづける。\nこれは、光と時をめぐる、\n壮大な祭礼。" },
-                    { title: "ケーニヒスアレーの金色の夢",
-                      poem: "夜がおりてくると、ケーニヒスアレーは、\n金色の薄衣をまとう。\nプラタナスの枝葉は灯りに照らされ、\n金の神殿のアーチを編みあげる。\n運河は、魔法の鏡。\n静寂のなかに、もうひとつの、\nさかさまの世界を生みだす。\n金色の光の柱が、まっすぐ水へ沈み、\n光の根となって、下へとのびてゆく。\nここは、夢とうつつの境目。\n岸辺の車さえ、もの思いに沈み、\nこの華やかな舞台の、\n静かな証人となる。" }
-                ]
-            },
-            "en": {
-                pageTitle: "A Düsseldorf Business-Trip Memoir — Poetry and Light",
-                h1: "Düsseldorf — Poems of Light and Shadow",
-                subtitle: "City impressions and free-verse monologues, jotted down on a business trip to Germany",
-                bannerH3: "Watch the Micro-Film (One-Minute Memoir)",
-                bannerP: "Click to enter a time-driven audiovisual memoir, where light, shadow, and verse begin to flow.",
-                musicPlay: "Play Music",
-                musicPause: "Pause Music",
-                items: [
-                    { title: "An Afternoon on Königsallee",
-                      poem: "In an afternoon woven of gold and green,\nthe Königsallee canal of Düsseldorf\nis a mirror that tells no lies.\nTenderly it gathers the sighs of the plane trees\nand the deep blue gaze of the sky.\nThe small bridge far off is a doorway\nbetween this moment and the eternal.\nFallen leaves lay out the footsteps of time;\nthe city in the water runs clearer\nthan the cobblestones beneath my feet.\nThis is a quiet sonata,\nscored by light and water as one." },
-                    { title: "Where Steel Meets the Sunset",
-                      poem: "The skeleton of bare branches\nis the hardest frame the dusk can hold.\nThe sky of Düsseldorf,\nbetween azure and a burning orange,\nweaves a fleeting moment into stillness.\nIndustrial chimneys stand silent\nas prehistoric beasts;\nthe Rhine Tower, a lone watchman,\npins the city's silhouette\nto the border of light and shadow.\nThis is the world in contemplation —\nand in the instant day turns to night,\nI see history speaking with the future." },
-                    { title: "A Wild Dance by the Rhine",
-                      poem: "By the Rhine, the clouds are dancers of the sky,\ndressed in robes of deep blue and gold.\nIn its final curtain call,\nthe setting sun bursts into solar fire,\ncarving the city's silhouette —\nthe Rheinturm and the cable-stayed bridge —\ndeep into the heart of the light.\nThe grass beneath my feet has fallen quiet,\nyet the flames of the sky still blaze,\nlighting this grand festival\nof light and time." },
-                    { title: "The Golden Dream of Königsallee",
-                      poem: "As night descends, Königsallee\nslips into a veil of gold.\nThe leaves of the plane trees, lit by lamplight,\nweave a golden temple arch.\nThe canal is a mirror of magic,\nconjuring, in the silence,\nanother world turned upside down.\nColumns of golden light sink straight into the water,\nroots of brightness reaching downward.\nHere is the border of dream and reality;\neven the cars along the bank fall silent in thought,\nbecoming the quiet witnesses\nof this magnificent performance." }
-                ]
-            },
-            "de": {
-                pageTitle: "Erinnerungen an eine Düsseldorf-Geschäftsreise — Poesie und Licht",
-                h1: "Düsseldorf – Gedichte aus Licht und Schatten",
-                subtitle: "Stadtbilder und Monologe in freien Versen, notiert auf einer Geschäftsreise durch Deutschland",
-                bannerH3: "Den Kurzfilm ansehen (One-Minute Memoir)",
-                bannerP: "Klicken Sie für ein zeitgesteuertes Bild- und Klang-Memoir, in dem Licht, Schatten und Verse zu fließen beginnen.",
-                musicPlay: "Musik abspielen",
-                musicPause: "Musik pausieren",
-                items: [
-                    { title: "Ein Nachmittag auf der Königsallee",
-                      poem: "An einem Nachmittag, gewebt aus Gold und Grün,\nist der Kanal der Düsseldorfer Königsallee\nein Spiegel, der niemals lügt.\nSanft sammelt er die Seufzer der Platanen\nund den tiefblauen Blick des Himmels.\nDie kleine Brücke in der Ferne ist ein Tor\nzwischen diesem Augenblick und der Ewigkeit.\nFallendes Laub legt die Schritte der Zeit aus;\ndie Stadt im Wasser ist klarer\nals das Kopfsteinpflaster unter meinen Füßen.\nDies ist eine stille Sonate,\ngeschrieben von Licht und Wasser zugleich." },
-                    { title: "Wo Stahl und Abendrot sich treffen",
-                      poem: "Das Gerippe kahler Äste\nist der härteste Rahmen der Dämmerung.\nDer Himmel über Düsseldorf\nwebt zwischen Azur und brennendem Orange\ndas Verfließen der Zeit zu Stille.\nIndustrieschlote stehen schweigend\nwie urzeitliche Tiere;\nder Rheinturm, ein einsamer Wächter,\nheftet die Silhouette der Stadt\nan die Grenze von Licht und Schatten.\nDies ist die Versenkung der Welt –\nund im Augenblick, da Tag in Nacht übergeht,\nsehe ich Geschichte und Zukunft im Gespräch." },
-                    { title: "Der wilde Tanz am Rhein",
-                      poem: "Am Rhein sind die Wolken Tänzer des Himmels,\ngekleidet in Gewänder aus Tiefblau und Gold.\nIn ihrem letzten Vorhang\nbricht die sinkende Sonne in Feuer aus\nund gräbt die Silhouette der Stadt –\nden Rheinturm und die Schrägseilbrücke –\ntief in den Kern des Lichts.\nDas Gras zu meinen Füßen ist verstummt,\ndoch die Flammen des Himmels leuchten weiter\nund erhellen dieses große Fest\naus Licht und Zeit." },
-                    { title: "Der goldene Traum der Königsallee",
-                      poem: "Wenn die Nacht herabsinkt, hüllt sich\ndie Königsallee in einen Schleier aus Gold.\nDas Laub der Platanen, vom Licht entzündet,\nflicht einen goldenen Tempelbogen.\nDer Kanal ist ein Zauberspiegel,\nder in der Stille eine andere,\nverkehrte Welt erschafft.\nSäulen goldenen Lichts tauchen senkrecht ins Wasser,\nWurzeln der Helligkeit, die abwärts reichen.\nHier verläuft die Grenze von Traum und Wirklichkeit;\nselbst die Wagen am Ufer verstummen in Gedanken\nund werden zu stillen Zeugen\ndieser prachtvollen Aufführung." }
-                ]
-            }
+        // 介面文字（頁面標題與音樂按鈕）四語對照
+        const uiStrings = {
+            "zh-TW": { title: "德國杜塞道夫出差回憶錄 - 詩與光影", musicPlay: "播放音樂", musicPause: "暫停音樂" },
+            "ja":    { title: "ドイツ・デュッセルドルフ出張回想録 — 詩と光影", musicPlay: "音楽を再生", musicPause: "音楽を停止" },
+            "en":    { title: "A Düsseldorf Business-Trip Memoir — Poetry and Light", musicPlay: "Play Music", musicPause: "Pause Music" },
+            "de":    { title: "Erinnerungen an eine Düsseldorf-Geschäftsreise — Poesie und Licht", musicPlay: "Musik abspielen", musicPause: "Musik pausieren" }
         };
 
-        // 動態切換語系：直接更新文字內容，不重載頁面、不中斷背景音樂
+        // 切換語系：所有語言內容都已存在於 HTML，這裡只切換 body 類別讓 CSS 顯示對應語言，
+        // 不重載頁面、不中斷背景音樂。
         function switchLanguage(lang) {
-            if (!content[lang]) return;
+            if (!uiStrings[lang]) return;
             currentLang = lang;
-            const c = content[lang];
             document.documentElement.lang = lang;
-            document.title = c.pageTitle;
-            document.getElementById('page-h1').textContent = c.h1;
-            document.getElementById('page-subtitle').textContent = c.subtitle;
-            document.getElementById('banner-h3').textContent = c.bannerH3;
-            document.getElementById('banner-p').textContent = c.bannerP;
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            c.items.forEach((item, i) => {
-                if (!galleryItems[i]) return;
-                galleryItems[i].querySelector('.title').textContent = item.title;
-                galleryItems[i].querySelector('.poem').textContent = item.poem;
-            });
-            musicText.innerText = audio.paused ? c.musicPlay : c.musicPause;
+            document.body.className = 'lang-' + lang;
+            document.title = uiStrings[lang].title;
+            musicText.innerText = audio.paused ? uiStrings[lang].musicPlay : uiStrings[lang].musicPause;
             document.querySelectorAll('#lang-switcher button').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === lang);
             });
@@ -488,7 +612,7 @@
             }).catch(error => {
                 console.log("瀏覽器阻擋了自動播放，等待使用者點擊後播放。");
                 updateUI(false);
-                
+
                 // 額外機制：使用者首次點擊頁面任何地方時嘗試播放
                 const startPlayOnInteraction = () => {
                     audio.play().then(() => {
@@ -512,11 +636,11 @@
 
         function updateUI(isPlaying) {
             if (isPlaying) {
-                musicText.innerText = content[currentLang].musicPause;
+                musicText.innerText = uiStrings[currentLang].musicPause;
                 musicIcon.innerText = "💿";
                 musicIcon.classList.add('rotating');
             } else {
-                musicText.innerText = content[currentLang].musicPlay;
+                musicText.innerText = uiStrings[currentLang].musicPlay;
                 musicIcon.innerText = "🎵";
                 musicIcon.classList.remove('rotating');
             }

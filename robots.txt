@@ -1,0 +1,7 @@
+# robots.txt — 杜塞道夫光影詩篇 / Düsseldorf Memoir
+# 歡迎搜尋引擎與 AI 爬蟲索引本網站全部內容
+User-agent: *
+Allow: /
+
+# 部署後請將 REPLACE-WITH-YOUR-DOMAIN 換成實際網域，Sitemap 才會生效
+Sitemap: https://REPLACE-WITH-YOUR-DOMAIN/sitemap.xml
