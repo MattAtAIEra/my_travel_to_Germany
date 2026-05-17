@@ -1,0 +1,6 @@
+# robots.txt — 杜塞道夫光影詩篇 / Düsseldorf Memoir
+# 歡迎搜尋引擎與 AI 爬蟲索引本網站全部內容
+User-agent: *
+Allow: /
+
+Sitemap: https://matt-at-dusseldorf.netlify.app/sitemap.xml
