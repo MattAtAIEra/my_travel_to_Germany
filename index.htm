@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>德國杜塞道夫出差回憶錄 - 詩與光影</title>
     <meta name="description" content="德國杜塞道夫（Düsseldorf）出差期間的城市攝影與新詩創作：國王大道運河、萊茵河黃昏與夜景共四篇光影詩，並附一分鐘動態微電影，提供繁體中文、日語、英語、德語四種語言。">
+    <meta name="theme-color" content="#1c3540">
     <link rel="canonical" href="https://matt-at-dusseldorf.netlify.app/index.htm">
 
     <!-- Open Graph / 社群分享預覽 -->
@@ -38,320 +39,757 @@
       ]
     }
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
-            background-color: #faf9f6;
-            color: #2c3e50;
-            margin: 0;
-            padding: 50px 20px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px; /* 稍微縮小間距留給 Banner */
-        }
-        h1 {
-            color: #1a252f;
-            font-size: 2.8em;
-            margin: 0 0 15px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-        p.subtitle {
-            color: #7f8c8d;
-            font-size: 1.2em;
-            letter-spacing: 1px;
-            margin: 0;
+        /* ============================================================
+           杜塞道夫光影詩集 — 編輯雜誌風旅行誌
+           色彩：暖紙色頁面 · 暮藍（電影／頁尾）· 落日赭橙（重點色）
+           字體：Fraunces（拉丁顯示／詩句斜體）· Noto Serif TC／JP（中日）
+           ============================================================ */
+        :root {
+            --paper:       #f4efe3;
+            --paper-warm:  #faf6ea;
+            --paper-deep:  #ebe2cf;
+            --ink:         #221d15;
+            --ink-soft:    #6c6151;
+            --ink-faint:   #a99d86;
+            --accent:      #b3531f;
+            --accent-deep: #8c3d14;
+            --accent-warm: #d99355;
+            --petrol:      #16313c;
+            --petrol-soft: #244c5a;
+            --line:        #d6cbb2;
+            --maxw:        1180px;
+
+            --font-display: 'Fraunces', 'Noto Serif TC', 'Noto Serif JP', Georgia, serif;
+            --font-body:    'Fraunces', 'Noto Serif TC', 'Noto Serif JP', Georgia, serif;
+            --ease:         cubic-bezier(.22,.68,.16,1);
         }
 
-        /* 多語系內容區塊：預設隱藏，僅顯示與 body 當前語系相符者 */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        html, body { overflow-x: hidden; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-optical-sizing: auto;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* 日文內容改用 Noto Serif JP */
+        [lang="ja"]    { font-family: 'Fraunces', 'Noto Serif JP', serif; }
+        [lang="zh-TW"] { font-family: 'Fraunces', 'Noto Serif TC', serif; }
+
+        img { display: block; max-width: 100%; }
+        a { color: inherit; }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        /* --- 多語系內容區塊 --- */
         .i18n-block { display: none; }
         body.lang-zh-TW .i18n-block[lang="zh-TW"],
         body.lang-ja    .i18n-block[lang="ja"],
         body.lang-en    .i18n-block[lang="en"],
         body.lang-de    .i18n-block[lang="de"] { display: block; }
 
-        /* --- 新增：微電影 Banner 樣式 --- */
-        .movie-banner {
+        /* --- 紙面顆粒紋理 ---
+           固定層、無混色模式：瀏覽器可獨立合成，捲動時不需逐幀重繪。 */
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 9;
+            pointer-events: none;
+            opacity: .5;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+
+        /* --- 閱讀進度條 --- */
+        .progress {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            z-index: 1100;
+            background: transparent;
+        }
+        .progress span {
             display: block;
-            max-width: 900px;
-            margin: 0 auto 50px auto;
-            text-decoration: none;
-            background: linear-gradient(135deg, #1a252f, #2c3e50);
-            color: #ffffff;
-            border-radius: 16px;
-            padding: 20px 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            height: 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
         }
-        .movie-banner::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('20220911_162427.jpg') center/cover;
-            opacity: 0.15; /* 微微透出第一張照片作為背景紋理 */
-            z-index: 0;
-            transition: opacity 0.3s ease;
+
+        /* --- 共用容器 --- */
+        .wrap {
+            width: 100%;
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 0 clamp(1.4rem, 5vw, 4rem);
         }
-        .movie-banner:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        }
-        .movie-banner:hover::before {
-            opacity: 0.25;
-        }
-        .banner-content {
+
+        /* --- 裝飾分隔線 --- */
+        .rule {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 1.4rem;
+            color: var(--ink-faint);
+            max-width: 460px;
+            margin: clamp(3.5rem, 8vw, 6rem) auto;
+        }
+        .rule::before, .rule::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+        .rule span { font-size: .8rem; letter-spacing: .2em; }
+
+        /* ============================================================
+           語言切換器
+           ============================================================ */
+        #lang-switcher {
+            position: fixed;
+            top: 18px; right: 18px;
+            z-index: 1000;
+            display: flex;
+            gap: 2px;
+            padding: 4px;
+            border-radius: 999px;
+            background: var(--paper-warm);
+            box-shadow: 0 6px 22px rgba(34, 29, 21, .16);
+            border: 1px solid rgba(214, 203, 178, .9);
+        }
+        #lang-switcher button {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            color: var(--ink-soft);
+            font-family: var(--font-body);
+            font-size: .72rem;
+            letter-spacing: .04em;
+            padding: 6px 11px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: color .25s, background-color .25s;
+        }
+        #lang-switcher button:hover { color: var(--accent); }
+        #lang-switcher button.active {
+            background: var(--petrol);
+            color: var(--paper-warm);
+        }
+
+        /* ============================================================
+           背景音樂控制
+           ============================================================ */
+        #music-control {
+            position: fixed;
+            bottom: 22px; right: 22px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px 10px 14px;
+            border: 1px solid rgba(214, 203, 178, .9);
+            border-radius: 999px;
+            background: var(--paper-warm);
+            box-shadow: 0 8px 26px rgba(34, 29, 21, .18);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: .78rem;
+            letter-spacing: .05em;
+            cursor: pointer;
+            transition: transform .25s var(--ease), color .25s;
+        }
+        #music-control:hover { transform: translateY(-2px); color: var(--accent); }
+        .eq {
+            display: flex;
+            align-items: flex-end;
+            gap: 2.5px;
+            height: 15px;
+        }
+        .eq i {
+            width: 2.5px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
+        #music-control.is-playing .eq i {
+            animation: eq .9s ease-in-out infinite;
+        }
+        .eq i:nth-child(2) { animation-delay: .18s; }
+        .eq i:nth-child(3) { animation-delay: .36s; }
+        .eq i:nth-child(4) { animation-delay: .12s; }
+        @keyframes eq {
+            0%, 100% { height: 4px; }
+            50%      { height: 14px; }
+        }
+
+        /* ============================================================
+           刊頭 Masthead
+           ============================================================ */
+        .masthead {
+            position: relative;
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(5rem, 12vh, 9rem) 0;
+            background:
+                radial-gradient(120% 78% at 50% 0%, var(--paper-warm) 0%, var(--paper) 58%);
+        }
+        .masthead::before {
+            content: '';
+            position: absolute;
+            inset: clamp(14px, 2.4vw, 30px);
+            border: 1px solid var(--line);
+            pointer-events: none;
+        }
+        .masthead__inner {
+            position: relative;
+            max-width: 760px;
+            padding: 0 clamp(1.6rem, 6vw, 4rem);
+        }
+
+        .overline {
+            margin: 0 0 clamp(1.6rem, 4vw, 2.6rem);
+            font-size: clamp(.68rem, 1.5vw, .8rem);
+            letter-spacing: .34em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .overline .i18n-block { display: none; }
+        body.lang-zh-TW .overline .i18n-block[lang="zh-TW"],
+        body.lang-ja    .overline .i18n-block[lang="ja"],
+        body.lang-en    .overline .i18n-block[lang="en"],
+        body.lang-de    .overline .i18n-block[lang="de"] { display: inline-block; }
+
+        .masthead h1 {
+            margin: 0;
+            font-weight: 300;
+            font-size: clamp(2.4rem, 5.6vw, 4.4rem);
+            line-height: 1.16;
+            letter-spacing: -.012em;
+            color: var(--ink);
+            text-wrap: balance;
+        }
+        .masthead h1 br { display: block; }
+        .masthead h1 .i18n-block { letter-spacing: -.012em; }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: clamp(1.8rem, 4vw, 2.8rem) auto;
+            width: 180px;
+            color: var(--accent);
+        }
+        .ornament::before, .ornament::after {
+            content: '';
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, transparent, var(--line) 40%, var(--line) 60%, transparent);
+        }
+        .ornament span {
+            font-size: .7rem;
+            transform: translateY(-1px);
+        }
+
+        .lede {
+            margin: 0 auto;
+            max-width: 32em;
+            font-size: clamp(1rem, 1.9vw, 1.22rem);
+            line-height: 1.85;
+            color: var(--ink-soft);
+        }
+        .dateline {
+            margin: clamp(1.8rem, 4vw, 2.6rem) 0 0;
+            font-size: .76rem;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        /* 刊頭載入動畫 */
+        .masthead .overline,
+        .masthead h1,
+        .masthead .ornament,
+        .masthead .lede,
+        .masthead .dateline {
+            animation: rise 1.1s var(--ease) both;
+        }
+        .masthead h1        { animation-delay: .12s; }
+        .masthead .ornament { animation-delay: .26s; }
+        .masthead .lede     { animation-delay: .36s; }
+        .masthead .dateline { animation-delay: .48s; }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(26px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================
+           微電影專題 — 暗色「電影院」色帶
+           ============================================================ */
+        .film-band {
+            background:
+                radial-gradient(110% 150% at 18% 0%, var(--petrol-soft) 0%, var(--petrol) 64%);
+            color: var(--paper-warm);
+            padding: clamp(3.4rem, 8vw, 6.4rem) 0;
+        }
+        .film {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: clamp(2rem, 5vw, 4.6rem);
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        .film__media {
+            position: relative;
+        }
+        .film__media figure {
+            margin: 0;
+            overflow: hidden;
             position: relative;
             z-index: 1;
         }
-        .banner-icon {
-            font-size: 2.5em;
-            margin-right: 20px;
-            background: rgba(255,255,255,0.1);
-            width: 60px; height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-        }
-        .banner-text {
-            flex-grow: 1;
-        }
-        .banner-text h2 {
-            margin: 0 0 6px 0;
-            font-size: 1.4em;
-            color: #ffffff;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-        .banner-text p {
-            margin: 0;
-            color: #bdc3c7;
-            font-size: 0.95em;
-            letter-spacing: 0.5px;
-        }
-        .banner-arrow {
-            font-size: 1.5em;
-            color: #d35400;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-            background: #ffffff;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-        }
-        .movie-banner:hover .banner-arrow {
-            transform: translateX(8px);
-            background: #d35400;
-            color: #ffffff;
-        }
-        /* ------------------------------ */
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-bottom: 60px;
-        }
-        @media (max-width: 450px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-        }
-        .gallery-item {
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 20px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        }
-        .image-container {
+        .film__media img {
             width: 100%;
-            height: 320px;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-            margin: 0;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
+            aspect-ratio: 16 / 9;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            filter: saturate(.92) brightness(.92);
+            transition: transform 1.3s var(--ease), filter .5s;
         }
-        .gallery-item:hover img {
-            transform: scale(1.03);
+        .film:hover .film__media img {
+            transform: scale(1.05);
+            filter: saturate(1) brightness(1);
         }
-        .content {
-            padding: 25px 10px 10px 10px;
-            text-align: center;
-        }
-        .title {
-            font-size: 1.3em;
-            color: #34495e;
-            margin: 0 0 18px;
-            font-weight: 600;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        .title::after {
+        .film__media::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 2px;
-            background-color: #d35400;
+            inset: 0;
+            transform: translate(16px, 16px);
+            border: 1px solid rgba(217, 147, 85, .55);
+            z-index: 0;
         }
-        .poem {
-            font-family: 'Georgia', 'Noto Serif TC', serif;
-            font-style: italic;
-            color: #555;
-            line-height: 1.8;
-            font-size: 0.95em;
-            white-space: pre-line;
-            letter-spacing: 0.5px;
-        }
-
-        /* 音樂控制按鈕樣式 */
-        #music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(44, 62, 80, 0.9);
-            color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+        .film__play {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            pointer-events: none;
         }
-        #music-control:hover {
-            background-color: rgba(211, 84, 0, 0.9);
-            transform: scale(1.05);
+        .film__play b {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(250, 246, 234, .85);
+            background: rgba(22, 49, 60, .55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color .35s, border-color .35s, transform .35s var(--ease);
         }
-        .music-icon {
-            display: inline-block;
+        .film__play b::before {
+            content: '';
+            border-style: solid;
+            border-width: 9px 0 9px 15px;
+            border-color: transparent transparent transparent var(--paper-warm);
+            margin-left: 4px;
+            transition: border-left-color .35s;
         }
-        .rotating {
-            animation: rotate 3s linear infinite;
-        }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .film:hover .film__play b {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.08);
         }
 
-        /* 多語系切換器 */
-        #lang-switcher {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 1000;
+        .film__kicker {
+            margin: 0 0 1.1rem;
+            font-size: .72rem;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+        }
+        .film__title {
+            margin: 0 0 1.1rem;
+            font-weight: 400;
+            font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+            line-height: 1.18;
+        }
+        .film__desc {
+            margin: 0 0 1.8rem;
+            font-size: 1rem;
+            line-height: 1.85;
+            color: rgba(250, 246, 234, .76);
+            max-width: 30em;
+        }
+        .film__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: .65rem;
+            font-size: .82rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--paper-warm);
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(217, 147, 85, .55);
+        }
+        .film__cta .arrow {
+            transition: transform .35s var(--ease);
+        }
+        .film:hover .film__cta .arrow { transform: translateX(7px); }
+
+        /* ============================================================
+           詩篇對開版面 Journal
+           ============================================================ */
+        .journal {
+            padding-bottom: clamp(3rem, 7vw, 6rem);
+        }
+        .entry {
+            display: grid;
+            grid-template-columns: 1.04fr .96fr;
+            gap: clamp(2.2rem, 5.5vw, 6rem);
+            align-items: center;
+            padding-block: clamp(3.6rem, 8vw, 7rem);
+        }
+        .entry + .entry { border-top: 1px solid var(--line); }
+        .entry:nth-of-type(even) .entry__media { order: 2; }
+
+        /* 影像與位移外框 */
+        .entry__media { position: relative; }
+        .entry__media figure {
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background: var(--paper-deep);
+            box-shadow: 0 24px 48px -26px rgba(34, 29, 21, .5);
+        }
+        .entry__media img {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+            transition: transform 1.4s var(--ease);
+        }
+        .entry:hover .entry__media img { transform: scale(1.045); }
+        .entry__media::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border: 1px solid var(--accent);
+            transform: translate(18px, 18px);
+        }
+        .entry:nth-of-type(even) .entry__media::after {
+            transform: translate(-18px, 18px);
+        }
+
+        /* 文字欄 */
+        .entry__body {
+            position: relative;
+            padding-top: clamp(1.6rem, 4vw, 3rem);
+        }
+        .entry__index {
+            position: absolute;
+            top: -.5em;
+            left: -.06em;
+            z-index: 0;
+            font-size: clamp(5.5rem, 12vw, 10.5rem);
+            font-weight: 400;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1.4px rgba(179, 83, 31, .32);
+            pointer-events: none;
+            user-select: none;
+        }
+        .entry:nth-of-type(even) .entry__index {
+            left: auto;
+            right: -.06em;
+        }
+        .entry__body > *:not(.entry__index) { position: relative; z-index: 1; }
+
+        .entry__kicker {
             display: flex;
-            gap: 6px;
+            align-items: center;
+            gap: .85rem;
+            margin: 0 0 1rem;
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
         }
-        #lang-switcher button {
-            background: rgba(255, 255, 255, 0.92);
-            color: #7f8c8d;
-            border: 1px solid #ddddd6;
-            padding: 7px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8em;
-            letter-spacing: 0.5px;
-            transition: all 0.25s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        .entry__place { color: var(--ink-soft); }
+        .entry__kicker .bar {
+            width: 26px;
+            height: 1px;
+            background: var(--accent);
         }
-        #lang-switcher button:hover {
-            color: #d35400;
-            border-color: #d35400;
+        .entry__no { color: var(--accent); }
+
+        .entry__title {
+            margin: 0 0 1.5rem;
+            font-weight: 400;
+            font-size: clamp(1.7rem, 3.4vw, 2.55rem);
+            line-height: 1.16;
+            letter-spacing: -.008em;
+            color: var(--ink);
         }
-        #lang-switcher button.active {
-            background: #d35400;
-            color: #ffffff;
-            border-color: #d35400;
+
+        .entry__poem {
+            border-left: 1px solid var(--line);
+            padding-left: clamp(1.1rem, 2.2vw, 1.9rem);
+            position: relative;
+        }
+        .entry__poem::before {
+            content: '';
+            position: absolute;
+            left: -1px; top: 0;
+            width: 1px; height: 2.4rem;
+            background: var(--accent);
+        }
+        .poem {
+            margin: 0;
+            white-space: pre-line;
+            font-size: clamp(1rem, 1.55vw, 1.12rem);
+            line-height: 2;
+            font-style: italic;
+            color: #463c2c;
+            letter-spacing: .005em;
+        }
+        .poem[lang="zh-TW"], .poem[lang="ja"] {
+            font-style: normal;
+            line-height: 2.05;
+            letter-spacing: .03em;
+        }
+
+        /* ============================================================
+           頁尾 — 暮藍色帶
+           ============================================================ */
+        .footer {
+            background: var(--petrol);
+            color: var(--paper-warm);
+            text-align: center;
+            padding: clamp(3.4rem, 8vw, 5.6rem) 0 clamp(2.4rem, 5vw, 3.4rem);
+        }
+        .footer__mark {
+            display: block;
+            font-size: .9rem;
+            color: var(--accent-warm);
+            margin-bottom: 1.4rem;
+        }
+        .footer__place {
+            margin: 0 0 .8rem;
+            font-size: clamp(1.3rem, 3vw, 1.9rem);
+            font-weight: 300;
+            letter-spacing: .04em;
+        }
+        .footer__tag {
+            margin: 0 auto 1.8rem;
+            max-width: 28em;
+            font-size: .96rem;
+            line-height: 1.8;
+            color: rgba(250, 246, 234, .68);
+        }
+        .footer__year {
+            margin: 0 0 2.2rem;
+            font-size: .74rem;
+            letter-spacing: .34em;
+            color: var(--accent-warm);
+        }
+        .footer__top {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(250, 246, 234, .7);
+            transition: color .25s;
+        }
+        .footer__top:hover { color: var(--paper-warm); }
+        .footer__top .arrow { transition: transform .3s var(--ease); }
+        .footer__top:hover .arrow { transform: translateY(-3px); }
+
+        /* ============================================================
+           捲動進場動畫
+           ============================================================ */
+        html.js .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity 1s var(--ease), transform 1s var(--ease);
+        }
+        html.js .reveal.in-view {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ============================================================
+           響應式
+           ============================================================ */
+        @media (max-width: 860px) {
+            .film,
+            .entry {
+                grid-template-columns: 1fr;
+                gap: clamp(1.8rem, 6vw, 2.6rem);
+            }
+            .film__media,
+            .entry:nth-of-type(even) .entry__media { order: -1; }
+            .entry:nth-of-type(even) .entry__index {
+                left: -.06em;
+                right: auto;
+            }
+            .entry:nth-of-type(even) .entry__media::after {
+                transform: translate(14px, 14px);
+            }
+            .entry__media::after,
+            .film__media::after { transform: translate(13px, 13px); }
+            .masthead { min-height: 86vh; }
+        }
+        @media (max-width: 480px) {
+            #lang-switcher { top: 12px; right: 12px; }
+            #music-control { bottom: 14px; right: 14px; padding: 9px 13px; }
+            .entry__media::after,
+            .film__media::after { transform: translate(9px, 9px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+            html.js .reveal { opacity: 1 !important; transform: none !important; }
         }
     </style>
 </head>
 <body class="lang-zh-TW">
 
+    <div class="grain" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
     <!-- 多語系切換器 -->
     <nav id="lang-switcher" aria-label="語言選擇 / Language">
         <button data-lang="zh-TW" class="active" onclick="switchLanguage('zh-TW')">繁中</button>
         <button data-lang="ja" onclick="switchLanguage('ja')">日本語</button>
-        <button data-lang="en" onclick="switchLanguage('en')">English</button>
-        <button data-lang="de" onclick="switchLanguage('de')">Deutsch</button>
+        <button data-lang="en" onclick="switchLanguage('en')">EN</button>
+        <button data-lang="de" onclick="switchLanguage('de')">DE</button>
     </nav>
 
     <!-- 背景音樂 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
-
-    <!-- 浮動控制按鈕 -->
-    <div id="music-control" onclick="toggleMusic()">
-        <span class="music-icon" id="music-icon">🎵</span>
+    <button id="music-control" type="button" onclick="toggleMusic()" aria-label="背景音樂 / Background music">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
         <span id="music-text">播放音樂</span>
-    </div>
+    </button>
 
-    <header>
-        <h1 class="i18n-block" lang="zh-TW">杜塞道夫（Düsseldorf）的光影詩篇</h1>
-        <h1 class="i18n-block" lang="ja">デュッセルドルフ、光と影の詩篇</h1>
-        <h1 class="i18n-block" lang="en">Düsseldorf — Poems of Light and Shadow</h1>
-        <h1 class="i18n-block" lang="de">Düsseldorf – Gedichte aus Licht und Schatten</h1>
-        <p class="subtitle i18n-block" lang="zh-TW">德國出差隨手紀錄的城市意象與新詩獨白</p>
-        <p class="subtitle i18n-block" lang="ja">ドイツ出張のあいまに綴った、街の情景と自由詩の独白</p>
-        <p class="subtitle i18n-block" lang="en">City impressions and free-verse monologues, jotted down on a business trip to Germany</p>
-        <p class="subtitle i18n-block" lang="de">Stadtbilder und Monologe in freien Versen, notiert auf einer Geschäftsreise durch Deutschland</p>
+    <!-- ==================== 刊頭 ==================== -->
+    <header class="masthead" id="top">
+        <div class="masthead__inner">
+            <p class="overline">
+                <span class="i18n-block" lang="zh-TW">光與影的詩集 · 第一卷</span>
+                <span class="i18n-block" lang="ja">光と影の詩集 · 第一巻</span>
+                <span class="i18n-block" lang="en">A Journal of Light &amp; Verse · Vol. I</span>
+                <span class="i18n-block" lang="de">Tagebuch aus Licht &amp; Versen · Band I</span>
+            </p>
+            <h1>
+                <span class="i18n-block" lang="zh-TW">杜塞道夫（Düsseldorf）<br>的光影詩篇</span>
+                <span class="i18n-block" lang="ja">デュッセルドルフ、<br>光と影の詩篇</span>
+                <span class="i18n-block" lang="en">Düsseldorf —<br>Poems of Light and Shadow</span>
+                <span class="i18n-block" lang="de">Düsseldorf –<br>Gedichte aus Licht und Schatten</span>
+            </h1>
+            <div class="ornament" aria-hidden="true"><span>✦</span></div>
+            <p class="lede">
+                <span class="i18n-block" lang="zh-TW">德國出差隨手紀錄的城市意象與新詩獨白</span>
+                <span class="i18n-block" lang="ja">ドイツ出張のあいまに綴った、街の情景と自由詩の独白</span>
+                <span class="i18n-block" lang="en">City impressions and free-verse monologues, jotted down on a business trip to Germany</span>
+                <span class="i18n-block" lang="de">Stadtbilder und Monologe in freien Versen, notiert auf einer Geschäftsreise durch Deutschland</span>
+            </p>
+            <p class="dateline">Düsseldorf · Rheinland — September 2022</p>
+        </div>
     </header>
 
-    <!-- 微電影 Banner 連結 -->
-    <a href="index_slideshow_v3.htm" class="movie-banner" title="前往觀看動態微電影">
-        <div class="banner-content">
-            <div class="banner-icon">🎬</div>
-            <div class="banner-text">
-                <h2 class="i18n-block" lang="zh-TW">觀看動態微電影 (One-Minute Memoir)</h2>
-                <h2 class="i18n-block" lang="ja">動く微映画を観る（One-Minute Memoir）</h2>
-                <h2 class="i18n-block" lang="en">Watch the Micro-Film (One-Minute Memoir)</h2>
-                <h2 class="i18n-block" lang="de">Den Kurzfilm ansehen (One-Minute Memoir)</h2>
-                <p class="i18n-block" lang="zh-TW">點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</p>
-                <p class="i18n-block" lang="ja">クリックして、時の流れに導かれる映像回想録へ。光と影と詩が、流れだす。</p>
-                <p class="i18n-block" lang="en">Click to enter a time-driven audiovisual memoir, where light, shadow, and verse begin to flow.</p>
-                <p class="i18n-block" lang="de">Klicken Sie für ein zeitgesteuertes Bild- und Klang-Memoir, in dem Licht, Schatten und Verse zu fließen beginnen.</p>
-            </div>
-            <div class="banner-arrow">➔</div>
+    <!-- ==================== 微電影專題 ==================== -->
+    <section class="film-band">
+        <div class="wrap">
+            <a href="index_slideshow_v3.htm" class="film reveal" title="前往觀看動態微電影">
+                <div class="film__media">
+                    <figure>
+                        <img src="IMG_8628.jpg" alt="杜塞道夫微電影預覽：國王大道運河被燈火染成金色的夜景" loading="lazy">
+                    </figure>
+                    <span class="film__play" aria-hidden="true"><b></b></span>
+                </div>
+                <div class="film__body">
+                    <p class="film__kicker">One-Minute Memoir</p>
+                    <h2 class="film__title">
+                        <span class="i18n-block" lang="zh-TW">觀看動態微電影</span>
+                        <span class="i18n-block" lang="ja">動く微映画を観る</span>
+                        <span class="i18n-block" lang="en">Watch the Micro-Film</span>
+                        <span class="i18n-block" lang="de">Den Kurzfilm ansehen</span>
+                    </h2>
+                    <p class="film__desc">
+                        <span class="i18n-block" lang="zh-TW">點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</span>
+                        <span class="i18n-block" lang="ja">クリックして、時の流れに導かれる映像回想録へ。光と影と詩が、流れだす。</span>
+                        <span class="i18n-block" lang="en">Click to enter a time-driven audiovisual memoir, where light, shadow, and verse begin to flow.</span>
+                        <span class="i18n-block" lang="de">Klicken Sie für ein zeitgesteuertes Bild- und Klang-Memoir, in dem Licht, Schatten und Verse zu fließen beginnen.</span>
+                    </p>
+                    <span class="film__cta">
+                        <span class="i18n-block" lang="zh-TW">進入微電影</span>
+                        <span class="i18n-block" lang="ja">微映画を観る</span>
+                        <span class="i18n-block" lang="en">Enter the film</span>
+                        <span class="i18n-block" lang="de">Zum Film</span>
+                        <span class="arrow" aria-hidden="true">→</span>
+                    </span>
+                </div>
+            </a>
         </div>
-    </a>
+    </section>
 
-    <main class="gallery">
-        <!-- 照片 1 -->
-        <article class="gallery-item">
-            <figure class="image-container">
-                <img src="20220911_162427.jpg" alt="杜塞道夫國王大道運河的午後，梧桐樹倒映在水面，遠處有一座小橋" loading="lazy" width="400" height="320">
-            </figure>
-            <div class="content">
-                <h2 class="title i18n-block" lang="zh-TW">Königsallee 的午後</h2>
-                <h2 class="title i18n-block" lang="ja">ケーニヒスアレーの午後</h2>
-                <h2 class="title i18n-block" lang="en">An Afternoon on Königsallee</h2>
-                <h2 class="title i18n-block" lang="de">Ein Nachmittag auf der Königsallee</h2>
-                <div class="poem i18n-block" lang="zh-TW">在金色與碧綠交織的午後，
+    <div class="rule" aria-hidden="true"><span>✦</span></div>
+
+    <!-- ==================== 詩篇對開版面 ==================== -->
+    <main class="wrap">
+        <div class="journal">
+
+            <!-- 詩篇 01 -->
+            <article class="entry reveal">
+                <div class="entry__media">
+                    <figure>
+                        <img src="20220911_162427.jpg" alt="杜塞道夫國王大道運河的午後，梧桐樹倒映在水面，遠處有一座小橋" loading="lazy">
+                    </figure>
+                </div>
+                <div class="entry__body">
+                    <span class="entry__index" aria-hidden="true">01</span>
+                    <p class="entry__kicker">
+                        <span class="entry__place">Königsallee</span>
+                        <span class="bar" aria-hidden="true"></span>
+                        <span class="entry__no">Nº 01</span>
+                    </p>
+                    <h2 class="entry__title">
+                        <span class="i18n-block" lang="zh-TW">Königsallee 的午後</span>
+                        <span class="i18n-block" lang="ja">ケーニヒスアレーの午後</span>
+                        <span class="i18n-block" lang="en">An Afternoon on Königsallee</span>
+                        <span class="i18n-block" lang="de">Ein Nachmittag auf der Königsallee</span>
+                    </h2>
+                    <div class="entry__poem">
+                        <div class="poem i18n-block" lang="zh-TW">在金色與碧綠交織的午後，
 杜塞道夫的 Königsallee 運河，
 是一面不說謊的鏡子。
 溫柔地收納了懸鈴木的嘆息，
@@ -361,7 +799,7 @@
 城市在水中，比腳下的石板路更加清澈。
 這是一首，由光與水共同譜寫的，
 寧靜奏鳴曲。</div>
-                <div class="poem i18n-block" lang="ja">金と碧の織りなす、午後。
+                        <div class="poem i18n-block" lang="ja">金と碧の織りなす、午後。
 デュッセルドルフ、ケーニヒスアレーの運河は、
 嘘をつかない一枚の鏡。
 プラタナスのため息も、
@@ -371,7 +809,7 @@
 水のなかの街は、足もとの石畳よりも澄んでいる。
 これは、光と水が共に書きあげた、
 静かなソナタ。</div>
-                <div class="poem i18n-block" lang="en">In an afternoon woven of gold and green,
+                        <div class="poem i18n-block" lang="en">In an afternoon woven of gold and green,
 the Königsallee canal of Düsseldorf
 is a mirror that tells no lies.
 Tenderly it gathers the sighs of the plane trees
@@ -383,7 +821,7 @@ the city in the water runs clearer
 than the cobblestones beneath my feet.
 This is a quiet sonata,
 scored by light and water as one.</div>
-                <div class="poem i18n-block" lang="de">An einem Nachmittag, gewebt aus Gold und Grün,
+                        <div class="poem i18n-block" lang="de">An einem Nachmittag, gewebt aus Gold und Grün,
 ist der Kanal der Düsseldorfer Königsallee
 ein Spiegel, der niemals lügt.
 Sanft sammelt er die Seufzer der Platanen
@@ -395,20 +833,32 @@ die Stadt im Wasser ist klarer
 als das Kopfsteinpflaster unter meinen Füßen.
 Dies ist eine stille Sonate,
 geschrieben von Licht und Wasser zugleich.</div>
-            </div>
-        </article>
+                    </div>
+                </div>
+            </article>
 
-        <!-- 照片 2 -->
-        <article class="gallery-item">
-            <figure class="image-container">
-                <img src="IMG_0348.jpg" alt="杜塞道夫黃昏的天際線，萊茵河塔與工業煙囪在橙藍交界的天空下成為剪影" loading="lazy" width="400" height="320">
-            </figure>
-            <div class="content">
-                <h2 class="title i18n-block" lang="zh-TW">鋼鐵與晚霞的交界</h2>
-                <h2 class="title i18n-block" lang="ja">鋼鉄と夕焼けの境</h2>
-                <h2 class="title i18n-block" lang="en">Where Steel Meets the Sunset</h2>
-                <h2 class="title i18n-block" lang="de">Wo Stahl und Abendrot sich treffen</h2>
-                <div class="poem i18n-block" lang="zh-TW">枯枝的骨架，是黃昏最堅硬的框。
+            <!-- 詩篇 02 -->
+            <article class="entry reveal">
+                <div class="entry__media">
+                    <figure>
+                        <img src="IMG_0348.jpg" alt="杜塞道夫黃昏的天際線，萊茵河塔與工業煙囪在橙藍交界的天空下成為剪影" loading="lazy">
+                    </figure>
+                </div>
+                <div class="entry__body">
+                    <span class="entry__index" aria-hidden="true">02</span>
+                    <p class="entry__kicker">
+                        <span class="entry__place">Rheinturm</span>
+                        <span class="bar" aria-hidden="true"></span>
+                        <span class="entry__no">Nº 02</span>
+                    </p>
+                    <h2 class="entry__title">
+                        <span class="i18n-block" lang="zh-TW">鋼鐵與晚霞的交界</span>
+                        <span class="i18n-block" lang="ja">鋼鉄と夕焼けの境</span>
+                        <span class="i18n-block" lang="en">Where Steel Meets the Sunset</span>
+                        <span class="i18n-block" lang="de">Wo Stahl und Abendrot sich treffen</span>
+                    </h2>
+                    <div class="entry__poem">
+                        <div class="poem i18n-block" lang="zh-TW">枯枝的骨架，是黃昏最堅硬的框。
 杜塞道夫的天空，
 在蔚藍與燃燒的橙色之間，
 編織著凝結的飛逝。
@@ -418,7 +868,7 @@ geschrieben von Licht und Wasser zugleich.</div>
 這是世界的沉思，
 在晝夜交替的瞬間，
 我看見了歷史與未來的對話。</div>
-                <div class="poem i18n-block" lang="ja">枯れ枝の骨組みは、黄昏のいちばん硬い額縁。
+                        <div class="poem i18n-block" lang="ja">枯れ枝の骨組みは、黄昏のいちばん硬い額縁。
 デュッセルドルフの空は、
 青と、燃えるような橙のあいだで、
 過ぎゆく時を、ひとつに凝らせてゆく。
@@ -428,7 +878,7 @@ geschrieben von Licht und Wasser zugleich.</div>
 これは、世界の物思い。
 昼と夜の入れかわる一瞬に、
 私は、歴史と未来の対話を見た。</div>
-                <div class="poem i18n-block" lang="en">The skeleton of bare branches
+                        <div class="poem i18n-block" lang="en">The skeleton of bare branches
 is the hardest frame the dusk can hold.
 The sky of Düsseldorf,
 between azure and a burning orange,
@@ -441,7 +891,7 @@ to the border of light and shadow.
 This is the world in contemplation —
 and in the instant day turns to night,
 I see history speaking with the future.</div>
-                <div class="poem i18n-block" lang="de">Das Gerippe kahler Äste
+                        <div class="poem i18n-block" lang="de">Das Gerippe kahler Äste
 ist der härteste Rahmen der Dämmerung.
 Der Himmel über Düsseldorf
 webt zwischen Azur und brennendem Orange
@@ -454,20 +904,32 @@ an die Grenze von Licht und Schatten.
 Dies ist die Versenkung der Welt –
 und im Augenblick, da Tag in Nacht übergeht,
 sehe ich Geschichte und Zukunft im Gespräch.</div>
-            </div>
-        </article>
+                    </div>
+                </div>
+            </article>
 
-        <!-- 照片 3 -->
-        <article class="gallery-item">
-            <figure class="image-container">
-                <img src="IMG_0436.jpg" alt="萊茵河畔的夕陽，深藍與金色的雲彩，遠方有萊茵塔與斜張橋的剪影" loading="lazy" width="400" height="320">
-            </figure>
-            <div class="content">
-                <h2 class="title i18n-block" lang="zh-TW">萊茵河畔的狂舞</h2>
-                <h2 class="title i18n-block" lang="ja">ライン川のほとりの舞</h2>
-                <h2 class="title i18n-block" lang="en">A Wild Dance by the Rhine</h2>
-                <h2 class="title i18n-block" lang="de">Der wilde Tanz am Rhein</h2>
-                <div class="poem i18n-block" lang="zh-TW">萊茵河畔，雲朵是天空的舞者，
+            <!-- 詩篇 03 -->
+            <article class="entry reveal">
+                <div class="entry__media">
+                    <figure>
+                        <img src="IMG_0436.jpg" alt="萊茵河畔的夕陽，深藍與金色的雲彩，遠方有萊茵塔與斜張橋的剪影" loading="lazy">
+                    </figure>
+                </div>
+                <div class="entry__body">
+                    <span class="entry__index" aria-hidden="true">03</span>
+                    <p class="entry__kicker">
+                        <span class="entry__place">Rheinufer</span>
+                        <span class="bar" aria-hidden="true"></span>
+                        <span class="entry__no">Nº 03</span>
+                    </p>
+                    <h2 class="entry__title">
+                        <span class="i18n-block" lang="zh-TW">萊茵河畔的狂舞</span>
+                        <span class="i18n-block" lang="ja">ライン川のほとりの舞</span>
+                        <span class="i18n-block" lang="en">A Wild Dance by the Rhine</span>
+                        <span class="i18n-block" lang="de">Der wilde Tanz am Rhein</span>
+                    </h2>
+                    <div class="entry__poem">
+                        <div class="poem i18n-block" lang="zh-TW">萊茵河畔，雲朵是天空的舞者，
 身披深藍與金色的盛裝。
 夕陽在最後的謝幕中，
 爆發出太陽的怒火，
@@ -477,7 +939,7 @@ sehe ich Geschichte und Zukunft im Gespräch.</div>
 但天空的火焰，依然照亮，
 這場關於光與時間的，
 宏大祭典。</div>
-                <div class="poem i18n-block" lang="ja">ライン川のほとり、雲は空の踊り手。
+                        <div class="poem i18n-block" lang="ja">ライン川のほとり、雲は空の踊り手。
 深い青と金の衣装を、まとっている。
 夕陽は、最後のカーテンコールで、
 太陽の怒りを噴きあげ、
@@ -487,7 +949,7 @@ sehe ich Geschichte und Zukunft im Gespräch.</div>
 それでも空の炎は、なお燃えつづける。
 これは、光と時をめぐる、
 壮大な祭礼。</div>
-                <div class="poem i18n-block" lang="en">By the Rhine, the clouds are dancers of the sky,
+                        <div class="poem i18n-block" lang="en">By the Rhine, the clouds are dancers of the sky,
 dressed in robes of deep blue and gold.
 In its final curtain call,
 the setting sun bursts into solar fire,
@@ -498,7 +960,7 @@ The grass beneath my feet has fallen quiet,
 yet the flames of the sky still blaze,
 lighting this grand festival
 of light and time.</div>
-                <div class="poem i18n-block" lang="de">Am Rhein sind die Wolken Tänzer des Himmels,
+                        <div class="poem i18n-block" lang="de">Am Rhein sind die Wolken Tänzer des Himmels,
 gekleidet in Gewänder aus Tiefblau und Gold.
 In ihrem letzten Vorhang
 bricht die sinkende Sonne in Feuer aus
@@ -509,20 +971,32 @@ Das Gras zu meinen Füßen ist verstummt,
 doch die Flammen des Himmels leuchten weiter
 und erhellen dieses große Fest
 aus Licht und Zeit.</div>
-            </div>
-        </article>
+                    </div>
+                </div>
+            </article>
 
-        <!-- 照片 4 -->
-        <article class="gallery-item">
-            <figure class="image-container">
-                <img src="IMG_8628.jpg" alt="夜晚的杜塞道夫國王大道運河，燈火將梧桐染成金色並倒映在水面" loading="lazy" width="400" height="320">
-            </figure>
-            <div class="content">
-                <h2 class="title i18n-block" lang="zh-TW">Königsallee 的金色夢境</h2>
-                <h2 class="title i18n-block" lang="ja">ケーニヒスアレーの金色の夢</h2>
-                <h2 class="title i18n-block" lang="en">The Golden Dream of Königsallee</h2>
-                <h2 class="title i18n-block" lang="de">Der goldene Traum der Königsallee</h2>
-                <div class="poem i18n-block" lang="zh-TW">當夜色垂下，Königsallee 換上了金色的輕紗。
+            <!-- 詩篇 04 -->
+            <article class="entry reveal">
+                <div class="entry__media">
+                    <figure>
+                        <img src="IMG_8628.jpg" alt="夜晚的杜塞道夫國王大道運河，燈火將梧桐染成金色並倒映在水面" loading="lazy">
+                    </figure>
+                </div>
+                <div class="entry__body">
+                    <span class="entry__index" aria-hidden="true">04</span>
+                    <p class="entry__kicker">
+                        <span class="entry__place">Königsallee</span>
+                        <span class="bar" aria-hidden="true"></span>
+                        <span class="entry__no">Nº 04</span>
+                    </p>
+                    <h2 class="entry__title">
+                        <span class="i18n-block" lang="zh-TW">Königsallee 的金色夢境</span>
+                        <span class="i18n-block" lang="ja">ケーニヒスアレーの金色の夢</span>
+                        <span class="i18n-block" lang="en">The Golden Dream of Königsallee</span>
+                        <span class="i18n-block" lang="de">Der goldene Traum der Königsallee</span>
+                    </h2>
+                    <div class="entry__poem">
+                        <div class="poem i18n-block" lang="zh-TW">當夜色垂下，Königsallee 換上了金色的輕紗。
 懸鈴木的枝葉被燈火點亮，
 編織出一座金色的神殿拱門。
 運河是一面魔幻的鏡子，
@@ -533,7 +1007,7 @@ aus Licht und Zeit.</div>
 連岸邊的車輛也沉思不語，
 成為這場華麗演出的，
 寂靜證人。</div>
-                <div class="poem i18n-block" lang="ja">夜がおりてくると、ケーニヒスアレーは、
+                        <div class="poem i18n-block" lang="ja">夜がおりてくると、ケーニヒスアレーは、
 金色の薄衣をまとう。
 プラタナスの枝葉は灯りに照らされ、
 金の神殿のアーチを編みあげる。
@@ -546,7 +1020,7 @@ aus Licht und Zeit.</div>
 岸辺の車さえ、もの思いに沈み、
 この華やかな舞台の、
 静かな証人となる。</div>
-                <div class="poem i18n-block" lang="en">As night descends, Königsallee
+                        <div class="poem i18n-block" lang="en">As night descends, Königsallee
 slips into a veil of gold.
 The leaves of the plane trees, lit by lamplight,
 weave a golden temple arch.
@@ -559,7 +1033,7 @@ Here is the border of dream and reality;
 even the cars along the bank fall silent in thought,
 becoming the quiet witnesses
 of this magnificent performance.</div>
-                <div class="poem i18n-block" lang="de">Wenn die Nacht herabsinkt, hüllt sich
+                        <div class="poem i18n-block" lang="de">Wenn die Nacht herabsinkt, hüllt sich
 die Königsallee in einen Schleier aus Gold.
 Das Laub der Platanen, vom Licht entzündet,
 flicht einen goldenen Tempelbogen.
@@ -572,14 +1046,39 @@ Hier verläuft die Grenze von Traum und Wirklichkeit;
 selbst die Wagen am Ufer verstummen in Gedanken
 und werden zu stillen Zeugen
 dieser prachtvollen Aufführung.</div>
-            </div>
-        </article>
+                    </div>
+                </div>
+            </article>
+
+        </div>
     </main>
 
+    <!-- ==================== 頁尾 ==================== -->
+    <footer class="footer reveal">
+        <div class="wrap">
+            <span class="footer__mark" aria-hidden="true">✦</span>
+            <p class="footer__place">Düsseldorf · Rheinland</p>
+            <p class="footer__tag">
+                <span class="i18n-block" lang="zh-TW">一冊關於光、影與詩句的旅行手記</span>
+                <span class="i18n-block" lang="ja">光と影と詩のための、旅の手帖</span>
+                <span class="i18n-block" lang="en">A travel journal of light, shadow &amp; verse</span>
+                <span class="i18n-block" lang="de">Ein Reisetagebuch aus Licht, Schatten &amp; Versen</span>
+            </p>
+            <p class="footer__year">MMXXII</p>
+            <a class="footer__top" href="#top">
+                <span class="arrow" aria-hidden="true">↑</span>
+                <span class="i18n-block" lang="zh-TW">回到頁首</span>
+                <span class="i18n-block" lang="ja">先頭へ戻る</span>
+                <span class="i18n-block" lang="en">Back to top</span>
+                <span class="i18n-block" lang="de">Nach oben</span>
+            </a>
+        </div>
+    </footer>
+
     <script>
-        const audio = document.getElementById('bgm');
-        const musicIcon = document.getElementById('music-icon');
-        const musicText = document.getElementById('music-text');
+        const audio        = document.getElementById('bgm');
+        const musicControl = document.getElementById('music-control');
+        const musicText    = document.getElementById('music-text');
 
         let currentLang = 'zh-TW';
 
@@ -599,31 +1098,18 @@ dieser prachtvollen Aufführung.</div>
             document.documentElement.lang = lang;
             document.body.className = 'lang-' + lang;
             document.title = uiStrings[lang].title;
-            musicText.innerText = audio.paused ? uiStrings[lang].musicPlay : uiStrings[lang].musicPause;
+            musicText.textContent = audio.paused ? uiStrings[lang].musicPlay : uiStrings[lang].musicPause;
             document.querySelectorAll('#lang-switcher button').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === lang);
             });
         }
 
-        // 嘗試自動播放
-        window.addEventListener('DOMContentLoaded', () => {
-            // 現代瀏覽器通常會阻擋未互動的自動播放，這裡用 Promise 捕捉
-            audio.play().then(() => {
-                updateUI(true);
-            }).catch(error => {
-                console.log("瀏覽器阻擋了自動播放，等待使用者點擊後播放。");
-                updateUI(false);
-
-                // 額外機制：使用者首次點擊頁面任何地方時嘗試播放
-                const startPlayOnInteraction = () => {
-                    audio.play().then(() => {
-                        updateUI(true);
-                        document.removeEventListener('click', startPlayOnInteraction);
-                    });
-                };
-                document.addEventListener('click', startPlayOnInteraction);
-            });
-        });
+        function updateUI(isPlaying) {
+            musicControl.classList.toggle('is-playing', isPlaying);
+            musicText.textContent = isPlaying
+                ? uiStrings[currentLang].musicPause
+                : uiStrings[currentLang].musicPlay;
+        }
 
         function toggleMusic() {
             if (audio.paused) {
@@ -635,17 +1121,55 @@ dieser prachtvollen Aufführung.</div>
             }
         }
 
-        function updateUI(isPlaying) {
-            if (isPlaying) {
-                musicText.innerText = uiStrings[currentLang].musicPause;
-                musicIcon.innerText = "💿";
-                musicIcon.classList.add('rotating');
-            } else {
-                musicText.innerText = uiStrings[currentLang].musicPlay;
-                musicIcon.innerText = "🎵";
-                musicIcon.classList.remove('rotating');
-            }
+        // 嘗試自動播放（現代瀏覽器多半會阻擋未互動的自動播放）
+        window.addEventListener('DOMContentLoaded', () => {
+            audio.play().then(() => {
+                updateUI(true);
+            }).catch(() => {
+                updateUI(false);
+                const startPlayOnInteraction = () => {
+                    audio.play().then(() => {
+                        updateUI(true);
+                        document.removeEventListener('click', startPlayOnInteraction);
+                    });
+                };
+                document.addEventListener('click', startPlayOnInteraction);
+            });
+        });
+
+        // 捲動進場：詩篇逐一浮現
+        const revealEls = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in-view');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+            revealEls.forEach(el => io.observe(el));
+        } else {
+            revealEls.forEach(el => el.classList.add('in-view'));
         }
+
+        // 閱讀進度條：以 requestAnimationFrame 節流，每幀最多更新一次
+        const progressBar = document.getElementById('progress-bar');
+        let progressTicking = false;
+        function renderProgress() {
+            const doc = document.documentElement;
+            const max = doc.scrollHeight - doc.clientHeight;
+            const ratio = max > 0 ? doc.scrollTop / max : 0;
+            progressBar.style.transform = 'scaleX(' + ratio + ')';
+            progressTicking = false;
+        }
+        window.addEventListener('scroll', () => {
+            if (!progressTicking) {
+                progressTicking = true;
+                requestAnimationFrame(renderProgress);
+            }
+        }, { passive: true });
+        renderProgress();
     </script>
 </body>
 </html>
