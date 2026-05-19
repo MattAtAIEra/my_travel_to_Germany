@@ -1,0 +1,11 @@
+# 不需打包進容器映像的項目
+.git
+.gitignore
+.claude
+.dockerignore
+Dockerfile
+*.md
+.DS_Store
+
+# 目前未被任何頁面引用的素材
+IMG_0435.JPG
