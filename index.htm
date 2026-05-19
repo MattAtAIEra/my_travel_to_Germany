@@ -6,12 +6,14 @@
     <title>德國杜塞道夫出差回憶錄 - 詩與光影</title>
     <meta name="description" content="德國杜塞道夫（Düsseldorf）出差期間的城市攝影與新詩創作：國王大道運河、萊茵河黃昏與夜景共四篇光影詩，並附一分鐘動態微電影，提供繁體中文、日語、英語、德語四種語言。">
     <meta name="theme-color" content="#1c3540">
+    <link rel="canonical" href="https://matt-at-dusseldorf-532818994163.asia-northeast1.run.app/index.htm">
 
     <!-- Open Graph / 社群分享預覽 -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://matt-at-dusseldorf-532818994163.asia-northeast1.run.app/index.htm">
     <meta property="og:title" content="杜塞道夫（Düsseldorf）的光影詩篇 — 德國出差回憶錄">
     <meta property="og:description" content="國王大道運河、萊茵河黃昏與夜景的城市攝影與新詩，附一分鐘動態微電影。繁中／日／英／德四語。">
-    <meta property="og:image" content="https://matt-at-dusseldorf.netlify.app/20220911_162427.jpg">
+    <meta property="og:image" content="https://matt-at-dusseldorf-532818994163.asia-northeast1.run.app/20220911_162427.jpg">
     <meta property="og:locale" content="zh_TW">
     <meta property="og:locale:alternate" content="ja_JP">
     <meta property="og:locale:alternate" content="en_US">
@@ -20,7 +22,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="杜塞道夫（Düsseldorf）的光影詩篇 — 德國出差回憶錄">
     <meta name="twitter:description" content="國王大道運河、萊茵河黃昏與夜景的城市攝影與新詩，附一分鐘動態微電影。繁中／日／英／德四語。">
-    <meta name="twitter:image" content="https://matt-at-dusseldorf.netlify.app/20220911_162427.jpg">
+    <meta name="twitter:image" content="https://matt-at-dusseldorf-532818994163.asia-northeast1.run.app/20220911_162427.jpg">
 
     <!-- 結構化資料：相簿 -->
     <script type="application/ld+json">
@@ -72,7 +74,9 @@
         *, *::before, *::after { box-sizing: border-box; }
 
         html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-        html, body { overflow-x: hidden; }
+        /* overflow-x: clip 可裁掉水平溢出，又不會像 hidden 一樣
+           使 overflow-y 計算成 auto、讓 body 變成多餘的捲動容器。 */
+        html, body { overflow-x: clip; }
 
         body {
             margin: 0;
@@ -106,8 +110,7 @@
         body.lang-de    .i18n-block[lang="de"],
         body.lang-th    .i18n-block[lang="th"] { display: block; }
 
-        /* --- 紙面顆粒紋理 ---
-           固定層、無混色模式：瀏覽器可獨立合成，捲動時不需逐幀重繪。 */
+        /* --- 紙面顆粒紋理 --- */
         .grain {
             position: fixed;
             inset: 0;

@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://matt-at-dusseldorf.netlify.app/sitemap.xml
+Sitemap: https://matt-at-dusseldorf-532818994163.asia-northeast1.run.app/sitemap.xml
