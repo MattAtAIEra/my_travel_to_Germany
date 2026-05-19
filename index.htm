@@ -18,6 +18,7 @@
     <meta property="og:locale:alternate" content="ja_JP">
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="th_TH">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="杜塞道夫（Düsseldorf）的光影詩篇 — 德國出差回憶錄">
     <meta name="twitter:description" content="國王大道運河、萊茵河黃昏與夜景的城市攝影與新詩，附一分鐘動態微電影。繁中／日／英／德四語。">
@@ -30,7 +31,7 @@
       "@type": "ImageGallery",
       "name": "杜塞道夫（Düsseldorf）的光影詩篇",
       "description": "德國杜塞道夫出差期間的城市攝影與新詩創作，收錄國王大道運河、萊茵河黃昏與夜景共四篇光影詩。",
-      "inLanguage": ["zh-TW", "ja", "en", "de"],
+      "inLanguage": ["zh-TW", "ja", "en", "de", "th"],
       "image": [
         { "@type": "ImageObject", "contentUrl": "20220911_162427.jpg", "name": "Königsallee 的午後", "caption": "杜塞道夫國王大道運河的午後光影" },
         { "@type": "ImageObject", "contentUrl": "IMG_0348.jpg", "name": "鋼鐵與晚霞的交界", "caption": "萊茵河塔與工業煙囪的黃昏天際線" },
@@ -42,7 +43,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         /* ============================================================
@@ -63,7 +64,7 @@
             --petrol:      #16313c;
             --petrol-soft: #244c5a;
             --line:        #d6cbb2;
-            --maxw:        1180px;
+            --maxw:        1320px;
 
             --font-display: 'Fraunces', 'Noto Serif TC', 'Noto Serif JP', Georgia, serif;
             --font-body:    'Fraunces', 'Noto Serif TC', 'Noto Serif JP', Georgia, serif;
@@ -86,9 +87,10 @@
             text-rendering: optimizeLegibility;
         }
 
-        /* 日文內容改用 Noto Serif JP */
+        /* 各語系對應的襯線字體 */
         [lang="ja"]    { font-family: 'Fraunces', 'Noto Serif JP', serif; }
         [lang="zh-TW"] { font-family: 'Fraunces', 'Noto Serif TC', serif; }
+        [lang="th"]    { font-family: 'Fraunces', 'Noto Serif Thai', serif; }
 
         img { display: block; max-width: 100%; }
         a { color: inherit; }
@@ -103,7 +105,8 @@
         body.lang-zh-TW .i18n-block[lang="zh-TW"],
         body.lang-ja    .i18n-block[lang="ja"],
         body.lang-en    .i18n-block[lang="en"],
-        body.lang-de    .i18n-block[lang="de"] { display: block; }
+        body.lang-de    .i18n-block[lang="de"],
+        body.lang-th    .i18n-block[lang="th"] { display: block; }
 
         /* --- 紙面顆粒紋理 ---
            固定層、無混色模式：瀏覽器可獨立合成，捲動時不需逐幀重繪。 */
@@ -137,7 +140,7 @@
             width: 100%;
             max-width: var(--maxw);
             margin: 0 auto;
-            padding: 0 clamp(1.4rem, 5vw, 4rem);
+            padding: 0 clamp(1.4rem, 5vw, 3rem);
         }
 
         /* --- 裝飾分隔線 --- */
@@ -276,7 +279,8 @@
         body.lang-zh-TW .overline .i18n-block[lang="zh-TW"],
         body.lang-ja    .overline .i18n-block[lang="ja"],
         body.lang-en    .overline .i18n-block[lang="en"],
-        body.lang-de    .overline .i18n-block[lang="de"] { display: inline-block; }
+        body.lang-de    .overline .i18n-block[lang="de"],
+        body.lang-th    .overline .i18n-block[lang="th"] { display: inline-block; }
 
         .masthead h1 {
             margin: 0;
@@ -340,6 +344,58 @@
         @keyframes rise {
             from { opacity: 0; transform: translateY(26px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 向下捲動提示 --- */
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: clamp(1.4rem, 4vh, 2.8rem);
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .7rem;
+            z-index: 5;
+            text-decoration: none;
+            color: var(--ink-soft);
+            animation: cue-in 1s var(--ease) 1.15s both;
+            transition: opacity .5s ease, transform .5s ease;
+        }
+        .scroll-cue:hover { color: var(--accent); }
+        .scroll-cue.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(12px);
+        }
+        .scroll-cue__label {
+            font-size: .64rem;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+        }
+        .scroll-cue__track {
+            position: relative;
+            width: 1px;
+            height: 48px;
+            background: var(--line);
+            overflow: hidden;
+        }
+        .scroll-cue__track::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 1px;
+            height: 15px;
+            background: var(--accent);
+            animation: cue-travel 1.9s var(--ease) infinite;
+        }
+        @keyframes cue-in {
+            from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes cue-travel {
+            0%        { transform: translateY(-100%); }
+            65%, 100% { transform: translateY(320%); }
         }
 
         /* ============================================================
@@ -464,12 +520,15 @@
         }
         .entry {
             display: grid;
-            grid-template-columns: 1.04fr .96fr;
-            gap: clamp(2.2rem, 5.5vw, 6rem);
+            grid-template-columns: minmax(0, 1fr) minmax(400px, 480px);
+            gap: clamp(2rem, 3.6vw, 4.6rem);
             align-items: center;
             padding-block: clamp(3.6rem, 8vw, 7rem);
         }
         .entry + .entry { border-top: 1px solid var(--line); }
+        .entry:nth-of-type(even) {
+            grid-template-columns: minmax(400px, 480px) minmax(0, 1fr);
+        }
         .entry:nth-of-type(even) .entry__media { order: 2; }
 
         /* 影像與位移外框 */
@@ -489,6 +548,18 @@
             transition: transform 1.4s var(--ease);
         }
         .entry:hover .entry__media img { transform: scale(1.045); }
+        /* 縮時攝影：疊在原圖框內，捲入視野時淡入切換 */
+        .entry__media .timelapse {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.1s ease, transform 1.4s var(--ease);
+        }
+        .entry__media figure.is-playing .timelapse { opacity: 1; }
+        .entry:hover .entry__media .timelapse { transform: scale(1.045); }
         .entry__media::after {
             content: '';
             position: absolute;
@@ -572,7 +643,7 @@
             color: #463c2c;
             letter-spacing: .005em;
         }
-        .poem[lang="zh-TW"], .poem[lang="ja"] {
+        .poem[lang="zh-TW"], .poem[lang="ja"], .poem[lang="th"] {
             font-style: normal;
             line-height: 2.05;
             letter-spacing: .03em;
@@ -643,16 +714,21 @@
         /* ============================================================
            響應式
            ============================================================ */
-        @media (max-width: 860px) {
+        @media (max-width: 1100px) {
             .film,
-            .entry {
+            .entry,
+            .entry:nth-of-type(even) {
                 grid-template-columns: 1fr;
                 gap: clamp(1.8rem, 6vw, 2.6rem);
             }
             .film__media,
             .entry:nth-of-type(even) .entry__media { order: -1; }
+            .entry__index {
+                font-size: clamp(3.6rem, 14vw, 5.2rem);
+                top: -.34em;
+            }
             .entry:nth-of-type(even) .entry__index {
-                left: -.06em;
+                left: -.04em;
                 right: auto;
             }
             .entry:nth-of-type(even) .entry__media::after {
@@ -691,6 +767,7 @@
         <button data-lang="ja" onclick="switchLanguage('ja')">日本語</button>
         <button data-lang="en" onclick="switchLanguage('en')">EN</button>
         <button data-lang="de" onclick="switchLanguage('de')">DE</button>
+        <button data-lang="th" onclick="switchLanguage('th')">ไทย</button>
     </nav>
 
     <!-- 背景音樂 -->
@@ -708,12 +785,14 @@
                 <span class="i18n-block" lang="ja">光と影の詩集 · 第一巻</span>
                 <span class="i18n-block" lang="en">A Journal of Light &amp; Verse · Vol. I</span>
                 <span class="i18n-block" lang="de">Tagebuch aus Licht &amp; Versen · Band I</span>
+                <span class="i18n-block" lang="th">บันทึกแห่งแสงและบทกวี · เล่มที่ ๑</span>
             </p>
             <h1>
                 <span class="i18n-block" lang="zh-TW">杜塞道夫（Düsseldorf）<br>的光影詩篇</span>
                 <span class="i18n-block" lang="ja">デュッセルドルフ、<br>光と影の詩篇</span>
                 <span class="i18n-block" lang="en">Düsseldorf —<br>Poems of Light and Shadow</span>
                 <span class="i18n-block" lang="de">Düsseldorf –<br>Gedichte aus Licht und Schatten</span>
+                <span class="i18n-block" lang="th">ดึสเซลดอร์ฟ —<br>บทกวีแห่งแสงและเงา</span>
             </h1>
             <div class="ornament" aria-hidden="true"><span>✦</span></div>
             <p class="lede">
@@ -721,13 +800,24 @@
                 <span class="i18n-block" lang="ja">ドイツ出張のあいまに綴った、街の情景と自由詩の独白</span>
                 <span class="i18n-block" lang="en">City impressions and free-verse monologues, jotted down on a business trip to Germany</span>
                 <span class="i18n-block" lang="de">Stadtbilder und Monologe in freien Versen, notiert auf einer Geschäftsreise durch Deutschland</span>
+                <span class="i18n-block" lang="th">ภาพความประทับใจของเมืองและบทกวีอิสระ บันทึกไว้ระหว่างการเดินทางไปทำงานที่ประเทศเยอรมนี</span>
             </p>
             <p class="dateline">Düsseldorf · Rheinland — September 2022</p>
         </div>
+        <a class="scroll-cue" href="#explore" aria-label="向下捲動瀏覽內容 / Scroll down">
+            <span class="scroll-cue__label">
+                <span class="i18n-block" lang="zh-TW">向下捲動</span>
+                <span class="i18n-block" lang="ja">スクロール</span>
+                <span class="i18n-block" lang="en">Scroll</span>
+                <span class="i18n-block" lang="de">Scrollen</span>
+                <span class="i18n-block" lang="th">เลื่อนลง</span>
+            </span>
+            <span class="scroll-cue__track" aria-hidden="true"></span>
+        </a>
     </header>
 
     <!-- ==================== 微電影專題 ==================== -->
-    <section class="film-band">
+    <section class="film-band" id="explore">
         <div class="wrap">
             <a href="index_slideshow_v3.htm" class="film reveal" title="前往觀看動態微電影">
                 <div class="film__media">
@@ -743,18 +833,21 @@
                         <span class="i18n-block" lang="ja">動く微映画を観る</span>
                         <span class="i18n-block" lang="en">Watch the Micro-Film</span>
                         <span class="i18n-block" lang="de">Den Kurzfilm ansehen</span>
+                        <span class="i18n-block" lang="th">ชมภาพยนตร์สั้น</span>
                     </h2>
                     <p class="film__desc">
                         <span class="i18n-block" lang="zh-TW">點擊體驗時序驅動的專屬影音回憶錄，讓光影與詩句流動。</span>
                         <span class="i18n-block" lang="ja">クリックして、時の流れに導かれる映像回想録へ。光と影と詩が、流れだす。</span>
                         <span class="i18n-block" lang="en">Click to enter a time-driven audiovisual memoir, where light, shadow, and verse begin to flow.</span>
                         <span class="i18n-block" lang="de">Klicken Sie für ein zeitgesteuertes Bild- und Klang-Memoir, in dem Licht, Schatten und Verse zu fließen beginnen.</span>
+                        <span class="i18n-block" lang="th">คลิกเพื่อเข้าสู่บันทึกความทรงจำภาพและเสียงที่ขับเคลื่อนด้วยกาลเวลา ที่ซึ่งแสง เงา และบทกวีเริ่มไหลเลื่อน</span>
                     </p>
                     <span class="film__cta">
                         <span class="i18n-block" lang="zh-TW">進入微電影</span>
                         <span class="i18n-block" lang="ja">微映画を観る</span>
                         <span class="i18n-block" lang="en">Enter the film</span>
                         <span class="i18n-block" lang="de">Zum Film</span>
+                        <span class="i18n-block" lang="th">เข้าชมภาพยนตร์</span>
                         <span class="arrow" aria-hidden="true">→</span>
                     </span>
                 </div>
@@ -787,6 +880,7 @@
                         <span class="i18n-block" lang="ja">ケーニヒスアレーの午後</span>
                         <span class="i18n-block" lang="en">An Afternoon on Königsallee</span>
                         <span class="i18n-block" lang="de">Ein Nachmittag auf der Königsallee</span>
+                        <span class="i18n-block" lang="th">ยามบ่ายบนถนนเคอนิจส์อัลเล</span>
                     </h2>
                     <div class="entry__poem">
                         <div class="poem i18n-block" lang="zh-TW">在金色與碧綠交織的午後，
@@ -833,6 +927,18 @@ die Stadt im Wasser ist klarer
 als das Kopfsteinpflaster unter meinen Füßen.
 Dies ist eine stille Sonate,
 geschrieben von Licht und Wasser zugleich.</div>
+                        <div class="poem i18n-block" lang="th">ในยามบ่ายที่ถักทอด้วยสีทองและสีเขียว
+คลองเคอนิจส์อัลเลแห่งเมืองดึสเซลดอร์ฟ
+คือกระจกเงาที่ไม่เคยลวงโลก
+มันโอบรับเสียงถอนหายใจของหมู่ต้นเพลน
+และสายตาสีน้ำเงินเข้มของท้องฟ้าไว้อย่างอ่อนโยน
+สะพานน้อยไกลโพ้นคือบานประตู
+ระหว่างชั่วขณะนี้กับนิรันดร์
+ใบไม้ร่วงปูเรียงรอยเท้าของกาลเวลา
+เมืองในผืนน้ำกระจ่างใส
+ยิ่งกว่าถนนหินใต้ฝ่าเท้าของฉัน
+นี่คือบทเพลงโซนาตาอันเงียบสงบ
+ที่แสงและสายน้ำร่วมกันประพันธ์</div>
                     </div>
                 </div>
             </article>
@@ -856,6 +962,7 @@ geschrieben von Licht und Wasser zugleich.</div>
                         <span class="i18n-block" lang="ja">鋼鉄と夕焼けの境</span>
                         <span class="i18n-block" lang="en">Where Steel Meets the Sunset</span>
                         <span class="i18n-block" lang="de">Wo Stahl und Abendrot sich treffen</span>
+                        <span class="i18n-block" lang="th">ที่ซึ่งเหล็กกล้าพบกับแสงอาทิตย์อัสดง</span>
                     </h2>
                     <div class="entry__poem">
                         <div class="poem i18n-block" lang="zh-TW">枯枝的骨架，是黃昏最堅硬的框。
@@ -904,6 +1011,19 @@ an die Grenze von Licht und Schatten.
 Dies ist die Versenkung der Welt –
 und im Augenblick, da Tag in Nacht übergeht,
 sehe ich Geschichte und Zukunft im Gespräch.</div>
+                        <div class="poem i18n-block" lang="th">โครงร่างของกิ่งไม้เปลือยเปล่า
+คือกรอบที่แข็งแกร่งที่สุดที่สนธยาโอบรับไว้
+ท้องฟ้าแห่งเมืองดึสเซลดอร์ฟ
+ระหว่างสีฟ้าครามกับสีส้มที่ลุกโชน
+ถักทอชั่วขณะอันผ่านเลยให้กลายเป็นความนิ่งสงัด
+ปล่องควันโรงงานยืนเงียบงัน
+ดั่งสัตว์ดึกดำบรรพ์
+หอคอยไรน์ ยามเฝ้าผู้โดดเดี่ยว
+ตรึงเงาร่างของเมือง
+ไว้กับเส้นแบ่งของแสงและเงา
+นี่คือโลกที่กำลังครุ่นคำนึง —
+และในชั่วพริบตาที่วันผันสู่ราตรี
+ฉันได้เห็นอดีตสนทนากับอนาคต</div>
                     </div>
                 </div>
             </article>
@@ -911,8 +1031,9 @@ sehe ich Geschichte und Zukunft im Gespräch.</div>
             <!-- 詩篇 03 -->
             <article class="entry reveal">
                 <div class="entry__media">
-                    <figure>
+                    <figure class="has-timelapse">
                         <img src="IMG_0436.jpg" alt="萊茵河畔的夕陽，深藍與金色的雲彩，遠方有萊茵塔與斜張橋的剪影" loading="lazy">
+                        <video class="timelapse" src="IMG_0438.MOV" muted loop playsinline preload="none" aria-hidden="true"></video>
                     </figure>
                 </div>
                 <div class="entry__body">
@@ -927,6 +1048,7 @@ sehe ich Geschichte und Zukunft im Gespräch.</div>
                         <span class="i18n-block" lang="ja">ライン川のほとりの舞</span>
                         <span class="i18n-block" lang="en">A Wild Dance by the Rhine</span>
                         <span class="i18n-block" lang="de">Der wilde Tanz am Rhein</span>
+                        <span class="i18n-block" lang="th">ระบำอันบ้าคลั่งริมฝั่งแม่น้ำไรน์</span>
                     </h2>
                     <div class="entry__poem">
                         <div class="poem i18n-block" lang="zh-TW">萊茵河畔，雲朵是天空的舞者，
@@ -971,6 +1093,17 @@ Das Gras zu meinen Füßen ist verstummt,
 doch die Flammen des Himmels leuchten weiter
 und erhellen dieses große Fest
 aus Licht und Zeit.</div>
+                        <div class="poem i18n-block" lang="th">ริมฝั่งแม่น้ำไรน์ หมู่เมฆคือนักระบำแห่งท้องฟ้า
+สวมอาภรณ์สีน้ำเงินเข้มและสีทอง
+ในการรูดม่านครั้งสุดท้าย
+ดวงตะวันลับฟ้าปะทุเป็นเปลวเพลิงสุริยะ
+สลักเงาร่างของเมือง —
+หอคอยไรน์และสะพานขึงเคเบิล —
+ลึกลงสู่ใจกลางของแสงสว่าง
+ทุ่งหญ้าใต้ฝ่าเท้าของฉันเงียบสงบลงแล้ว
+ทว่าเปลวไฟแห่งท้องฟ้ายังคงลุกโชน
+ส่องสว่างมหกรรมอันยิ่งใหญ่
+แห่งแสงและกาลเวลานี้</div>
                     </div>
                 </div>
             </article>
@@ -994,6 +1127,7 @@ aus Licht und Zeit.</div>
                         <span class="i18n-block" lang="ja">ケーニヒスアレーの金色の夢</span>
                         <span class="i18n-block" lang="en">The Golden Dream of Königsallee</span>
                         <span class="i18n-block" lang="de">Der goldene Traum der Königsallee</span>
+                        <span class="i18n-block" lang="th">ความฝันสีทองแห่งถนนเคอนิจส์อัลเล</span>
                     </h2>
                     <div class="entry__poem">
                         <div class="poem i18n-block" lang="zh-TW">當夜色垂下，Königsallee 換上了金色的輕紗。
@@ -1046,6 +1180,19 @@ Hier verläuft die Grenze von Traum und Wirklichkeit;
 selbst die Wagen am Ufer verstummen in Gedanken
 und werden zu stillen Zeugen
 dieser prachtvollen Aufführung.</div>
+                        <div class="poem i18n-block" lang="th">เมื่อราตรีย่างกราย ถนนเคอนิจส์อัลเล
+ก็คลุมกายด้วยผ้าคลุมสีทอง
+ใบของหมู่ต้นเพลนที่ต้องแสงโคมไฟ
+ถักทอซุ้มประตูวิหารสีทอง
+คลองคือกระจกเงาแห่งมนตรา
+เสกสรรขึ้นในความเงียบงัน
+อีกโลกหนึ่งที่กลับหัวกลับหาง
+เสาแสงสีทองดิ่งจมตรงลงสู่ผืนน้ำ
+ดั่งรากแห่งความสว่างที่หยั่งลึกลงเบื้องล่าง
+ที่นี่คือเส้นแบ่งของความฝันและความจริง
+แม้แต่รถราริมฝั่งก็เงียบงันในห้วงคำนึง
+กลายเป็นสักขีพยานอันเงียบสงบ
+ของการแสดงอันตระการตานี้</div>
                     </div>
                 </div>
             </article>
@@ -1063,6 +1210,7 @@ dieser prachtvollen Aufführung.</div>
                 <span class="i18n-block" lang="ja">光と影と詩のための、旅の手帖</span>
                 <span class="i18n-block" lang="en">A travel journal of light, shadow &amp; verse</span>
                 <span class="i18n-block" lang="de">Ein Reisetagebuch aus Licht, Schatten &amp; Versen</span>
+                <span class="i18n-block" lang="th">บันทึกการเดินทางแห่งแสง เงา และบทกวี</span>
             </p>
             <p class="footer__year">MMXXII</p>
             <a class="footer__top" href="#top">
@@ -1071,6 +1219,7 @@ dieser prachtvollen Aufführung.</div>
                 <span class="i18n-block" lang="ja">先頭へ戻る</span>
                 <span class="i18n-block" lang="en">Back to top</span>
                 <span class="i18n-block" lang="de">Nach oben</span>
+                <span class="i18n-block" lang="th">กลับขึ้นด้านบน</span>
             </a>
         </div>
     </footer>
@@ -1087,7 +1236,8 @@ dieser prachtvollen Aufführung.</div>
             "zh-TW": { title: "德國杜塞道夫出差回憶錄 - 詩與光影", musicPlay: "播放音樂", musicPause: "暫停音樂" },
             "ja":    { title: "ドイツ・デュッセルドルフ出張回想録 — 詩と光影", musicPlay: "音楽を再生", musicPause: "音楽を停止" },
             "en":    { title: "A Düsseldorf Business-Trip Memoir — Poetry and Light", musicPlay: "Play Music", musicPause: "Pause Music" },
-            "de":    { title: "Erinnerungen an eine Düsseldorf-Geschäftsreise — Poesie und Licht", musicPlay: "Musik abspielen", musicPause: "Musik pausieren" }
+            "de":    { title: "Erinnerungen an eine Düsseldorf-Geschäftsreise — Poesie und Licht", musicPlay: "Musik abspielen", musicPause: "Musik pausieren" },
+            "th":    { title: "บันทึกการเดินทางทำงานที่ดึสเซลดอร์ฟ — บทกวีและแสงเงา", musicPlay: "เล่นเพลง", musicPause: "หยุดเพลง" }
         };
 
         // 切換語系：所有語言內容都已存在於 HTML，這裡只切換 body 類別讓 CSS 顯示對應語言，
@@ -1153,14 +1303,34 @@ dieser prachtvollen Aufführung.</div>
             revealEls.forEach(el => el.classList.add('in-view'));
         }
 
+        // 縮時攝影：捲入視野時於原圖框內切換播放。影片靜音，不影響背景音樂。
+        const timelapseFigures = document.querySelectorAll('figure.has-timelapse');
+        if ('IntersectionObserver' in window && timelapseFigures.length) {
+            const tlObserver = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    const video = e.target.querySelector('.timelapse');
+                    if (!video) return;
+                    if (e.isIntersecting) {
+                        e.target.classList.add('is-playing');
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.35 });
+            timelapseFigures.forEach(f => tlObserver.observe(f));
+        }
+
         // 閱讀進度條：以 requestAnimationFrame 節流，每幀最多更新一次
         const progressBar = document.getElementById('progress-bar');
+        const scrollCue = document.querySelector('.scroll-cue');
         let progressTicking = false;
         function renderProgress() {
             const doc = document.documentElement;
             const max = doc.scrollHeight - doc.clientHeight;
             const ratio = max > 0 ? doc.scrollTop / max : 0;
             progressBar.style.transform = 'scaleX(' + ratio + ')';
+            if (scrollCue) scrollCue.classList.toggle('is-hidden', doc.scrollTop > 90);
             progressTicking = false;
         }
         window.addEventListener('scroll', () => {

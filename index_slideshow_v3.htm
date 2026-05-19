@@ -18,6 +18,7 @@
     <meta property="og:locale:alternate" content="ja_JP">
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="th_TH">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Düsseldorf One-Minute Memoir — 杜塞道夫光影微電影">
     <meta name="twitter:description" content="一分鐘的杜塞道夫光影微電影，六幕城市場景與詩意旁白。繁中／日／英／德四語。">
@@ -31,7 +32,7 @@
       "name": "Düsseldorf One-Minute Memoir",
       "alternateName": "杜塞道夫光影微電影",
       "description": "一分鐘的杜塞道夫光影微電影，由六幕城市場景與詩意旁白組成。",
-      "inLanguage": ["zh-TW", "ja", "en", "de"],
+      "inLanguage": ["zh-TW", "ja", "en", "de", "th"],
       "genre": "影像詩 / 旅行回憶錄",
       "timeRequired": "PT1M",
       "about": { "@type": "Place", "name": "Düsseldorf, Germany" },
@@ -41,7 +42,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         /* ============================================================
@@ -88,6 +89,7 @@
 
         [lang="ja"] { font-family: 'Fraunces', 'Noto Serif JP', serif; }
         [lang="zh-TW"] { font-family: 'Fraunces', 'Noto Serif TC', serif; }
+        [lang="th"] { font-family: 'Fraunces', 'Noto Serif Thai', serif; }
 
         a { color: inherit; }
         :focus-visible { outline: 2px solid var(--amber-bright); outline-offset: 3px; }
@@ -97,7 +99,8 @@
         body.lang-zh-TW .i18n-block[lang="zh-TW"],
         body.lang-ja    .i18n-block[lang="ja"],
         body.lang-en    .i18n-block[lang="en"],
-        body.lang-de    .i18n-block[lang="de"] { display: block; }
+        body.lang-de    .i18n-block[lang="de"],
+        body.lang-th    .i18n-block[lang="th"] { display: block; }
 
         /* --- 紙面顆粒紋理（固定、無混色：捲動不重繪）--- */
         .grain {
@@ -301,6 +304,7 @@
             font-weight: 500;
         }
         body.lang-ja .subtitle-text { font-family: 'Fraunces', 'Noto Serif JP', serif; }
+        body.lang-th .subtitle-text { font-family: 'Fraunces', 'Noto Serif Thai', serif; }
 
         /* ============================================================
            控制列
@@ -418,6 +422,7 @@
             margin: .35rem 0;
         }
         body.lang-ja #screenplay p { font-family: 'Fraunces', 'Noto Serif JP', serif; }
+        body.lang-th #screenplay p { font-family: 'Fraunces', 'Noto Serif Thai', serif; }
 
         /* ============================================================
            頁尾
@@ -516,6 +521,7 @@
         <span class="i18n-block" lang="ja">詩集に戻る</span>
         <span class="i18n-block" lang="en">Back to the Journal</span>
         <span class="i18n-block" lang="de">Zum Tagebuch</span>
+        <span class="i18n-block" lang="th">กลับสู่บันทึกบทกวี</span>
     </a>
 
     <!-- 語言切換器 -->
@@ -524,6 +530,7 @@
         <button data-lang="ja" onclick="switchLanguage('ja')">日本語</button>
         <button data-lang="en" onclick="switchLanguage('en')">EN</button>
         <button data-lang="de" onclick="switchLanguage('de')">DE</button>
+        <button data-lang="th" onclick="switchLanguage('th')">ไทย</button>
     </nav>
 
     <!-- ==================== 刊頭 ==================== -->
@@ -533,6 +540,7 @@
             <span class="i18n-block" lang="ja">光と影の微映画 · 全六幕</span>
             <span class="i18n-block" lang="en">A Short Film of Light &amp; Shadow · Six Scenes</span>
             <span class="i18n-block" lang="de">Ein Kurzfilm aus Licht &amp; Schatten · Sechs Szenen</span>
+            <span class="i18n-block" lang="th">ภาพยนตร์สั้นแห่งแสงและเงา · หกฉาก</span>
         </p>
         <h1>One-Minute Memoir</h1>
         <p id="tagline">時序驅動浮動影音劇本實驗版本</p>
@@ -568,6 +576,7 @@
         <h2 class="i18n-block" lang="ja">ナレーション全文</h2>
         <h2 class="i18n-block" lang="en">Full Narration</h2>
         <h2 class="i18n-block" lang="de">Vollständige Erzählung</h2>
+        <h2 class="i18n-block" lang="th">บทบรรยายฉบับเต็ม</h2>
 
         <div class="scene reveal">
             <span class="scene-label">Scene 1 · Königsallee (Day)</span>
@@ -586,6 +595,10 @@
             <div class="i18n-block" lang="de">
                 <p>Ich betrete die Königsallee, wo die Platanen die Nachmittagssonne zu verstreutem Gold sieben.</p>
                 <p>Der Kanal ist der Spiegel der Stadt – er sammelt Passanten, Baumschatten und einen ganzen Herbst.</p>
+            </div>
+            <div class="i18n-block" lang="th">
+                <p>ฉันก้าวเข้าสู่ถนนเคอนิจส์อัลเล ที่ซึ่งหมู่ต้นเพลนร่อนแสงแดดยามบ่ายให้กระจายเป็นเศษทอง</p>
+                <p>คลองคือกระจกเงาของเมือง — โอบรับผู้คนที่เดินผ่าน เงาของต้นไม้ และฤดูใบไม้ร่วงทั้งฤดู</p>
             </div>
         </div>
 
@@ -607,6 +620,10 @@
                 <p>Ich raste unter einem alten Baum. Der Wind kommt herüber – aus dem neunzehnten Jahrhundert.</p>
                 <p>Ein Blatt sinkt auf meine Schulter – als hätte die Stadt mir leise zugenickt.</p>
             </div>
+            <div class="i18n-block" lang="th">
+                <p>ฉันพักเหนื่อยใต้ต้นไม้เก่าแก่ สายลมเดินทางมาจากศตวรรษที่สิบเก้า</p>
+                <p>ใบไม้ใบหนึ่งร่วงลงบนบ่าของฉัน — ราวกับเมืองได้เอ่ยทักทายอย่างเงียบ ๆ</p>
+            </div>
         </div>
 
         <div class="scene reveal">
@@ -626,6 +643,10 @@
             <div class="i18n-block" lang="de">
                 <p>Ich folge dem Fluss. Der Rhein ist lautlos – er fließt einfach dahin.</p>
                 <p>Und trägt die Geschichten ganz Europas in die Ferne.</p>
+            </div>
+            <div class="i18n-block" lang="th">
+                <p>ฉันเดินเลียบแม่น้ำ แม่น้ำไรน์ไม่ส่งเสียงใด — มันเพียงไหลเลื่อนไป</p>
+                <p>พาเรื่องราวทั้งหมดของยุโรปไปสู่ที่แห่งหนึ่งอันไกลโพ้น</p>
             </div>
         </div>
 
@@ -647,6 +668,10 @@
                 <p>Schornsteine stehen still am Rand des Himmels. Ein Flugzeug zieht vorüber.</p>
                 <p>Es hinterlässt einen weißen Schlusspunkt – doch ich bleibe und mag den Tag noch nicht enden lassen.</p>
             </div>
+            <div class="i18n-block" lang="th">
+                <p>ปล่องควันยืนเงียบงันอยู่ที่ขอบฟ้า เครื่องบินลำหนึ่งแล่นตัดผ่าน</p>
+                <p>ทิ้งจุดสิ้นสุดสีขาวไว้เบื้องหลัง — ทว่าฉันยังรั้งรออยู่ที่นี่ ไม่อยากให้วันนี้สิ้นสุดลง</p>
+            </div>
         </div>
 
         <div class="scene reveal">
@@ -666,6 +691,10 @@
             <div class="i18n-block" lang="de">
                 <p>Der Rheinturm wacht über den letzten Schimmer aus Gold.</p>
                 <p>Die Wolken zerlaufen wie verschütteter Tee, und die ganze Stadt versinkt langsam im Fluss.</p>
+            </div>
+            <div class="i18n-block" lang="th">
+                <p>หอคอยไรน์เฝ้ามองร่องรอยสุดท้ายของสีทอง</p>
+                <p>หมู่เมฆแผ่กระจายดั่งน้ำชาที่หกเลอะ และทั้งเมืองค่อย ๆ จมลงสู่แม่น้ำ</p>
             </div>
         </div>
 
@@ -687,6 +716,10 @@
                 <p>Die Nacht kehrt in die Königsallee zurück. Das Licht malt die Platanen zu einem Ölgemälde.</p>
                 <p>Das Wasser liegt still wie ein vollendetes Gedicht – niemand liest es vor, und doch ist jede Zeile klar.</p>
             </div>
+            <div class="i18n-block" lang="th">
+                <p>ราตรีหวนคืนสู่ถนนเคอนิจส์อัลเล แสงโคมไฟวาดหมู่ต้นเพลนให้กลายเป็นภาพสีน้ำมัน</p>
+                <p>ผืนน้ำนิ่งสงบดั่งบทกวีที่เขียนจบแล้ว — ไม่มีใครอ่านออกเสียง ทว่าทุกบรรทัดกระจ่างชัด</p>
+            </div>
         </div>
 
         <div class="scene reveal">
@@ -707,6 +740,10 @@
                 <p>Düsseldorf.</p>
                 <p>Ich falte die Bilder dieser Tage in die Tasche der Erinnerung und trage sie nach Hause.</p>
             </div>
+            <div class="i18n-block" lang="th">
+                <p>ดึสเซลดอร์ฟ</p>
+                <p>ฉันพับวันคืนแห่งทิวทัศน์เหล่านี้เก็บใส่กระเป๋าแห่งความทรงจำ และนำพวกมันกลับบ้าน</p>
+            </div>
         </div>
     </section>
 
@@ -719,6 +756,7 @@
             <span class="i18n-block" lang="ja">一分間の街を、記憶のポケットへ</span>
             <span class="i18n-block" lang="en">A city in one minute, folded into the pocket of memory</span>
             <span class="i18n-block" lang="de">Eine Stadt in einer Minute, gefaltet in die Tasche der Erinnerung</span>
+            <span class="i18n-block" lang="th">เมืองในหนึ่งนาที พับเก็บไว้ในกระเป๋าแห่งความทรงจำ</span>
         </p>
         <nav class="footer__links">
             <a href="index.htm">
@@ -727,6 +765,7 @@
                 <span class="i18n-block" lang="ja">詩集に戻る</span>
                 <span class="i18n-block" lang="en">Back to the Journal</span>
                 <span class="i18n-block" lang="de">Zum Tagebuch</span>
+                <span class="i18n-block" lang="th">กลับสู่บันทึกบทกวี</span>
             </a>
             <a href="#top">
                 <span class="arrow arrow-up" aria-hidden="true">↑</span>
@@ -734,6 +773,7 @@
                 <span class="i18n-block" lang="ja">先頭へ戻る</span>
                 <span class="i18n-block" lang="en">Back to top</span>
                 <span class="i18n-block" lang="de">Nach oben</span>
+                <span class="i18n-block" lang="th">กลับขึ้นด้านบน</span>
             </a>
         </nav>
     </footer>
@@ -744,7 +784,8 @@
             "zh-TW": { title: "Düsseldorf One-Minute Memoir — 杜塞道夫光影微電影", tagline: "時序驅動浮動影音劇本實驗版本", play: "播放影片", pause: "暫停影片" },
             "ja":    { title: "Düsseldorf One-Minute Memoir — デュッセルドルフ 光と影の微映画", tagline: "時の流れが紡ぐ、光と影のメモワール", play: "再生", pause: "一時停止" },
             "en":    { title: "Düsseldorf One-Minute Memoir — A Memoir of Light and Shadow", tagline: "A time-driven memoir of light and shadow", play: "Play", pause: "Pause" },
-            "de":    { title: "Düsseldorf One-Minute Memoir — Ein Memoir aus Licht und Schatten", tagline: "Ein zeitgesteuertes Memoir aus Licht und Schatten", play: "Abspielen", pause: "Pause" }
+            "de":    { title: "Düsseldorf One-Minute Memoir — Ein Memoir aus Licht und Schatten", tagline: "Ein zeitgesteuertes Memoir aus Licht und Schatten", play: "Abspielen", pause: "Pause" },
+            "th":    { title: "Düsseldorf One-Minute Memoir — บันทึกแห่งแสงและเงา", tagline: "บันทึกความทรงจำแห่งแสงและเงาที่ขับเคลื่อนด้วยกาลเวลา", play: "เล่น", pause: "หยุด" }
         };
 
         // 各場景素材的替代文字（圖片 alt / 影片 aria-label），供無障礙與爬蟲使用
@@ -777,13 +818,15 @@
                             "zh-TW": "走進國王大道，梧桐把午後的陽光，篩成一地碎金。",
                             "ja": "ケーニヒスアレーを歩けば、プラタナスが午後の陽を漉して、足もとに金の欠片を散らす。",
                             "en": "I step onto Königsallee, where the plane trees sift the afternoon sun into a scatter of gold.",
-                            "de": "Ich betrete die Königsallee, wo die Platanen die Nachmittagssonne zu verstreutem Gold sieben."
+                            "de": "Ich betrete die Königsallee, wo die Platanen die Nachmittagssonne zu verstreutem Gold sieben.",
+                            "th": "ฉันก้าวเข้าสู่ถนนเคอนิจส์อัลเล ที่ซึ่งหมู่ต้นเพลนร่อนแสงแดดยามบ่ายให้กระจายเป็นเศษทอง"
                         } },
                         { "in": 4.5, "out": 8.5, "text": {
                             "zh-TW": "運河是這座城市的一面鏡，收著行人、樹影，與一整片秋天。",
                             "ja": "運河はこの街の鏡。行き交う人も、木々の影も、秋のすべても、そっと映している。",
                             "en": "The canal is the city's mirror — holding passers-by, the shadows of trees, and a whole autumn.",
-                            "de": "Der Kanal ist der Spiegel der Stadt – er sammelt Passanten, Baumschatten und einen ganzen Herbst."
+                            "de": "Der Kanal ist der Spiegel der Stadt – er sammelt Passanten, Baumschatten und einen ganzen Herbst.",
+                            "th": "คลองคือกระจกเงาของเมือง — โอบรับผู้คนที่เดินผ่าน เงาของต้นไม้ และฤดูใบไม้ร่วงทั้งฤดู"
                         } }
                     ],
                     "transition_out": { "type": "crossfade", "duration": 0.8 }
@@ -797,13 +840,15 @@
                             "zh-TW": "我在一棵老樹下歇腳。風從十九世紀走來。",
                             "ja": "古い木の下で、ひと休み。風は十九世紀のほうから歩いてくる。",
                             "en": "I rest beneath an old tree. The wind comes walking out of the nineteenth century.",
-                            "de": "Ich raste unter einem alten Baum. Der Wind kommt herüber – aus dem neunzehnten Jahrhundert."
+                            "de": "Ich raste unter einem alten Baum. Der Wind kommt herüber – aus dem neunzehnten Jahrhundert.",
+                            "th": "ฉันพักเหนื่อยใต้ต้นไม้เก่าแก่ สายลมเดินทางมาจากศตวรรษที่สิบเก้า"
                         } },
                         { "in": 13.0, "out": 16.5, "text": {
                             "zh-TW": "葉子落在肩上——像這座城，輕輕地與我打了個招呼。",
                             "ja": "葉が一枚、肩に落ちる——この街が、そっと挨拶をくれたように。",
                             "en": "A leaf settles on my shoulder — as if the city had quietly said hello.",
-                            "de": "Ein Blatt sinkt auf meine Schulter – als hätte die Stadt mir leise zugenickt."
+                            "de": "Ein Blatt sinkt auf meine Schulter – als hätte die Stadt mir leise zugenickt.",
+                            "th": "ใบไม้ใบหนึ่งร่วงลงบนบ่าของฉัน — ราวกับเมืองได้เอ่ยทักทายอย่างเงียบ ๆ"
                         } }
                     ],
                     "transition_out": { "type": "crossfade", "duration": 0.6 }
@@ -817,13 +862,15 @@
                             "zh-TW": "沿著河走。萊茵河沒有聲音，它只是流著。",
                             "ja": "川に沿って歩く。ライン川は音を立てず、ただ流れている。",
                             "en": "I follow the river. The Rhine makes no sound — it simply flows.",
-                            "de": "Ich folge dem Fluss. Der Rhein ist lautlos – er fließt einfach dahin."
+                            "de": "Ich folge dem Fluss. Der Rhein ist lautlos – er fließt einfach dahin.",
+                            "th": "ฉันเดินเลียบแม่น้ำ แม่น้ำไรน์ไม่ส่งเสียงใด — มันเพียงไหลเลื่อนไป"
                         } },
                         { "in": 21.5, "out": 25.5, "text": {
                             "zh-TW": "把整個歐洲的故事，帶向遠方。",
                             "ja": "ヨーロッパじゅうの物語を抱いて、遠くへと運んでいく。",
                             "en": "Carrying all the stories of Europe toward somewhere far away.",
-                            "de": "Und trägt die Geschichten ganz Europas in die Ferne."
+                            "de": "Und trägt die Geschichten ganz Europas in die Ferne.",
+                            "th": "พาเรื่องราวทั้งหมดของยุโรปไปสู่ที่แห่งหนึ่งอันไกลโพ้น"
                         } }
                     ],
                     "transition_out": { "type": "dip_to_black", "duration": 0.5 }
@@ -837,13 +884,15 @@
                             "zh-TW": "煙囪靜靜站在天邊。一架飛機劃過。",
                             "ja": "煙突が、空の果てに静かに立っている。飛行機が一機、横切っていく。",
                             "en": "Smokestacks stand quietly at the edge of the sky. A plane cuts across.",
-                            "de": "Schornsteine stehen still am Rand des Himmels. Ein Flugzeug zieht vorüber."
+                            "de": "Schornsteine stehen still am Rand des Himmels. Ein Flugzeug zieht vorüber.",
+                            "th": "ปล่องควันยืนเงียบงันอยู่ที่ขอบฟ้า เครื่องบินลำหนึ่งแล่นตัดผ่าน"
                         } },
                         { "in": 30.5, "out": 35.5, "text": {
                             "zh-TW": "留下一道白色的句點——而我還在這裡，捨不得結束這一天。",
                             "ja": "白い句点を、ひとつ残して——それでも私はまだここで、この一日を終わらせたくない。",
                             "en": "It leaves a white full stop behind — yet here I linger, unwilling to let the day end.",
-                            "de": "Es hinterlässt einen weißen Schlusspunkt – doch ich bleibe und mag den Tag noch nicht enden lassen."
+                            "de": "Es hinterlässt einen weißen Schlusspunkt – doch ich bleibe und mag den Tag noch nicht enden lassen.",
+                            "th": "ทิ้งจุดสิ้นสุดสีขาวไว้เบื้องหลัง — ทว่าฉันยังรั้งรออยู่ที่นี่ ไม่อยากให้วันนี้สิ้นสุดลง"
                         } }
                     ],
                     "transition_out": { "type": "crossfade", "duration": 0.8 }
@@ -857,13 +906,15 @@
                             "zh-TW": "萊茵塔守著最後一抹金黃。",
                             "ja": "ラインタワーが、最後の金色を、そっと見守っている。",
                             "en": "The Rheinturm keeps watch over the last trace of gold.",
-                            "de": "Der Rheinturm wacht über den letzten Schimmer aus Gold."
+                            "de": "Der Rheinturm wacht über den letzten Schimmer aus Gold.",
+                            "th": "หอคอยไรน์เฝ้ามองร่องรอยสุดท้ายของสีทอง"
                         } },
                         { "in": 40.5, "out": 45.5, "text": {
                             "zh-TW": "雲彩像被誰打翻的茶，慢慢暈開，整座城市，沉入河水。",
                             "ja": "雲は、こぼれた紅茶のように、ゆっくりと滲み、街はまるごと、川の底へ沈んでいく。",
                             "en": "The clouds spread like spilled tea, and the whole city sinks slowly into the river.",
-                            "de": "Die Wolken zerlaufen wie verschütteter Tee, und die ganze Stadt versinkt langsam im Fluss."
+                            "de": "Die Wolken zerlaufen wie verschütteter Tee, und die ganze Stadt versinkt langsam im Fluss.",
+                            "th": "หมู่เมฆแผ่กระจายดั่งน้ำชาที่หกเลอะ และทั้งเมืองค่อย ๆ จมลงสู่แม่น้ำ"
                         } }
                     ],
                     "transition_out": { "type": "crossfade", "duration": 1.0 }
@@ -877,13 +928,15 @@
                             "zh-TW": "夜回到國王大道。燈火把梧桐染成一幅油畫。",
                             "ja": "夜が、ケーニヒスアレーに戻ってくる。灯りがプラタナスを、一枚の油絵に染めあげる。",
                             "en": "Night returns to Königsallee. The lamplight paints the plane trees into an oil canvas.",
-                            "de": "Die Nacht kehrt in die Königsallee zurück. Das Licht malt die Platanen zu einem Ölgemälde."
+                            "de": "Die Nacht kehrt in die Königsallee zurück. Das Licht malt die Platanen zu einem Ölgemälde.",
+                            "th": "ราตรีหวนคืนสู่ถนนเคอนิจส์อัลเล แสงโคมไฟวาดหมู่ต้นเพลนให้กลายเป็นภาพสีน้ำมัน"
                         } },
                         { "in": 50.5, "out": 54.5, "text": {
                             "zh-TW": "水面靜得像一首寫完的詩——沒有人朗讀，卻句句清晰。",
                             "ja": "水面は、書き終えた詩のように静か——誰も読みあげないのに、一行ずつ、はっきりと。",
                             "en": "The water lies still as a finished poem — no one reads it aloud, yet every line is clear.",
-                            "de": "Das Wasser liegt still wie ein vollendetes Gedicht – niemand liest es vor, und doch ist jede Zeile klar."
+                            "de": "Das Wasser liegt still wie ein vollendetes Gedicht – niemand liest es vor, und doch ist jede Zeile klar.",
+                            "th": "ผืนน้ำนิ่งสงบดั่งบทกวีที่เขียนจบแล้ว — ไม่มีใครอ่านออกเสียง ทว่าทุกบรรทัดกระจ่างชัด"
                         } }
                     ],
                     "transition_out": { "type": "fade_to_black", "duration": 1.0 }
@@ -897,7 +950,8 @@
                             "zh-TW": "杜塞道夫\n我把這幾天的風景，折進記憶的口袋，帶回家。",
                             "ja": "デュッセルドルフ\nこの数日の景色を、記憶のポケットに折りたたんで、家へ持ち帰る。",
                             "en": "Düsseldorf\nI fold these days of scenery into the pocket of memory, and carry them home.",
-                            "de": "Düsseldorf\nIch falte die Bilder dieser Tage in die Tasche der Erinnerung und trage sie nach Hause."
+                            "de": "Düsseldorf\nIch falte die Bilder dieser Tage in die Tasche der Erinnerung und trage sie nach Hause.",
+                            "th": "ดึสเซลดอร์ฟ\nฉันพับวันคืนแห่งทิวทัศน์เหล่านี้เก็บใส่กระเป๋าแห่งความทรงจำ และนำพวกมันกลับบ้าน"
                         } }
                     ]
                 }
