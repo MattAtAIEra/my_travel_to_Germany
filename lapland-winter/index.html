@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>夢幻祕境・芬蘭拉普蘭 7 天遊</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+/* ── Theme tokens (overridden by themes/{theme}.css below) ──────── */
+:root {
+  --primary: #2C5F2D;
+  --secondary: #97BC62;
+  --accent: #C7392F;
+  --warn: #E8A93C;
+  --glow: 232,169,60;      /* CTA 脈動光環，RGB 三元組（= --warn）— 主題覆寫 --warn 時請一併覆寫 */
+  --cream: #F5F4EC;
+  --ink: #1A2E1B;
+  --dim: #6B7770;
+  --white: #ffffff;
+  --display-font: "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", "Source Han Sans TC", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--display-font);
+  background: #000; color: var(--ink);
+}
+#stage {
+  position: relative; width: 100vw;
+  height: 100vh;       /* fallback：不支援 dvh 的舊瀏覽器 */
+  height: 100dvh;      /* iOS Safari 100vh 含工具列高度，會把控制列推出畫面；dvh 隨工具列收合即時調整 */
+  background: var(--cream); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ── Top bar ───────────────────────────────────── */
+.topbar {
+  height: 40px; background: var(--primary); color: white;
+  display: flex; align-items: center; padding: 0 24px;
+  font-size: 13px; gap: 16px; flex-shrink: 0;
+}
+.crumb { opacity: 0.9; font-weight: 600; letter-spacing: 1px; }
+.progress { flex: 1; height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; position: relative; }
+.progress-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--warn); border-radius: 2px; transition: width 0.15s; }
+.time { font-variant-numeric: tabular-nums; opacity: 0.85; }
+
+/* ── Stage frame ────────────────────────────────── */
+.frame { position: relative; flex: 1; overflow: hidden; background: var(--cream); }
+
+/* ── Generic scene ──────────────────────────────── */
+.scene {
+  position: absolute; inset: 0; padding: 48px 64px 200px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none; display: flex; flex-direction: column;
+}
+.scene.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.eyebrow { font-size: 13px; letter-spacing: 4px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+.h1 { font-size: 42px; font-weight: 800; color: var(--ink); margin-bottom: 28px; line-height: 1.2; }
+.h2 { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.lead { font-size: 18px; color: var(--dim); line-height: 1.6; }
+
+/* ── Scene: title / outro shared ──────────────────── */
+.scene-title, .scene-outro {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--ink) 100%);
+  padding: 64px 80px 200px;
+  color: white;
+  justify-content: center;
+}
+.scene-title .eyebrow, .scene-outro .eyebrow { color: var(--secondary); }
+.scene-title .display, .scene-outro .display { font-size: 88px; font-weight: 800; line-height: 1.05; color: white; margin: 24px 0; }
+.scene-title .display .accent, .scene-outro .display .accent { color: var(--warn); }
+.scene-title .tagline, .scene-outro .tagline { font-size: 22px; color: var(--cream); margin-top: 24px; opacity: 0.9; }
+.scene-title .ribbon { width: 80px; height: 6px; background: var(--warn); margin: 32px 0 16px; border-radius: 3px; }
+.scene-title .series, .scene-outro .next { font-size: 14px; color: var(--cream); opacity: 0.7; letter-spacing: 2px; }
+.scene-title .blob, .scene-outro .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.scene-title .blob.b1 { right: -200px; top: -200px; width: 600px; height: 600px; background: var(--secondary); opacity: 0.25; }
+.scene-title .blob.b2 { right: 200px; bottom: -100px; width: 320px; height: 320px; background: var(--warn); opacity: 0.18; }
+.scene-outro .blob.b1 { left: -150px; top: -150px; width: 500px; height: 500px; background: var(--secondary); opacity: 0.2; }
+.scene-outro .blob.b2 { right: -100px; bottom: -200px; width: 480px; height: 480px; background: var(--warn); opacity: 0.15; }
+
+/* ── Scene: 2-column painpoint ────────────────────── */
+.painpoint { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px; }
+.panel { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.panel.dark { background: var(--primary); color: white; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.panel h3 { font-size: 22px; margin-bottom: 16px; }
+.panel.dark h3 { color: var(--warn); }
+.panel ul { list-style: none; padding: 0; margin: 0 0 16px; }
+.panel li { padding: 8px 0; font-size: 16px; line-height: 1.5; }
+.panel li::before { content: "‧ "; color: var(--secondary); font-weight: bold; }
+.panel.dark li::before { color: var(--warn); }
+.panel .stat { font-size: 14px; color: var(--dim); margin-top: 16px; }
+.panel.dark .stat { color: rgba(255,255,255,0.7); }
+.panel .stat .num { font-size: 32px; font-weight: 800; color: var(--accent); margin-left: 8px; vertical-align: middle; }
+.panel.dark .stat .num { color: var(--warn); }
+
+/* ── Scene: 3-card row (objectives / takeaways / etc.) ──────────── */
+.cards-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 24px; }
+.cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+.card { background: white; border-radius: 12px; padding: 28px; display: flex; gap: 20px; align-items: flex-start; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.card-num { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; font-weight: 800; flex-shrink: 0; }
+.card-num.c1 { background: var(--primary); }
+.card-num.c2 { background: var(--secondary); }
+.card-num.c3 { background: var(--accent); }
+.card-num.c4 { background: var(--warn); color: var(--ink); }
+.card-title { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.card-body { font-size: 14px; color: var(--dim); line-height: 1.5; }
+.tagline-center { margin-top: 36px; text-align: center; font-style: italic; color: var(--primary); font-size: 22px; font-weight: 700; }
+
+/* ── Scene: callout stack (FAQ / answers / 3-color signal) ────── */
+.callout-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.callout { background: white; border-radius: 10px; padding: 18px 22px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.callout-icon { width: 44px; height: 44px; border-radius: 50%; color: white; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+.cl-p { background: var(--primary); }
+.cl-s { background: var(--secondary); }
+.cl-a { background: var(--accent); }
+.cl-w { background: var(--warn); color: var(--ink); }
+.cl-blue { background: #3b82c4; }
+.callout-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+.callout-desc { font-size: 14px; color: var(--dim); line-height: 1.55; margin-top: 4px; }
+
+/* ── Scene: browser-style demo ──────────────────── */
+.browser { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); margin-top: 18px; }
+.browser-bar { background: var(--ink); padding: 8px 12px; display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: var(--accent); } .dot.y { background: var(--warn); } .dot.g { background: var(--secondary); }
+.browser-url { color: var(--cream); font-size: 11px; margin-left: 12px; opacity: 0.8; }
+.browser-body { padding: 24px; min-height: 280px; }
+.browser-body h4 { font-size: 18px; color: var(--primary); margin-bottom: 12px; }
+
+/* ── Subtitle bar ───────────────────────────────── */
+.subtitle-bar {
+  position: absolute; left: 64px; right: 64px; bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  background: rgba(26, 46, 27, 0.94); color: white;
+  padding: 18px 28px; border-radius: 10px;
+  font-size: 22px; line-height: 1.5;
+  min-height: 70px; display: flex; align-items: center;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  z-index: 90;
+}
+.subtitle-bar.empty { opacity: 0; pointer-events: none; }  /* 重要：opacity:0 不關 pointer-events，會吃掉下方互動元素的點擊（例如 feedback form 按鈕）*/
+.subtitle-bar .marker { color: var(--warn); margin-right: 12px; flex-shrink: 0; font-weight: bold; }
+
+/* ── Controls bar ───────────────────────────────── */
+.controls {
+  height: calc(64px + env(safe-area-inset-bottom, 0px)); background: var(--ink);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 24px;
+  padding-bottom: env(safe-area-inset-bottom, 0px); /* 墊高按鈕避開 iPhone Home Indicator；必須寫在 padding shorthand 之後 */
+  flex-shrink: 0; border-top: 2px solid var(--primary);
+}
+.btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-family: inherit; transition: background 0.2s; font-weight: 600; }
+.btn:hover { background: var(--secondary); color: var(--ink); }
+.btn.warn { background: var(--warn); color: var(--ink); }
+.btn.warn:hover { background: white; }
+.btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.3); }
+.btn.ghost:hover { background: rgba(255,255,255,0.1); color: white; }
+.btn .ticon { font-style: normal; line-height: 1; }
+.btn .tlabel { margin-left: 6px; }
+.timeinfo { color: white; font-size: 14px; font-variant-numeric: tabular-nums; }
+.scene-chip { color: rgba(255,255,255,0.65); font-size: 13px; margin-left: auto; }
+.no-audio-note { color: var(--warn); font-size: 12px; padding: 6px 12px; background: rgba(232,169,60,0.15); border-radius: 4px; }
+audio { display: none; }
+
+/* CTA：未播放時播放鍵呼吸光環提示（setPlayBtn 以 .is-playing 開關） */
+@keyframes ctaPulse {
+  0%   { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0.55); }
+  70%  { box-shadow: 0 0 11px 3px rgba(var(--glow), 0.40), 0 0 0 14px rgba(var(--glow), 0); }
+  100% { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0); }
+}
+#playBtn:not(.is-playing) { animation: ctaPulse 1.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  #playBtn:not(.is-playing) { animation: none; box-shadow: 0 0 10px 2px rgba(var(--glow), 0.55); }
+}
+
+/* small screen */
+@media (max-width: 900px) {
+  .scene { padding: 32px 24px 120px; }
+  .h1 { font-size: 28px; }
+  .painpoint, .cards-3, .cards-2 { grid-template-columns: 1fr; }
+  .scene-title .display, .scene-outro .display { font-size: 44px; }
+  .subtitle-bar { left: 16px; right: 16px; font-size: 16px; }
+}
+
+/* mobile RWD: 控制列改成「左側純 icon 按鈕 + 右側時間」的標準播放器佈局。
+   窄螢幕容不下文字標籤與不定長度的段落／提示，留著會換行、溢出、把整條控制列撐破版，
+   因此一律移除按鈕文字、段落提示（.scene-chip）、無音檔提示（.no-audio-note）。
+   進度仍可從頂部 progress bar 與時間判讀，資訊不流失。
+   注意：.controls 這裡勿用 padding shorthand，會把上方的 padding-bottom 安全區重設為 0 */
+@media (max-width: 540px) {
+  .controls      { padding-left: 10px; padding-right: 10px; gap: 6px; }
+  .btn           { padding: 9px 11px; flex-shrink: 0; }   /* 按鈕不被壓縮變形 */
+  .btn .tlabel   { display: none; }                       /* 移除按鈕文字，只留 icon */
+  .btn .ticon    { font-size: 22px; }
+  .timeinfo      { font-size: 12px; white-space: nowrap; flex-shrink: 0; margin-left: auto; } /* 時間不換行、推到最右 */
+  .scene-chip    { display: none; }   /* 段落標題長度不定，手機移除避免破版 */
+  .no-audio-note { display: none; }   /* 異常提示，手機移除以保版面（播放遇錯仍會自動前進） */
+}
+
+/* ── Scene: storybook — full-bleed illustration ─── */
+.scene-storybook { padding: 0; }
+.scene-storybook .story-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene-storybook .story-eyebrow { position: absolute; top: 24px; left: 32px; font-size: 13px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.35); padding: 6px 14px; border-radius: 999px; backdrop-filter: blur(6px); }
+.scene-storybook .story-caption { position: absolute; top: 24px; right: 32px; max-width: 44%; font-size: 26px; font-weight: 800; line-height: 1.35; color: #fff; background: rgba(0,0,0,0.4); padding: 12px 20px; border-radius: 14px; backdrop-filter: blur(6px); }
+/* ── Hero image on title / outro ── */
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.45) 100%); }
+.scene-title > *:not(.hero-img):not(.hero-overlay), .scene-outro > *:not(.hero-img):not(.hero-overlay) { position: relative; z-index: 1; }
+/* ── Side illustration on generic ── */
+.side-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; flex: 1; min-height: 0; }
+.side-img { width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+@media (max-width: 900px) {
+  .side-grid { grid-template-columns: 1fr; }
+  .side-img { max-height: 40vh; }
+  .scene-storybook .story-caption { font-size: 18px; max-width: 60%; }
+}
+
+/* ── Cue system: one subtitle → one visual beat (筆記 §3) ─────────── */
+[data-cue]:not(.cue-mark) {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
+}
+[data-cue]:not(.cue-mark).cue-seen,
+[data-cue]:not(.cue-mark).cue-on { opacity: 1; transform: none; }
+.cue-mark { display: inline-block; transition: color .4s, text-shadow .4s; }
+.cue-mark.cue-on { animation: cueMark .65s ease both; }
+@keyframes cueMark { 0%{transform:scale(1)} 35%{transform:scale(1.16)} 100%{transform:scale(1)} }
+/* spotlight the current element */
+.card[data-cue].cue-on, .callout[data-cue].cue-on, .panel[data-cue].cue-on,
+.browser[data-cue].cue-on { box-shadow: 0 0 0 2px var(--secondary), 0 16px 40px rgba(0,0,0,.35); }
+/* mobile: scenes scroll so below-the-fold cues can be brought into view (筆記 §4) */
+/* NOTE: no `scroll-behavior: smooth` here — it hijacks programmatic scrollTop
+   assignment too (CSSOM), which silently never completes in throttled/background
+   contexts. Correct position always beats animated motion; the cue reveal
+   transition already provides the visual softness. */
+@media (max-width: 900px) { .scene { overflow-y: auto; -webkit-overflow-scrolling: touch; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-cue]:not(.cue-mark) { transition: none; }
+  .cue-mark.cue-on { animation: none; }
+}
+
+/* /* Theme: glass — 無邊框滿版影像 + Apple Liquid Glass 懸浮操作面板 + Ken Burns。
+   適合：旅遊、攝影、生活風格、以照片為主角的敘事（storybook / hero 場景）。
+   設計語言：頂欄與控制列不再佔據版面，改為懸浮的煙燻玻璃膠囊（backdrop blur +
+   飽和度提升 + 內緣高光），照片滿出整個視窗；每張照片以 Ken Burns 緩慢推移。
+   注意：本主題以 storybook / title / outro 全圖場景為主要對象；資訊型場景
+   （cards / callout / panel）仍可用，會轉為深色玻璃卡片。 */
+
+:root {
+  --primary: #16273D;      /* 極夜藍 */
+  --secondary: #7FD1C0;    /* 極光青 */
+  --accent: #FFB86B;       /* 暮色橙（title 強調字） */
+  --warn: #FFD479;         /* 極光金 */
+  --glow: 255,212,121;     /* CTA 光環 RGB（= --warn） */
+  --cream: #0B111A;        /* stage 底色：深夜藍黑（照片之外的留白） */
+  --ink: #F4F7FB;          /* 文字轉白（深色玻璃上） */
+  --dim: #A8B7C9;          /* 次要文字 */
+  --white: #ffffff;
+  --display-font: -apple-system, "SF Pro Display", "PingFang TC", "Noto Sans CJK TC",
+                  "Microsoft JhengHei", sans-serif;
+  /* 玻璃配方：共用三件套（面板底、描邊、內緣高光＋投影） */
+  --glass-bg: linear-gradient(150deg, rgba(46, 60, 82, 0.42), rgba(15, 22, 34, 0.38));
+  --glass-border: 1px solid rgba(255, 255, 255, 0.22);
+  --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30),
+                  inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+                  0 12px 40px rgba(0, 0, 0, 0.38);
+}
+
+/* ── 滿版舞台：畫面鋪滿視窗，頂欄／控制列懸浮其上 ─────────────── */
+.frame { position: absolute; inset: 0; background: var(--cream); }
+
+/* ── 頂欄 → 懸浮玻璃膠囊（置中） ─────────────────────────────── */
+.topbar {
+  position: absolute; z-index: 100;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 50%; transform: translateX(-50%);
+  width: min(640px, calc(100% - 28px));
+  height: 44px; border-radius: 999px;
+  padding: 0 20px; gap: 14px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.topbar .crumb { font-size: 12px; letter-spacing: 2px; font-weight: 700; }
+.topbar .time { display: none; }               /* 時間已在下方 dock，頂欄保持極簡 */
+.progress { height: 3px; background: rgba(255,255,255,0.22); }
+.progress-bar { background: linear-gradient(90deg, var(--secondary), var(--warn)); }
+
+/* ── 控制列 → 懸浮玻璃 dock（置中、圓形 icon 按鈕） ───────────── */
+.controls {
+  position: absolute; z-index: 100;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  left: 50%; transform: translateX(-50%);
+  width: fit-content; max-width: calc(100% - 20px);
+  height: 64px; border-radius: 999px;
+  padding: 0 16px;
+  gap: 10px; border-top: none;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* 玻璃圓鈕：純 icon、內緣高光、hover 浮起 */
+.btn {
+  width: 44px; height: 44px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 2px 10px rgba(0, 0, 0, 0.28);
+  transition: background .25s, transform .15s, box-shadow .25s;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.22); color: #fff; transform: translateY(-1px); }
+.btn:active { transform: scale(0.95); }
+.btn .tlabel { display: none; }                /* 玻璃 dock 一律純 icon */
+.btn .ticon { font-size: 18px; margin: 0; }
+
+/* 播放鍵（CTA）：亮玻璃、深色 icon，比其他鈕大一號 */
+.btn.warn, #playBtn {
+  width: 54px; height: 54px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.62));
+  color: var(--primary);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+}
+.btn.warn:hover, #playBtn:hover { background: #fff; color: var(--primary); transform: translateY(-1px); }
+#playBtn .ticon { font-size: 22px; }
+
+.timeinfo { font-size: 13px; color: rgba(255,255,255,0.92); padding-left: 4px; }
+.scene-chip { font-size: 12px; color: rgba(255,255,255,0.60); margin-left: 4px; }
+.no-audio-note { background: rgba(255, 212, 121, 0.18); color: var(--warn); border-radius: 999px; }
+
+/* ── 字幕條 → 懸浮玻璃膠囊（置中於 dock 上方） ────────────────── */
+.subtitle-bar {
+  left: 50%; right: auto; transform: translateX(-50%);
+  bottom: calc(98px + env(safe-area-inset-bottom, 0px));
+  width: min(860px, calc(100% - 28px));
+  border-radius: 20px; padding: 16px 26px;
+  justify-content: center; text-align: center;
+  font-size: 21px; min-height: 60px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+.subtitle-bar .marker { display: none; }       /* 置中排版，拿掉側標箭頭 */
+
+/* ── 場景切換：照片式慢速交叉淡化（取代上滑進場） ─────────────── */
+.scene { transform: none !important; transition: opacity 1.15s ease; }
+
+/* ── Ken Burns：滿版照片緩慢推移，四種方向輪替 ────────────────── */
+.scene-storybook .story-img, .hero-img {
+  transform: scale(1.14);
+  transition: transform 1.2s ease;             /* 場景卸下時平滑歸位，不跳格 */
+  will-change: transform;
+}
+.scene.active .story-img, .scene.active .hero-img {
+  animation: kbDriftA 30s ease-in-out infinite alternate;
+}
+.scene.active:nth-of-type(4n+2) .story-img, .scene.active:nth-of-type(4n+2) .hero-img { animation-name: kbDriftB; }
+.scene.active:nth-of-type(4n+3) .story-img, .scene.active:nth-of-type(4n+3) .hero-img { animation-name: kbZoomIn; }
+.scene.active:nth-of-type(4n)   .story-img, .scene.active:nth-of-type(4n)   .hero-img { animation-name: kbZoomOut; }
+@keyframes kbDriftA {
+  from { transform: scale(1.14) translate(1.6%, 1.1%); }
+  to   { transform: scale(1.26) translate(-1.6%, -1.1%); }
+}
+@keyframes kbDriftB {
+  from { transform: scale(1.26) translate(-1.6%, 1.1%); }
+  to   { transform: scale(1.14) translate(1.4%, -1.0%); }
+}
+@keyframes kbZoomIn {
+  from { transform: scale(1.10); }
+  to   { transform: scale(1.30) translate(0.8%, -1.4%); }
+}
+@keyframes kbZoomOut {
+  from { transform: scale(1.30) translate(-0.8%, 1.2%); }
+  to   { transform: scale(1.10); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene.active .story-img, .scene.active .hero-img { animation: none; }
+}
+
+/* ── Storybook：上下柔光 scrim + 編輯排版式標題（左上） ────────── */
+.scene-storybook::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(6, 10, 16, 0.52) 0%, rgba(6, 10, 16, 0) 30%,
+    rgba(6, 10, 16, 0) 55%, rgba(6, 10, 16, 0.55) 100%);
+}
+.scene-storybook .story-eyebrow {
+  z-index: 2; top: calc(78px + env(safe-area-inset-top, 0px)); left: 34px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  letter-spacing: 3px;
+}
+.scene-storybook .story-caption {
+  z-index: 2; left: 34px; right: auto;
+  top: calc(122px + env(safe-area-inset-top, 0px));
+  max-width: 52%;
+  background: none; padding: 0; border-radius: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-size: 42px; font-weight: 800; letter-spacing: 1px; line-height: 1.3;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.6), 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Title / Outro：深夜藍底（無圖時），hero 圖沿用 Ken Burns ──── */
+.scene-title, .scene-outro { background: linear-gradient(160deg, #1B2C44 0%, #0B111A 100%); }
+.scene-title .display, .scene-outro .display { font-size: 72px; text-shadow: 0 2px 30px rgba(0,0,0,0.55); }
+.scene-title .display .accent, .scene-outro .display .accent { color: var(--accent); }
+.scene-title .ribbon { background: linear-gradient(90deg, var(--secondary), var(--warn)); height: 5px; }
+.scene-title .eyebrow { color: var(--secondary); }
+/* base 用 --cream 上色，本主題 --cream 是深色底 → 相片上改回白色系 */
+.scene-title .tagline, .scene-outro .tagline { color: rgba(255,255,255,0.94); text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
+.scene-title .series, .scene-outro .next { color: rgba(255,255,255,0.78); opacity: 1; text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
+
+/* ── 資訊型場景備援：白卡轉深色玻璃卡（本主題以照片場景為主） ──── */
+.panel, .card, .callout, .browser {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  color: var(--ink);
+}
+.card-body, .callout-desc, .panel .stat, .lead { color: var(--dim); }
+
+/* ── 手機：dock 縮小、標題縮級，維持懸浮玻璃語言 ──────────────── */
+@media (max-width: 540px) {
+  .topbar { height: 38px; padding: 0 14px; }
+  .controls { height: 56px; gap: 8px; padding: 0 12px; }
+  .btn { width: 40px; height: 40px; padding: 0; }
+  .btn.warn, #playBtn { width: 48px; height: 48px; }
+  .subtitle-bar { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); font-size: 16px; padding: 12px 18px; }
+  .scene-storybook .story-caption { font-size: 24px; max-width: 80%; top: calc(104px + env(safe-area-inset-top, 0px)); left: 20px; }
+  .scene-storybook .story-eyebrow { left: 20px; top: calc(62px + env(safe-area-inset-top, 0px)); }
+  .scene-title .display, .scene-outro .display { font-size: 40px; }
+}
+ */
+/*  */
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Top brand bar -->
+  <div class="topbar">
+    <div class="crumb">夢幻祕境・芬蘭拉普蘭 7 天遊</div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="time" id="topTime">0:00 / 0:00</div>
+  </div>
+
+  <!-- Scene stage -->
+  <div class="frame" id="frame">
+
+    <div class="scene scene-title" data-id="s01">
+      <img class="hero-img" src="images/s01-hero.jpg" alt=""><div class="hero-overlay"></div>
+      <div class="eyebrow">NORDIC UNIQUE TRAVELS ‧ 冬季多天遊</div>
+      <div class="display" data-cue="001">夢幻祕境<br>芬蘭拉普蘭 <span class='accent'>7 天遊</span></div>
+      <div class="ribbon"></div>
+      <div class="tagline">極光 ‧ 馴鹿 ‧ 聖誕老人的故鄉——走進北極圈的冬季童話</div>
+      <div class="series">赫爾辛基 ‧ 羅瓦涅米 ‧ 北極圈</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s02">
+      <img class="story-img" src="images/s02-full.jpg" alt="">
+      <div class="story-eyebrow">OVERVIEW ‧ 行程總覽</div>
+      <div class="story-caption">七天六夜・北極圈的冬季童話</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s03">
+      <img class="story-img" src="images/s03-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 1 ‧ 赫爾辛基</div>
+      <div class="story-caption">城市漫遊・夜臥火車北上</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s04">
+      <img class="story-img" src="images/s04-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 2 ‧ 羅瓦涅米</div>
+      <div class="story-caption">聖誕老人村・跨越北極圈</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s05">
+      <img class="story-img" src="images/s05-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 2 ‧ 聖誕老人村</div>
+      <div class="story-caption">與聖誕老人本尊相見</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s06">
+      <img class="story-img" src="images/s06-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 3 ‧ 極地活動日</div>
+      <div class="story-caption">雪鞋健行・原始森林</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s07">
+      <img class="story-img" src="images/s07-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 3 ‧ 極地活動日</div>
+      <div class="story-caption">冰釣・篝火・守候極光</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s08">
+      <img class="story-img" src="images/s08-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 4–5 ‧ 拉努阿 &amp; 市區</div>
+      <div class="story-caption">拉努阿動物園・北極熊</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s09">
+      <img class="story-img" src="images/s09-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 6 ‧ 馴鹿農場</div>
+      <div class="story-caption">馴鹿雪橇・薩米文化</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s10">
+      <img class="story-img" src="images/s10-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 7 ‧ 哈士奇農場</div>
+      <div class="story-caption">哈士奇雪橇・林間飛馳</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s11">
+      <img class="story-img" src="images/s11-full.jpg" alt="">
+      <div class="story-eyebrow">DAY 7 ‧ 夜</div>
+      <div class="story-caption">狩獵北極光</div>
+    </div>
+
+    <div class="scene scene-outro" data-id="s12">
+      <img class="hero-img" src="images/s12-hero.jpg" alt=""><div class="hero-overlay"></div>
+      <div class="display" data-cue="028">這個冬天，<span class='accent'>北極圈</span>見</div>
+      <div class="next">大人 €1,999 ‧ 小孩 €1,749 ‧ 最少 4 人成團 ‧ 含 5 晚住宿與全部活動門票 ‧ booking@nordictravels.eu</div>
+    </div>
+  </div><!-- /.frame -->
+
+  <!-- Subtitle overlay -->
+  <div class="subtitle-bar empty" id="subtitleBar"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn warn" id="playBtn"><span class="ticon">▶</span><span class="tlabel">播放</span></button>
+    <button class="btn ghost" id="prevBtn"><span class="ticon">⏮</span><span class="tlabel">上一段</span></button>
+    <button class="btn ghost" id="nextBtn"><span class="ticon">⏭</span><span class="tlabel">下一段</span></button>
+    <button class="btn ghost" id="restartBtn"><span class="ticon">⟲</span><span class="tlabel">重播</span></button>
+    <div class="timeinfo" id="timeinfo">0:00 / 0:00</div>
+    <div class="no-audio-note" id="audioNote" style="display:none">部分配音檔尚未產生（將以預估秒數播放靜音）</div>
+    <div class="scene-chip" id="sceneChip">場景 1</div>
+    <audio id="player" preload="auto"></audio>
+    <audio id="bgm" loop preload="auto" src="BGM/BGM.mp3"></audio>
+  </div>
+
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+//  Subs (injected from {prefix}.subs.json)
+// ────────────────────────────────────────────────
+const PREFIX = "LAP";
+const AUDIO_DIR = "audio";
+const SUBS = [
+  {
+    "id": "001",
+    "scene": "s01",
+    "text": "",
+    "dur": 2.5
+  },
+  {
+    "id": "002",
+    "scene": "s01",
+    "text": "夢幻祕境——芬蘭拉普蘭七天遊，一場走進北極圈的冬季童話。",
+    "dur": 5.93
+  },
+  {
+    "id": "003",
+    "scene": "s02",
+    "text": "七天六夜，從首都赫爾辛基一路北上，深入聖誕老人的故鄉羅瓦涅米。",
+    "dur": 7.09
+  },
+  {
+    "id": "004",
+    "scene": "s02",
+    "text": "極光、馴鹿、哈士奇、冰釣、聖誕老人村，北極的精華一次收齊。",
+    "dur": 6.81
+  },
+  {
+    "id": "005",
+    "scene": "s02",
+    "text": "五晚住宿、來回夜臥火車、專業導遊與所有活動門票，通通包含在內。",
+    "dur": 7.05
+  },
+  {
+    "id": "006",
+    "scene": "s03",
+    "text": "第一天，我們在赫爾辛基展開城市漫遊。",
+    "dur": 3.65
+  },
+  {
+    "id": "007",
+    "scene": "s03",
+    "text": "走訪雪白莊嚴的赫爾辛基大教堂，與紅磚的烏斯別斯基大教堂。",
+    "dur": 6.21
+  },
+  {
+    "id": "008",
+    "scene": "s03",
+    "text": "再逛逛海邊的露天市集，於西貝流士公園畫下句點。",
+    "dur": 5.25
+  },
+  {
+    "id": "009",
+    "scene": "s03",
+    "text": "傍晚登上夜臥火車，一覺醒來，就是北極圈。",
+    "dur": 4.29
+  },
+  {
+    "id": "010",
+    "scene": "s04",
+    "text": "第二天，歡迎來到羅瓦涅米——聖誕老人的官方故鄉。",
+    "dur": 4.85
+  },
+  {
+    "id": "011",
+    "scene": "s04",
+    "text": "在聖誕老人村跨越北極圈白線，拿到專屬的北極圈證書。",
+    "dur": 5.77
+  },
+  {
+    "id": "012",
+    "scene": "s05",
+    "text": "接著，見到童年夢想中的主角——聖誕老人本人。",
+    "dur": 4.33
+  },
+  {
+    "id": "013",
+    "scene": "s05",
+    "text": "和他聊聊天、合張影，把願望親口說給他聽。",
+    "dur": 4.57
+  },
+  {
+    "id": "014",
+    "scene": "s06",
+    "text": "第三天是極地活動日。",
+    "dur": 2.37
+  },
+  {
+    "id": "015",
+    "scene": "s06",
+    "text": "踏上雪鞋，穿越白雪覆蓋的原始森林，每一步都鬆軟無聲。",
+    "dur": 5.69
+  },
+  {
+    "id": "016",
+    "scene": "s07",
+    "text": "來到冰封的湖面，用冰鑽鑿開三十公分厚的冰層，體驗芬蘭式冰釣。",
+    "dur": 6.49
+  },
+  {
+    "id": "017",
+    "scene": "s07",
+    "text": "午後圍著篝火享用燒烤，夜幕降臨後，前往觀景點守候第一場極光。",
+    "dur": 6.41
+  },
+  {
+    "id": "018",
+    "scene": "s08",
+    "text": "第四天，先登上北極圈旁的烏納斯瓦拉山丘，飽覽羅瓦涅米全景。",
+    "dur": 6.09
+  },
+  {
+    "id": "019",
+    "scene": "s08",
+    "text": "隨後前往拉努阿野生動物園，探訪北極熊等兩百多隻極地動物。",
+    "dur": 5.73
+  },
+  {
+    "id": "020",
+    "scene": "s08",
+    "text": "第五天遊覽市區，走進暱稱極光教堂的羅瓦涅米大教堂與市政廳。",
+    "dur": 6.53
+  },
+  {
+    "id": "021",
+    "scene": "s09",
+    "text": "第六天，拜訪原始森林裡的馴鹿牧場。",
+    "dur": 3.65
+  },
+  {
+    "id": "022",
+    "scene": "s09",
+    "text": "與薩米牧民聊聊他們與馴鹿相伴的日常，親手餵食這些溫柔的大傢伙。",
+    "dur": 6.41
+  },
+  {
+    "id": "023",
+    "scene": "s09",
+    "text": "再裹上暖毯，搭乘馴鹿雪橇滑進森林，還能拿到一張馴鹿雪橇駕照。",
+    "dur": 6.57
+  },
+  {
+    "id": "024",
+    "scene": "s10",
+    "text": "最後一天，前往哈士奇牧場。",
+    "dur": 2.73
+  },
+  {
+    "id": "025",
+    "scene": "s10",
+    "text": "一群熱情的雪橇犬將帶著你，在林間雪道上飛馳。",
+    "dur": 4.53
+  },
+  {
+    "id": "026",
+    "scene": "s11",
+    "text": "入夜後，再一次出發狩獵北極光。",
+    "dur": 3.69
+  },
+  {
+    "id": "027",
+    "scene": "s11",
+    "text": "當綠色光幕在頭頂舞動，這趟旅程的一切都值得了。",
+    "dur": 4.73
+  },
+  {
+    "id": "028",
+    "scene": "s12",
+    "text": "大人一千九百九十九歐元起，這個冬天，跟著專業導遊走進北極圈的童話。",
+    "dur": 6.41
+  },
+  {
+    "id": "029",
+    "scene": "s12",
+    "text": "",
+    "dur": 4
+  }
+];
+
+// scene id → human label (injected from scenes.json)
+const SCENE_LABELS = {"s01": "序幕", "s02": "總覽", "s03": "Day 1", "s04": "Day 2", "s05": "Day 2", "s06": "Day 3", "s07": "Day 3", "s08": "Day 4–5", "s09": "Day 6", "s10": "Day 7", "s11": "Day 7 夜", "s12": "尾聲"};
+
+// ────────────────────────────────────────────────
+//  Player core (do not touch — proven on Kaohsiung pilot)
+// ────────────────────────────────────────────────
+function estDur(s) {
+  if (s.dur) return s.dur;
+  if (!s.text) return 1.5;
+  // ~4 Chinese chars/sec; ~2.5 English words/sec
+  const isAscii = /^[\x00-\x7f\s\p{P}]*$/u.test(s.text);
+  return Math.max(1.8, isAscii ? s.text.split(/\s+/).length / 2.5 : s.text.length / 4);
+}
+function sceneLabel(sid) { return SCENE_LABELS[sid] || sid; }
+// 場景換場呼吸空拍（秒）：新場景畫面先進、旁白與字幕靜默 SCENE_GAP 秒再開始。
+// 旁白緊接著換場會給聽者壓迫感；預設 2 秒由 build_html.py --scene-gap 控制。
+const SCENE_GAP = 2.0;
+function gapOf(i) { return (i > 0 && SUBS[i].scene !== SUBS[i - 1].scene) ? SCENE_GAP : 0; }
+const TOTAL_EST = SUBS.reduce((a, s, i) => a + estDur(s) + gapOf(i), 0);
+
+const player = document.getElementById('player');
+const sceneEls = Array.from(document.querySelectorAll('.scene'));
+const subtitleBar = document.getElementById('subtitleBar');
+const progressBar = document.getElementById('progressBar');
+const topTime = document.getElementById('topTime');
+const timeinfo = document.getElementById('timeinfo');
+const sceneChip = document.getElementById('sceneChip');
+const audioNote = document.getElementById('audioNote');
+const playBtn = document.getElementById('playBtn');
+
+// ── BGM: starts on user Play only (autoplay policy); pauses with the deck; fades out at the end (筆記 §5.3) ──
+const bgm = document.getElementById('bgm');
+const BGM_VOLUME = 0.15;
+let bgmFadeTimer = null;
+function bgmStart() {
+  if (!bgm) return;
+  if (bgmFadeTimer) { clearInterval(bgmFadeTimer); bgmFadeTimer = null; }
+  bgm.volume = BGM_VOLUME;
+  const p = bgm.play();
+  if (p && p.catch) p.catch(() => {});
+}
+function bgmPause() { if (bgm) bgm.pause(); }
+function bgmFadeOut() {
+  if (!bgm || bgm.paused) return;
+  if (bgmFadeTimer) clearInterval(bgmFadeTimer);
+  bgmFadeTimer = setInterval(() => {
+    if (bgm.volume > 0.01) { bgm.volume = Math.max(0, bgm.volume - BGM_VOLUME / 35); }
+    else { bgm.pause(); clearInterval(bgmFadeTimer); bgmFadeTimer = null; }
+  }, 100);   // ≈3.5s fade — 結尾要有「留白收筆」的餘韻，太快像切斷
+}
+
+let curIdx = 0;
+let isPlaying = false;
+let virtualTimer = null;
+let elapsedBefore = 0;
+const actualDur = {};
+
+function fmt(t) {
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+function durOf(s) { return actualDur[s.id] || estDur(s); }
+function recalcElapsedBefore(idx) {
+  let t = 0;
+  for (let i = 0; i < idx; i++) t += durOf(SUBS[i]) + gapOf(i);
+  elapsedBefore = t + gapOf(idx);   // 自身的換場空拍也算已經過的時間
+}
+function audioUrl(s) { return `${AUDIO_DIR}/${PREFIX}-${s.id}.mp3`; }
+function showScene(sid) {
+  sceneEls.forEach(el => el.classList.toggle('active', el.getAttribute('data-id') === sid));
+}
+function showSub(s) {
+  if (s.text && s.text.trim()) {
+    subtitleBar.innerHTML = `<span class="marker">▸</span>${s.text}`;
+    subtitleBar.classList.remove('empty');
+  } else {
+    subtitleBar.classList.add('empty');
+  }
+}
+
+// ── Cue engine: one subtitle → one visual beat (筆記 §3–4) ──
+// scrollCueIntoView uses offsetTop/offsetHeight (layout coords — the reveal
+// translateY makes getBoundingClientRect lie) and sets scrollTop directly
+// (native smooth scrollTo can silently no-op; smoothness comes from CSS only).
+var _lastCueScene = null;
+function scrollCueIntoView(el, scene) {
+  var topR = 20, botR = 140;   // botR reserves the subtitle-bar band (incl. iOS safe area)
+  var view = scene.clientHeight - topR - botR;
+  if (view <= 0) return;
+  var elTop = el.offsetTop, elH = el.offsetHeight, elBot = elTop + elH;
+  var curTop = scene.scrollTop, visTop = curTop + topR, visBot = curTop + scene.clientHeight - botR;
+  var target;
+  if (elH >= view) { target = elTop - topR; }
+  else if (elBot > visBot) { target = elBot - (scene.clientHeight - botR) + 12; }
+  else if (elTop < visTop) { target = elTop - topR - 12; }
+  else { return; }
+  var max = scene.scrollHeight - scene.clientHeight;
+  // Force an instant scroll: if any CSS sets scroll-behavior:smooth, plain
+  // scrollTop assignment becomes an animated scroll that throttled/background
+  // tabs silently never run (measured in the v0.3.0 harness).
+  var prevSB = scene.style.scrollBehavior;
+  scene.style.scrollBehavior = 'auto';
+  scene.scrollTop = Math.max(0, Math.min(target, max));
+  scene.style.scrollBehavior = prevSB || '';
+}
+function showCues(s) {
+  var scene = document.querySelector('.scene[data-id="' + s.scene + '"]');
+  if (!scene) return;
+  var cur = s.id, els = scene.querySelectorAll('[data-cue]');
+  for (var i = 0; i < els.length; i++) {
+    var c = els[i].getAttribute('data-cue');
+    els[i].classList.remove('cue-on', 'cue-seen');
+    if (c < cur) { els[i].classList.add('cue-seen'); }
+    else if (c === cur) { els[i].classList.add('cue-on'); }
+  }
+  if (scene.scrollHeight > scene.clientHeight + 4) {      // only when the scene scrolls (= mobile)
+    if (_lastCueScene !== s.scene) { scene.scrollTop = 0; } // every scene starts at the top
+    var onEl = scene.querySelector('[data-cue="' + cur + '"].cue-on') || scene.querySelector('[data-cue].cue-on');
+    if (onEl) { setTimeout(function () { scrollCueIntoView(onEl, scene); }, 60); } // setTimeout, NOT rAF
+  }
+  _lastCueScene = s.scene;
+}
+function updateChrome(curT) {
+  const total = Math.max(TOTAL_EST, curT);
+  const pct = Math.min(100, curT / total * 100);
+  progressBar.style.width = pct + '%';
+  topTime.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  timeinfo.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  sceneChip.textContent = `${curIdx+1} / ${SUBS.length} ‧ ${sceneLabel(SUBS[curIdx].scene)}`;
+}
+function render(curIntra=0) {
+  const s = SUBS[curIdx];
+  showScene(s.scene);
+  showSub(s);
+  showCues(s);
+  updateChrome(elapsedBefore + curIntra);
+}
+function clearTimers() {
+  if (virtualTimer) { clearTimeout(virtualTimer); virtualTimer = null; }
+}
+// per-play token: every state change invalidates in-flight callbacks so a
+// stale onended / timer can never advance twice (筆記 §5.1)
+let playToken = 0;
+function requestAdvance(tok) { if (tok !== playToken) return; advance(); }
+
+function advance() {
+  const s = SUBS[curIdx];
+  if (player.duration && !isNaN(player.duration) && player.duration > 0.1) {
+    actualDur[s.id] = player.duration;
+  }
+  clearTimers();
+  if (curIdx + 1 < SUBS.length) {
+    curIdx++;
+    elapsedBefore += durOf(s) + gapOf(curIdx);
+    render(0);
+    if (isPlaying) {
+      const g = gapOf(curIdx);
+      if (g > 0) {
+        // 呼吸空拍：畫面已換場（含 cue），字幕先收起、旁白延後 g 秒（手動跳轉不套用）
+        subtitleBar.classList.add('empty');
+        const tok = ++playToken;
+        virtualTimer = setTimeout(() => {
+          if (tok !== playToken) return;
+          render(0);          // 字幕與旁白同步出現
+          playCurrent();
+        }, g * 1000);
+      } else {
+        playCurrent();
+      }
+    }
+  } else {
+    // 播完最後一段：停在當前畫面，不要重置（讓使用者能點 CTA 按鈕、填表單等互動元素）
+    // 重要：不要呼叫 stop()（那會把 curIdx 重置為 0、跳回開頭），否則 final CTA 會消失。
+    isPlaying = false;
+    setPlayBtn(false);
+    player.pause();
+    render(durOf(s));  // 進度條跳到 100%、停留在最後場景
+    bgmFadeOut();
+  }
+}
+
+const preloader = new Audio();
+preloader.preload = 'auto';
+function preloadNext() {
+  for (let j = curIdx + 1; j < SUBS.length; j++) {
+    if (SUBS[j].text && SUBS[j].text.trim()) {
+      preloader.src = audioUrl(SUBS[j]);
+      preloader.load();
+      return;
+    }
+  }
+}
+
+function playCurrent() {
+  const s = SUBS[curIdx];
+  clearTimers();
+  const tok = ++playToken;
+  if (s.text && s.text.trim()) {
+    player.onended = () => requestAdvance(tok);
+    player.onerror = () => {
+      console.warn('audio error for', s.id);
+      audioNote.style.display = '';
+      if (isPlaying) {
+        clearTimers();
+        virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+      }
+    };
+    player.src = audioUrl(s);
+    player.load();
+    const promise = player.play();
+    if (promise && promise.catch) promise.catch(err => {
+      console.warn('audio play failed:', err);
+      virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+    });
+    audioNote.style.display = 'none';
+  } else {
+    // silent frame: drop handlers + src so nothing can replay the previous clip (筆記 §5.1)
+    player.onended = null; player.onerror = null;
+    player.removeAttribute('src'); player.load();
+    virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+  }
+  preloadNext();
+}
+function setPlayBtn(playing) {
+  const ic = playBtn.querySelector('.ticon'), lb = playBtn.querySelector('.tlabel');
+  if (ic) ic.textContent = playing ? '⏸' : '▶';
+  if (lb) lb.textContent = playing ? '暫停' : '播放';
+  playBtn.classList.toggle('is-playing', playing);
+}
+function play() { isPlaying = true; setPlayBtn(true); bgmStart(); playCurrent(); }
+function pause() { isPlaying = false; setPlayBtn(false); playToken++; clearTimers(); player.pause(); bgmPause(); }
+function stop() { pause(); curIdx = 0; elapsedBefore = 0; render(0); }
+function goTo(idx, autoplay = isPlaying) {
+  playToken++;
+  clearTimers();
+  player.pause();
+  curIdx = Math.max(0, Math.min(SUBS.length - 1, idx));
+  recalcElapsedBefore(curIdx);
+  render(0);
+  if (autoplay) playCurrent();
+}
+function gotoScene(direction) {
+  const curScene = SUBS[curIdx].scene;
+  if (direction === 'next') {
+    let i = curIdx;
+    while (i < SUBS.length && SUBS[i].scene === curScene) i++;
+    if (i >= SUBS.length) i = curIdx;
+    goTo(i);
+  } else {
+    let i = curIdx;
+    while (i > 0 && SUBS[i-1].scene === curScene) i--;
+    if (i === curIdx && i > 0) {
+      const prevScene = SUBS[i-1].scene;
+      i--;
+      while (i > 0 && SUBS[i-1].scene === prevScene) i--;
+    }
+    goTo(i);
+  }
+}
+
+player.addEventListener('timeupdate', () => {
+  if (isPlaying) render(player.currentTime || 0);
+});
+
+playBtn.addEventListener('click', () => isPlaying ? pause() : play());
+document.getElementById('restartBtn').addEventListener('click', stop);
+document.getElementById('prevBtn').addEventListener('click', () => gotoScene('prev'));
+document.getElementById('nextBtn').addEventListener('click', () => gotoScene('next'));
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+  if (e.code === 'ArrowLeft') gotoScene('prev');
+  if (e.code === 'ArrowRight') gotoScene('next');
+});
+
+render(0);
+</script>
+</body>
+</html>

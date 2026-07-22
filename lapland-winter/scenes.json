@@ -1,0 +1,152 @@
+{
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "title",
+      "label": "序幕",
+      "cue": "001",
+      "props": {
+        "eyebrow": "NORDIC UNIQUE TRAVELS ‧ 冬季多天遊",
+        "display": "夢幻祕境<br>芬蘭拉普蘭 <span class='accent'>7 天遊</span>",
+        "tagline": "極光 ‧ 馴鹿 ‧ 聖誕老人的故鄉——走進北極圈的冬季童話",
+        "series": "赫爾辛基 ‧ 羅瓦涅米 ‧ 北極圈",
+        "image": {
+          "slot": "hero"
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "type": "storybook",
+      "label": "總覽",
+      "props": {
+        "eyebrow": "OVERVIEW ‧ 行程總覽",
+        "caption": "七天六夜・北極圈的冬季童話",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "type": "storybook",
+      "label": "Day 1",
+      "props": {
+        "eyebrow": "DAY 1 ‧ 赫爾辛基",
+        "caption": "城市漫遊・夜臥火車北上",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s04",
+      "type": "storybook",
+      "label": "Day 2",
+      "props": {
+        "eyebrow": "DAY 2 ‧ 羅瓦涅米",
+        "caption": "聖誕老人村・跨越北極圈",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "type": "storybook",
+      "label": "Day 2",
+      "props": {
+        "eyebrow": "DAY 2 ‧ 聖誕老人村",
+        "caption": "與聖誕老人本尊相見",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s06",
+      "type": "storybook",
+      "label": "Day 3",
+      "props": {
+        "eyebrow": "DAY 3 ‧ 極地活動日",
+        "caption": "雪鞋健行・原始森林",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s07",
+      "type": "storybook",
+      "label": "Day 3",
+      "props": {
+        "eyebrow": "DAY 3 ‧ 極地活動日",
+        "caption": "冰釣・篝火・守候極光",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "type": "storybook",
+      "label": "Day 4–5",
+      "props": {
+        "eyebrow": "DAY 4–5 ‧ 拉努阿 & 市區",
+        "caption": "拉努阿動物園・北極熊",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s09",
+      "type": "storybook",
+      "label": "Day 6",
+      "props": {
+        "eyebrow": "DAY 6 ‧ 馴鹿農場",
+        "caption": "馴鹿雪橇・薩米文化",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "type": "storybook",
+      "label": "Day 7",
+      "props": {
+        "eyebrow": "DAY 7 ‧ 哈士奇農場",
+        "caption": "哈士奇雪橇・林間飛馳",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "type": "storybook",
+      "label": "Day 7 夜",
+      "props": {
+        "eyebrow": "DAY 7 ‧ 夜",
+        "caption": "狩獵北極光",
+        "image": {
+          "slot": "full"
+        }
+      }
+    },
+    {
+      "id": "s12",
+      "type": "outro",
+      "label": "尾聲",
+      "cue": "028",
+      "props": {
+        "display": "這個冬天，<span class='accent'>北極圈</span>見",
+        "next": "大人 €1,999 ‧ 小孩 €1,749 ‧ 最少 4 人成團 ‧ 含 5 晚住宿與全部活動門票 ‧ booking@nordictravels.eu",
+        "image": {
+          "slot": "hero"
+        }
+      }
+    }
+  ]
+}
