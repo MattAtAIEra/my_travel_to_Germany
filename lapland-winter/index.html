@@ -174,6 +174,51 @@ audio { display: none; }
   #playBtn:not(.is-playing) { animation: none; box-shadow: 0 0 10px 2px rgba(var(--glow), 0.55); }
 }
 
+/* ── 首播 CTA：螢幕中央大型半透明 Play ─────────────────────────
+   使用者測試發現角落的播放鍵會被忽略；改在畫面正中放一顆半透明大 Play，
+   暈開光環循環提示。按下（或以任何方式開始播放）後縮小飛入下方控制列的
+   播放鍵位置（morph），之後播放暫停照常由控制列／空白鍵操作。 */
+.big-play {
+  position: absolute; z-index: 95;
+  left: 50%; top: 50%;
+  width: 112px; height: 112px; margin: -56px 0 0 -56px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  color: #fff; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40), 0 12px 48px rgba(0, 0, 0, 0.35);
+  opacity: 0.9;   /* 半透明再讓一成，減少對畫面的遮蔽；hover 回實體感 */
+  animation: bigPlayPulse 1.8s ease-in-out infinite;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease;
+}
+.big-play .big-play-icon { font-size: 44px; line-height: 1; margin-left: 8px; /* 三角形視覺置中 */ }
+.big-play:hover { background: rgba(255, 255, 255, 0.32); opacity: 1; }
+/* 首播前下方 dock 整條隱藏（opacity 保留佔位，morph 才能量測飛行落點）；
+   開始播放（has-bigplay 移除）後延遲 0.15s 淡入，與大 Play 飛入同步完成 */
+body.has-bigplay .controls { opacity: 0; pointer-events: none; }
+.controls { transition: opacity 0.5s ease 0.15s; }
+@keyframes bigPlayPulse {   /* 暈開：光環從按鈕邊緣向外擴散淡出 */
+  0%   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0.50); }
+  70%  { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 36px rgba(var(--glow), 0); }
+  100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0); }
+}
+.big-play.morph {   /* 過場：縮小飛向 dock 播放鍵（目標位移由 JS 量測寫入） */
+  transform: translate(var(--bp-dx, 0px), var(--bp-dy, 40vh)) scale(var(--bp-scale, 0.4));
+  opacity: 0; animation: none; pointer-events: none;
+}
+/* 大 Play 在場時，dock 播放鍵的光環先不閃（避免兩顆同時脈動搶焦點） */
+body.has-bigplay #playBtn:not(.is-playing) { animation: none; }
+@media (max-width: 540px) {
+  .big-play { width: 88px; height: 88px; margin: -44px 0 0 -44px; }
+  .big-play .big-play-icon { font-size: 34px; margin-left: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .big-play { animation: none; transition: opacity 0.3s ease; }
+}
+
 /* small screen */
 @media (max-width: 900px) {
   .scene { padding: 32px 24px 120px; }
@@ -434,6 +479,15 @@ audio { display: none; }
 }
 .card-body, .callout-desc, .panel .stat, .lead { color: var(--dim); }
 
+/* ── 中央首播大 Play：亮玻璃、與 dock CTA 同語言 ──────────────── */
+.big-play {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+}
+.big-play:hover { background: linear-gradient(160deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.22)); }
+
 /* ── 手機：dock 縮小、標題縮級，維持懸浮玻璃語言 ──────────────── */
 @media (max-width: 540px) {
   .topbar { height: 38px; padding: 0 14px; }
@@ -540,6 +594,9 @@ audio { display: none; }
 
   <!-- Subtitle overlay -->
   <div class="subtitle-bar empty" id="subtitleBar"></div>
+
+  <!-- First-play CTA: center big play, morphs into the dock play button -->
+  <button class="big-play" id="bigPlay" aria-label="播放"><span class="big-play-icon">▶</span></button>
 
   <!-- Controls -->
   <div class="controls">
@@ -969,7 +1026,24 @@ function setPlayBtn(playing) {
   if (lb) lb.textContent = playing ? '暫停' : '播放';
   playBtn.classList.toggle('is-playing', playing);
 }
-function play() { isPlaying = true; setPlayBtn(true); bgmStart(); playCurrent(); }
+// ── 首播 CTA：中央大 Play → 縮小飛入 dock 播放鍵（過場約 0.65s） ──
+const bigPlay = document.getElementById('bigPlay');
+if (bigPlay) document.body.classList.add('has-bigplay');
+function morphBigPlay() {
+  if (!bigPlay || bigPlay.classList.contains('morph')) return;
+  const from = bigPlay.getBoundingClientRect();
+  const to = playBtn.getBoundingClientRect();
+  bigPlay.style.setProperty('--bp-dx', ((to.left + to.width / 2) - (from.left + from.width / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-dy', ((to.top + to.height / 2) - (from.top + from.height / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-scale', (to.width / from.width).toFixed(3));
+  bigPlay.classList.add('morph');
+  document.body.classList.remove('has-bigplay');   // dock 播放鍵的光環提示恢復運作
+  // 不靠 transitionend：reduced-motion 或分頁節流時可能不觸發 → 定時保底移除
+  setTimeout(() => bigPlay.remove(), 900);
+}
+if (bigPlay) bigPlay.addEventListener('click', () => play());
+
+function play() { isPlaying = true; setPlayBtn(true); morphBigPlay(); bgmStart(); playCurrent(); }
 function pause() { isPlaying = false; setPlayBtn(false); playToken++; clearTimers(); player.pause(); bgmPause(); }
 function stop() { pause(); curIdx = 0; elapsedBefore = 0; render(0); }
 function goTo(idx, autoplay = isPlaying) {
