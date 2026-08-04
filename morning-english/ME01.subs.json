@@ -1,0 +1,561 @@
+{
+  "prefix": "ME01",
+  "title": "The Elevator — Morning English",
+  "voices": {
+    "narrator": "0sGQQaD2G2X1s87kHM5b",
+    "diane": "YyqkX0AHv8W5D1vxG9lR",
+    "leo": "hd5CZt9EmlupFYXziBnV"
+  },
+  "subs": [
+    {
+      "id": "001",
+      "scene": "s01",
+      "text": "It's 8:52. You're late.",
+      "dur": 2.37
+    },
+    {
+      "id": "002",
+      "scene": "s01",
+      "text": "Six days into your first real job, Leo — and you're already late.",
+      "dur": 5.8
+    },
+    {
+      "id": "003",
+      "scene": "s01",
+      "text": "Project manager. At least, that's what the badge says.",
+      "dur": 3.72
+    },
+    {
+      "id": "004",
+      "scene": "s01",
+      "text": "The elevator doors are closing. You run.",
+      "dur": 2.65
+    },
+    {
+      "id": "005",
+      "scene": "s02",
+      "text": "You make it. Perfect.",
+      "dur": 1.76
+    },
+    {
+      "id": "006",
+      "scene": "s02",
+      "text": "Except — you're not alone.",
+      "dur": 2.04
+    },
+    {
+      "id": "007",
+      "scene": "s02",
+      "text": "Standing right next to you is Diane Ward. She runs the whole company.",
+      "dur": 4.6
+    },
+    {
+      "id": "008",
+      "scene": "s02",
+      "text": "Eleven floors. About thirty seconds. Nobody is speaking.",
+      "dur": 4.27
+    },
+    {
+      "id": "009",
+      "scene": "s03",
+      "text": "The doors close. Thirty seconds.",
+      "dur": 2.28
+    },
+    {
+      "id": "010",
+      "scene": "s03",
+      "text": "What do you say?",
+      "dur": 1.16
+    },
+    {
+      "id": "011",
+      "scene": "s04a",
+      "track": "b1a",
+      "signature": true,
+      "text": "Morning! Big day for the team, huh?",
+      "voice": "leo",
+      "dur": 2.65
+    },
+    {
+      "id": "069",
+      "scene": "s04a",
+      "track": "b1a",
+      "voice": "diane",
+      "text": "It is. And you must be the new one.",
+      "dur": 2.65
+    },
+    {
+      "id": "012",
+      "scene": "s04a",
+      "track": "b1a",
+      "text": "That's warm, and it's natural.",
+      "dur": 1.86
+    },
+    {
+      "id": "013",
+      "scene": "s04a",
+      "track": "b1a",
+      "text": "\"Huh?\" does the real work. It hands her the turn, and a greeting becomes a conversation.",
+      "dur": 6.59
+    },
+    {
+      "id": "014",
+      "scene": "s04a",
+      "track": "b1a",
+      "text": "It's casual for a CEO you've never met. Small bet. This time, it pays off.",
+      "dur": 6.22
+    },
+    {
+      "id": "015",
+      "scene": "s04b",
+      "track": "b1b",
+      "signature": true,
+      "text": "Good morning, Ms. Ward. It's a pleasure to finally meet you.",
+      "voice": "leo",
+      "dur": 3.3
+    },
+    {
+      "id": "068",
+      "scene": "s04b",
+      "track": "b1b",
+      "voice": "diane",
+      "text": "Diane, please. Ms. Ward is my mother.",
+      "dur": 2.46
+    },
+    {
+      "id": "016",
+      "scene": "s04b",
+      "track": "b1b",
+      "text": "Safe, polite, correct. Nothing here can go wrong.",
+      "dur": 4.37
+    },
+    {
+      "id": "017",
+      "scene": "s04b",
+      "track": "b1b",
+      "text": "But listen to the word \"finally\" — it quietly says you've been hoping for this.",
+      "dur": 5.85
+    },
+    {
+      "id": "018",
+      "scene": "s04b",
+      "track": "b1b",
+      "text": "You just spent five seconds creating distance you now have to close.",
+      "dur": 4.64
+    },
+    {
+      "id": "019",
+      "scene": "s04c",
+      "track": "b1c",
+      "signature": true,
+      "text": "Good morning.",
+      "voice": "leo",
+      "dur": 1.11
+    },
+    {
+      "id": "070",
+      "scene": "s04c",
+      "track": "b1c",
+      "voice": "diane",
+      "text": "Good morning.",
+      "dur": 0.98
+    },
+    {
+      "id": "020",
+      "scene": "s04c",
+      "track": "b1c",
+      "text": "Two words. Nothing wrong with them.",
+      "dur": 2.18
+    },
+    {
+      "id": "021",
+      "scene": "s04c",
+      "track": "b1c",
+      "text": "And nothing memorable either. In a thirty-second window, that spends your turn without buying anything.",
+      "dur": 6.64
+    },
+    {
+      "id": "022",
+      "scene": "s04c",
+      "track": "b1c",
+      "text": "She nods. The silence comes back. Now it's heavier.",
+      "dur": 4.23
+    },
+    {
+      "id": "023",
+      "scene": "s05",
+      "text": "Floor six. Seven.",
+      "dur": 1.9
+    },
+    {
+      "id": "077",
+      "scene": "s05",
+      "text": "Then she does something she doesn't have to do.",
+      "dur": 2.93
+    },
+    {
+      "id": "067",
+      "scene": "s05",
+      "voice": "diane",
+      "text": "So — what are you working on?",
+      "dur": 1.76
+    },
+    {
+      "id": "024",
+      "scene": "s05",
+      "text": "Four words. This is the door.",
+      "dur": 2.14
+    },
+    {
+      "id": "025",
+      "scene": "s05",
+      "text": "You have maybe twenty seconds before floor eleven.",
+      "dur": 3.02
+    },
+    {
+      "id": "026",
+      "scene": "s06",
+      "text": "She asked. Twenty seconds.",
+      "dur": 2.14
+    },
+    {
+      "id": "027",
+      "scene": "s06",
+      "text": "What do you do with them?",
+      "dur": 1.3
+    },
+    {
+      "id": "028",
+      "scene": "s07a",
+      "track": "b2a",
+      "signature": true,
+      "text": "I'm building a tool that uses AI to cut our campaign copy from three days to three hours.",
+      "voice": "leo",
+      "dur": 6.22
+    },
+    {
+      "id": "071",
+      "scene": "s07a",
+      "track": "b2a",
+      "voice": "diane",
+      "text": "Three hours. Say that again in the meeting on Thursday.",
+      "dur": 3.11
+    },
+    {
+      "id": "029",
+      "scene": "s07a",
+      "track": "b2a",
+      "text": "That's a whole pitch in one breath.",
+      "dur": 2.37
+    },
+    {
+      "id": "030",
+      "scene": "s07a",
+      "track": "b2a",
+      "text": "Notice the shape: what it does, then the number. She'll remember three days to three hours long after she forgets your name.",
+      "dur": 9.89
+    },
+    {
+      "id": "031",
+      "scene": "s07a",
+      "track": "b2a",
+      "text": "Bold works when the number is real. If it isn't, this is the sentence that ends you.",
+      "dur": 6.22
+    },
+    {
+      "id": "032",
+      "scene": "s07b",
+      "track": "b2b",
+      "signature": true,
+      "text": "Can I ask you something first — what slows your marketing team down the most?",
+      "voice": "leo",
+      "dur": 4.83
+    },
+    {
+      "id": "072",
+      "scene": "s07b",
+      "track": "b2b",
+      "voice": "diane",
+      "text": "Huh. Nobody's asked me that in a while.",
+      "dur": 2.32
+    },
+    {
+      "id": "033",
+      "scene": "s07b",
+      "track": "b2b",
+      "text": "You just gave away your twenty seconds to buy better information.",
+      "dur": 3.67
+    },
+    {
+      "id": "034",
+      "scene": "s07b",
+      "track": "b2b",
+      "text": "Can I ask you something first — that asks permission before spending her attention. Senior people notice it.",
+      "dur": 7.48
+    },
+    {
+      "id": "035",
+      "scene": "s07b",
+      "track": "b2b",
+      "text": "She may not answer today. But she will remember that you asked instead of pushed.",
+      "dur": 5.43
+    },
+    {
+      "id": "036",
+      "scene": "s07c",
+      "track": "b2c",
+      "signature": true,
+      "text": "Honestly? I'm still learning where the coffee machine is.",
+      "voice": "leo",
+      "dur": 3.58
+    },
+    {
+      "id": "073",
+      "scene": "s07c",
+      "track": "b2c",
+      "voice": "diane",
+      "text": "Second floor, past the printers. The good one.",
+      "dur": 2.6
+    },
+    {
+      "id": "037",
+      "scene": "s07c",
+      "track": "b2c",
+      "text": "You didn't pitch. You made her laugh at 8:52 in the morning.",
+      "dur": 3.95
+    },
+    {
+      "id": "038",
+      "scene": "s07c",
+      "track": "b2c",
+      "text": "That is not nothing. Deals don't close in elevators.",
+      "dur": 4.32
+    },
+    {
+      "id": "039",
+      "scene": "s07c",
+      "track": "b2c",
+      "text": "People just decide whether they want the next conversation. She does.",
+      "dur": 4.6
+    },
+    {
+      "id": "040",
+      "scene": "s08",
+      "text": "Floor nine. Ten.",
+      "dur": 1.76
+    },
+    {
+      "id": "041",
+      "scene": "s08",
+      "text": "Whatever you just said, it landed. She's looking at you now.",
+      "dur": 3.53
+    },
+    {
+      "id": "042",
+      "scene": "s08",
+      "text": "The doors are about to open. This is the last thing she'll remember.",
+      "dur": 4.37
+    },
+    {
+      "id": "043",
+      "scene": "s09",
+      "text": "Floor eleven. The doors open.",
+      "dur": 2.51
+    },
+    {
+      "id": "044",
+      "scene": "s09",
+      "text": "Last words?",
+      "dur": 1.11
+    },
+    {
+      "id": "045",
+      "scene": "s10a",
+      "track": "b3a",
+      "signature": true,
+      "text": "Could I get fifteen minutes with you next week?",
+      "voice": "leo",
+      "dur": 2.41
+    },
+    {
+      "id": "074",
+      "scene": "s10a",
+      "track": "b3a",
+      "voice": "diane",
+      "text": "Fifteen. Tuesday. Email my assistant.",
+      "dur": 3.02
+    },
+    {
+      "id": "046",
+      "scene": "s10a",
+      "track": "b3a",
+      "text": "Direct, and specific.",
+      "dur": 1.63
+    },
+    {
+      "id": "047",
+      "scene": "s10a",
+      "track": "b3a",
+      "text": "Fifteen minutes is small enough to say yes to. A meeting is not.",
+      "dur": 4.74
+    },
+    {
+      "id": "048",
+      "scene": "s10a",
+      "track": "b3a",
+      "text": "Always name the size of the ask. Vague asks get vague answers.",
+      "dur": 6.08
+    },
+    {
+      "id": "049",
+      "scene": "s10b",
+      "track": "b3b",
+      "signature": true,
+      "text": "I'll send you one page. If it's boring, you'll never hear from me again.",
+      "voice": "leo",
+      "dur": 4.32
+    },
+    {
+      "id": "075",
+      "scene": "s10b",
+      "track": "b3b",
+      "voice": "diane",
+      "text": "One page. I'll read it. And I'll tell you if it's boring.",
+      "dur": 3.25
+    },
+    {
+      "id": "050",
+      "scene": "s10b",
+      "track": "b3b",
+      "text": "This is confidence with an escape hatch.",
+      "dur": 2.14
+    },
+    {
+      "id": "051",
+      "scene": "s10b",
+      "track": "b3b",
+      "text": "You promised one page, and you gave her permission to ignore it.",
+      "dur": 3.9
+    },
+    {
+      "id": "052",
+      "scene": "s10b",
+      "track": "b3b",
+      "text": "Low pressure, high memory. Busy people love a small, cancellable ask.",
+      "dur": 5.71
+    },
+    {
+      "id": "053",
+      "scene": "s10c",
+      "track": "b3c",
+      "signature": true,
+      "text": "Thanks for the chat, Diane. Have a good one.",
+      "voice": "leo",
+      "dur": 2.18
+    },
+    {
+      "id": "076",
+      "scene": "s10c",
+      "track": "b3c",
+      "voice": "diane",
+      "text": "You too, Leo. My door's not as far as it looks.",
+      "dur": 2.97
+    },
+    {
+      "id": "054",
+      "scene": "s10c",
+      "track": "b3c",
+      "text": "Clean, warm, no ask at all.",
+      "dur": 2.37
+    },
+    {
+      "id": "055",
+      "scene": "s10c",
+      "track": "b3c",
+      "text": "Sometimes that's exactly right. You're one week in; you don't have to close anything.",
+      "dur": 5.67
+    },
+    {
+      "id": "056",
+      "scene": "s10c",
+      "track": "b3c",
+      "text": "But nothing is scheduled. A warm door still needs someone to knock.",
+      "dur": 5.06
+    },
+    {
+      "id": "078",
+      "scene": "s10z",
+      "text": "The doors close behind her.",
+      "dur": 1.72
+    },
+    {
+      "id": "079",
+      "scene": "s10z",
+      "text": "You're alone in a hallway on the eleventh floor.",
+      "dur": 2.55
+    },
+    {
+      "id": "080",
+      "scene": "s10z",
+      "text": "Whatever happens next — it started in those thirty seconds.",
+      "dur": 4.13
+    },
+    {
+      "id": "057",
+      "scene": "s11",
+      "text": "Same elevator. Same thirty seconds. Three different versions of you.",
+      "dur": 5.48
+    },
+    {
+      "id": "058",
+      "scene": "s11",
+      "replay": "s03"
+    },
+    {
+      "id": "059",
+      "scene": "s11",
+      "replay": "s06"
+    },
+    {
+      "id": "060",
+      "scene": "s11",
+      "replay": "s09"
+    },
+    {
+      "id": "061",
+      "scene": "s11",
+      "text": "None of them were wrong. They just cost different things.",
+      "dur": 3.39
+    },
+    {
+      "id": "062",
+      "scene": "s11",
+      "text": "That's the whole game — knowing what each one costs.",
+      "dur": 3.62
+    },
+    {
+      "id": "063",
+      "scene": "s12",
+      "text": "Here's today's challenge.",
+      "dur": 1.63
+    },
+    {
+      "id": "064",
+      "scene": "s12",
+      "text": "Find one small window today. A hallway. A coffee line. A call before it starts.",
+      "dur": 6.83
+    },
+    {
+      "id": "065",
+      "scene": "s12",
+      "text": "Say the one you didn't pick.",
+      "dur": 1.58
+    },
+    {
+      "id": "066",
+      "scene": "s12",
+      "text": "See you tomorrow.",
+      "dur": 1.11
+    }
+  ]
+}

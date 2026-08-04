@@ -1,0 +1,104 @@
+{
+  "characters/LEO.jpg": {
+    "prompt_hash": "14438b5ab0db7703",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "characters/DIANE.jpg": {
+    "prompt_hash": "5d378f6e83b81433",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s02-full.jpg": {
+    "prompt_hash": "3e053aa75fdf4e57",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s01-full.jpg": {
+    "prompt_hash": "1878f70bd3da556a",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04a-full.jpg": {
+    "prompt_hash": "72896a0e599e900b",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04b-full.jpg": {
+    "prompt_hash": "732469c5c450d8e1",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04c-full.jpg": {
+    "prompt_hash": "d66874f6ae36513c",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s05-full.jpg": {
+    "prompt_hash": "ae6294d3d0accd88",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s07a-full.jpg": {
+    "prompt_hash": "47ae044e4ba23aee",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s07b-full.jpg": {
+    "prompt_hash": "e92b78c41c0f3c69",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s07c-full.jpg": {
+    "prompt_hash": "8ce496744fcb6317",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s08-full.jpg": {
+    "prompt_hash": "a175f8d652ca1b71",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s10a-full.jpg": {
+    "prompt_hash": "539b61dac4c2d752",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s10b-full.jpg": {
+    "prompt_hash": "6f15aaf3b0c6f867",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s10c-full.jpg": {
+    "prompt_hash": "d149ab226e6125b5",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s12-full.jpg": {
+    "prompt_hash": "63ef33906c0a41df",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s10z-full.jpg": {
+    "prompt_hash": "3dd162fcfab8c565",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  }
+}

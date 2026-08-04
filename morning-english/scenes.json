@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "style": "Black-and-white Japanese shonen manga panel art, bold confident ink linework, screentone shading, dramatic camera angles, high contrast, monochrome with no color, no text, no speech bubbles, no captions, no lettering anywhere in the image",
+    "characters": {
+      "LEO": "A 22-24 year old man, slim and tall, neat short black hair with slightly messy bangs, handsome delicate features, light dress shirt with sleeves rolled to the elbow, a brand-new employee badge on a lanyard, a laptop bag over one shoulder, earnest and slightly nervous",
+      "DIANE": "A warm, kind-faced woman in her early fifties, drawn her real age: chin-length bob with silver streaks, a softly ROUNDED jawline and full cheeks — never a pointed or angular chin, never gaunt. Gentle laugh lines fanning out from friendly eyes, an easy genuine smile, soft eyebrows. Conservatively tailored dark blazer over a high-necked blouse — professional and comfortable, not glamorous, not severe. Silver-rimmed glasses, holding a paper coffee cup, relaxed open posture. She radiates the calm of someone with nothing to prove: experienced and generous, approachable, motherly warmth — absolutely never cold, sharp, stern, or condescending"
+    }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "storybook",
+      "chapter": "COLD OPEN",
+      "label": "8:52",
+      "cue": "001",
+      "props": {
+        "eyebrow": "MORNING ENGLISH · EP.01",
+        "caption": "8:52 A.M.",
+        "image": {
+          "characters": [
+            "LEO"
+          ],
+          "prompt": "LEO sprinting across a glass office lobby toward a closing elevator, seen from a low dramatic angle, motion speed lines streaking behind him, morning light flooding through tall windows, his laptop bag flying out behind him"
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "type": "storybook",
+      "chapter": "COLD OPEN",
+      "label": "Not alone",
+      "cue": "005",
+      "props": {
+        "caption": "Eleven floors.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "Interior of an elevator in a tight two-shot: LEO on the left frozen in mid-realization with wide eyes and a bead of sweat, DIANE on the right standing calmly holding her coffee cup, both facing forward, heavy screentone, shock lines radiating behind LEO"
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "type": "choice",
+      "chapter": "BEAT 1",
+      "label": "Your move",
+      "cue": "009",
+      "props": {
+        "eyebrow": "BEAT 1 · SMALL TALK",
+        "prompt": "The doors close. Thirty seconds. What do you say?",
+        "options": [
+          {
+            "label": "Morning! Big day for the team, huh?",
+            "track": "b1a",
+            "tone": "CASUAL",
+            "cue": "010"
+          },
+          {
+            "label": "Good morning, Ms. Ward. It's a pleasure to finally meet you.",
+            "track": "b1b",
+            "tone": "FORMAL"
+          },
+          {
+            "label": "Good morning.",
+            "track": "b1c",
+            "tone": "SAFE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04a",
+      "type": "storybook",
+      "chapter": "BEAT 1",
+      "label": "Casual",
+      "cue": "011",
+      "props": {
+        "eyebrow": "CASUAL",
+        "caption": "The bet pays off.",
+        "image": {
+          "characters": [
+            "DIANE",
+            "LEO"
+          ],
+          "prompt": "Close-up of DIANE turning her head slightly toward LEO with a small amused smile, warm soft screentone, gentle speed lines, LEO's shoulder blurred in the foreground of the frame"
+        }
+      }
+    },
+    {
+      "id": "s04b",
+      "type": "storybook",
+      "chapter": "BEAT 1",
+      "label": "Formal",
+      "cue": "015",
+      "props": {
+        "eyebrow": "FORMAL",
+        "caption": "\"Diane, please.\"",
+        "image": {
+          "characters": [
+            "DIANE",
+            "LEO"
+          ],
+          "prompt": "DIANE facing forward with a warm polite smile and one eyebrow raised in mild friendly surprise, soft even screentone, LEO standing very straight beside her with his hands at his sides, stiff formal symmetrical composition"
+        }
+      }
+    },
+    {
+      "id": "s04c",
+      "type": "storybook",
+      "chapter": "BEAT 1",
+      "label": "Safe",
+      "cue": "019",
+      "props": {
+        "eyebrow": "SAFE",
+        "caption": "The silence comes back.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "Wide shot of the elevator interior, LEO and DIANE both facing forward in silence with a large empty space between them, heavy vertical screentone, oppressive stillness, the floor indicator glowing above the doors"
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "type": "storybook",
+      "chapter": "BEAT 2",
+      "label": "The door",
+      "cue": "023",
+      "props": {
+        "caption": "\"So — what are you working on?\"",
+        "image": {
+          "characters": [
+            "DIANE"
+          ],
+          "prompt": "Dramatic low-angle close-up of DIANE turning to look directly at the viewer, one eyebrow raised in genuine curiosity, sharp focus lines converging on her face, strong screentone contrast"
+        }
+      }
+    },
+    {
+      "id": "s06",
+      "type": "choice",
+      "chapter": "BEAT 2",
+      "label": "The pitch",
+      "cue": "026",
+      "props": {
+        "eyebrow": "BEAT 2 · THE PITCH",
+        "prompt": "She asked. Twenty seconds. What do you do with them?",
+        "options": [
+          {
+            "label": "I'm building a tool that uses AI to cut our campaign copy from three days to three hours.",
+            "track": "b2a",
+            "tone": "BOLD",
+            "cue": "027"
+          },
+          {
+            "label": "Can I ask you something first — what slows your marketing team down the most?",
+            "track": "b2b",
+            "tone": "STRATEGIC"
+          },
+          {
+            "label": "Honestly? I'm still learning where the coffee machine is.",
+            "track": "b2c",
+            "tone": "HUMAN"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07a",
+      "type": "storybook",
+      "chapter": "BEAT 2",
+      "label": "Bold",
+      "cue": "028",
+      "props": {
+        "eyebrow": "BOLD",
+        "caption": "Three days to three hours.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "LEO speaking with sudden confidence, one hand raised mid-gesture, intense radiating focus lines behind him, DIANE in profile listening with her head tilted slightly, high-contrast dramatic screentone"
+        }
+      }
+    },
+    {
+      "id": "s07b",
+      "type": "storybook",
+      "chapter": "BEAT 2",
+      "label": "Strategic",
+      "cue": "032",
+      "props": {
+        "eyebrow": "STRATEGIC",
+        "caption": "You asked instead of pushed.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "LEO asking a careful question with an open calm expression, DIANE looking at him with new attention and a slight nod, quiet composition with soft even screentone, no speed lines"
+        }
+      }
+    },
+    {
+      "id": "s07c",
+      "type": "storybook",
+      "chapter": "BEAT 2",
+      "label": "Human",
+      "cue": "036",
+      "props": {
+        "eyebrow": "HUMAN",
+        "caption": "8:52 in the morning.",
+        "image": {
+          "characters": [
+            "DIANE",
+            "LEO"
+          ],
+          "prompt": "DIANE laughing openly and unguarded, her coffee cup tilted, LEO grinning sheepishly and rubbing the back of his neck, light airy screentone with small sparkle effects, warm relaxed mood"
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "type": "storybook",
+      "chapter": "BEAT 3",
+      "label": "Floor ten",
+      "cue": "040",
+      "props": {
+        "caption": "Nine. Ten.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "Tight close-up of the elevator floor indicator lighting up numbers nine and ten, LEO and DIANE reflected in the polished metal doors below it, tense vertical composition, heavy screentone"
+        }
+      }
+    },
+    {
+      "id": "s09",
+      "type": "choice",
+      "chapter": "BEAT 3",
+      "label": "Last words",
+      "cue": "043",
+      "props": {
+        "eyebrow": "BEAT 3 · THE FOLLOW-UP",
+        "prompt": "Floor eleven. The doors open. Last words?",
+        "options": [
+          {
+            "label": "Could I get fifteen minutes with you next week?",
+            "track": "b3a",
+            "tone": "DIRECT",
+            "cue": "044"
+          },
+          {
+            "label": "I'll send you one page. If it's boring, you'll never hear from me again.",
+            "track": "b3b",
+            "tone": "LIGHT"
+          },
+          {
+            "label": "Thanks for the chat, Diane. Have a good one.",
+            "track": "b3c",
+            "tone": "WARM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10a",
+      "type": "storybook",
+      "chapter": "BEAT 3",
+      "label": "Direct",
+      "cue": "045",
+      "props": {
+        "eyebrow": "DIRECT",
+        "caption": "Name the size of the ask.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "The elevator doors sliding open with bright light pouring in, LEO turning to face DIANE squarely and asking, DIANE pausing mid-step to consider him, strong directional light and sharp shadows"
+        }
+      }
+    },
+    {
+      "id": "s10b",
+      "type": "storybook",
+      "chapter": "BEAT 3",
+      "label": "Light",
+      "cue": "049",
+      "props": {
+        "eyebrow": "LIGHT",
+        "caption": "One page.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "LEO smiling easily with a small shrug as DIANE steps out of the elevator and glances back over her shoulder with an amused expression, light screentone, relaxed diagonal composition"
+        }
+      }
+    },
+    {
+      "id": "s10c",
+      "type": "storybook",
+      "chapter": "BEAT 3",
+      "label": "Warm",
+      "cue": "053",
+      "props": {
+        "eyebrow": "WARM",
+        "caption": "Nothing moves.",
+        "image": {
+          "characters": [
+            "LEO",
+            "DIANE"
+          ],
+          "prompt": "DIANE walking away down a bright corridor with her back to the viewer, LEO still standing inside the elevator watching her go, the doors beginning to close between them, wide melancholy composition, soft grey screentone"
+        }
+      }
+    },
+    {
+      "id": "s10z",
+      "type": "storybook",
+      "chapter": "BEAT 3",
+      "label": "Aftermath",
+      "cue": "078",
+      "props": {
+        "caption": "Thirty seconds.",
+        "image": {
+          "characters": [
+            "LEO"
+          ],
+          "prompt": "LEO standing alone facing the just-closed elevator doors, seen from behind over his shoulder, his faint reflection in the polished metal, an empty office corridor stretching away to the side, quiet aftermath stillness, soft even screentone, no motion lines"
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "type": "recap-choices",
+      "chapter": "RECAP",
+      "label": "Recap",
+      "cue": "057",
+      "props": {
+        "title": "That was you. Three choices.",
+        "choices": [
+          "s03",
+          "s06",
+          "s09"
+        ],
+        "footer": [
+          {
+            "text": "None of them were wrong. They just cost different things.",
+            "cue": "061"
+          },
+          {
+            "text": "That's the whole game — knowing what each one costs.",
+            "cue": "062"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s12",
+      "type": "storybook",
+      "chapter": "OUTRO",
+      "label": "Challenge",
+      "cue": "063",
+      "props": {
+        "eyebrow": "TODAY'S CHALLENGE",
+        "caption": "Say the one you didn't pick.",
+        "image": {
+          "characters": [
+            "LEO"
+          ],
+          "prompt": "LEO stepping out of the elevator into a bright open-plan office corridor, seen from behind with his shoulders relaxed, morning light flooding the hallway ahead of him, hopeful forward-moving composition"
+        }
+      }
+    }
+  ]
+}

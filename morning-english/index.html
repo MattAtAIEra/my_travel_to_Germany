@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Elevator — Morning English</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+/* ── Theme tokens (overridden by themes/{theme}.css below) ──────── */
+:root {
+  --primary: #2C5F2D;
+  --secondary: #97BC62;
+  --accent: #C7392F;
+  --warn: #E8A93C;
+  --glow: 232,169,60;      /* CTA 脈動光環，RGB 三元組（= --warn）— 主題覆寫 --warn 時請一併覆寫 */
+  --cream: #F5F4EC;
+  --ink: #1A2E1B;
+  --dim: #6B7770;
+  --white: #ffffff;
+  --display-font: "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", "Source Han Sans TC", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--display-font);
+  background: #000; color: var(--ink);
+}
+#stage {
+  position: relative; width: 100vw;
+  height: 100vh;       /* fallback：不支援 dvh 的舊瀏覽器 */
+  height: 100dvh;      /* iOS Safari 100vh 含工具列高度，會把控制列推出畫面；dvh 隨工具列收合即時調整 */
+  background: var(--cream); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ── Top bar ───────────────────────────────────── */
+.topbar {
+  height: 40px; background: var(--primary); color: white;
+  display: flex; align-items: center; padding: 0 24px;
+  font-size: 13px; gap: 16px; flex-shrink: 0;
+}
+.crumb { opacity: 0.9; font-weight: 600; letter-spacing: 1px; }
+.progress { flex: 1; height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; position: relative; }
+.progress-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--warn); border-radius: 2px; transition: width 0.15s; }
+/* 章節式進度：分支 deck 的總長度隨選擇而變，線性百分比會說謊 → 改標章節。
+   沒有章節資料時 .chapters 是空的（:empty 不顯示），舊 deck 外觀完全不變。 */
+.chapters { position: absolute; inset: -7px 0; display: flex; gap: 6px; align-items: center; }
+.chapters:empty { display: none; }
+.chapter-dot { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.18); transition: background 0.3s, box-shadow 0.3s; }
+.chapter-dot.seen { background: rgba(255,255,255,0.45); }
+.chapter-dot.now { background: var(--warn); box-shadow: 0 0 8px 1px rgba(var(--glow), 0.6); }
+.time { font-variant-numeric: tabular-nums; opacity: 0.85; }
+
+/* ── Stage frame ────────────────────────────────── */
+.frame { position: relative; flex: 1; overflow: hidden; background: var(--cream); }
+
+/* ── Generic scene ──────────────────────────────── */
+.scene {
+  position: absolute; inset: 0; padding: 48px 64px 200px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none; display: flex; flex-direction: column;
+}
+.scene.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.eyebrow { font-size: 13px; letter-spacing: 4px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+.h1 { font-size: 42px; font-weight: 800; color: var(--ink); margin-bottom: 28px; line-height: 1.2; }
+.h2 { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.lead { font-size: 18px; color: var(--dim); line-height: 1.6; }
+
+/* ── Scene: title / outro shared ──────────────────── */
+.scene-title, .scene-outro {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--ink) 100%);
+  padding: 64px 80px 200px;
+  color: white;
+  justify-content: center;
+}
+.scene-title .eyebrow, .scene-outro .eyebrow { color: var(--secondary); }
+.scene-title .display, .scene-outro .display { font-size: 88px; font-weight: 800; line-height: 1.05; color: white; margin: 24px 0; }
+.scene-title .display .accent, .scene-outro .display .accent { color: var(--warn); }
+.scene-title .tagline, .scene-outro .tagline { font-size: 22px; color: var(--cream); margin-top: 24px; opacity: 0.9; }
+.scene-title .ribbon { width: 80px; height: 6px; background: var(--warn); margin: 32px 0 16px; border-radius: 3px; }
+.scene-title .series, .scene-outro .next { font-size: 14px; color: var(--cream); opacity: 0.7; letter-spacing: 2px; }
+.scene-title .blob, .scene-outro .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.scene-title .blob.b1 { right: -200px; top: -200px; width: 600px; height: 600px; background: var(--secondary); opacity: 0.25; }
+.scene-title .blob.b2 { right: 200px; bottom: -100px; width: 320px; height: 320px; background: var(--warn); opacity: 0.18; }
+.scene-outro .blob.b1 { left: -150px; top: -150px; width: 500px; height: 500px; background: var(--secondary); opacity: 0.2; }
+.scene-outro .blob.b2 { right: -100px; bottom: -200px; width: 480px; height: 480px; background: var(--warn); opacity: 0.15; }
+
+/* ── Scene: 2-column painpoint ────────────────────── */
+.painpoint { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px; }
+.panel { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.panel.dark { background: var(--primary); color: white; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.panel h3 { font-size: 22px; margin-bottom: 16px; }
+.panel.dark h3 { color: var(--warn); }
+.panel ul { list-style: none; padding: 0; margin: 0 0 16px; }
+.panel li { padding: 8px 0; font-size: 16px; line-height: 1.5; }
+.panel li::before { content: "‧ "; color: var(--secondary); font-weight: bold; }
+.panel.dark li::before { color: var(--warn); }
+.panel .stat { font-size: 14px; color: var(--dim); margin-top: 16px; }
+.panel.dark .stat { color: rgba(255,255,255,0.7); }
+.panel .stat .num { font-size: 32px; font-weight: 800; color: var(--accent); margin-left: 8px; vertical-align: middle; }
+.panel.dark .stat .num { color: var(--warn); }
+
+/* ── Scene: 3-card row (objectives / takeaways / etc.) ──────────── */
+.cards-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 24px; }
+.cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+.card { background: white; border-radius: 12px; padding: 28px; display: flex; gap: 20px; align-items: flex-start; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.card-num { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; font-weight: 800; flex-shrink: 0; }
+.card-num.c1 { background: var(--primary); }
+.card-num.c2 { background: var(--secondary); }
+.card-num.c3 { background: var(--accent); }
+.card-num.c4 { background: var(--warn); color: var(--ink); }
+.card-title { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.card-body { font-size: 14px; color: var(--dim); line-height: 1.5; }
+.tagline-center { margin-top: 36px; text-align: center; font-style: italic; color: var(--primary); font-size: 22px; font-weight: 700; }
+
+/* ── Scene: callout stack (FAQ / answers / 3-color signal) ────── */
+.callout-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.callout { background: white; border-radius: 10px; padding: 18px 22px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.callout-icon { width: 44px; height: 44px; border-radius: 50%; color: white; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+.cl-p { background: var(--primary); }
+.cl-s { background: var(--secondary); }
+.cl-a { background: var(--accent); }
+.cl-w { background: var(--warn); color: var(--ink); }
+.cl-blue { background: #3b82c4; }
+.callout-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+.callout-desc { font-size: 14px; color: var(--dim); line-height: 1.55; margin-top: 4px; }
+
+/* ── Scene: browser-style demo ──────────────────── */
+.browser { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); margin-top: 18px; }
+.browser-bar { background: var(--ink); padding: 8px 12px; display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: var(--accent); } .dot.y { background: var(--warn); } .dot.g { background: var(--secondary); }
+.browser-url { color: var(--cream); font-size: 11px; margin-left: 12px; opacity: 0.8; }
+.browser-body { padding: 24px; min-height: 280px; }
+.browser-body h4 { font-size: 18px; color: var(--primary); margin-bottom: 12px; }
+
+/* ── Subtitle bar ───────────────────────────────── */
+.subtitle-bar {
+  position: absolute; left: 64px; right: 64px; bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  background: rgba(26, 46, 27, 0.94); color: white;
+  padding: 18px 28px; border-radius: 10px;
+  font-size: 22px; line-height: 1.5;
+  min-height: 70px; display: flex; align-items: center;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  z-index: 90;
+}
+.subtitle-bar.empty { opacity: 0; pointer-events: none; }  /* 重要：opacity:0 不關 pointer-events，會吃掉下方互動元素的點擊（例如 feedback form 按鈕）*/
+.subtitle-bar .marker { color: var(--warn); margin-right: 12px; flex-shrink: 0; font-weight: bold; }
+
+/* ── Controls bar ───────────────────────────────── */
+.controls {
+  height: calc(64px + env(safe-area-inset-bottom, 0px)); background: var(--ink);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 24px;
+  padding-bottom: env(safe-area-inset-bottom, 0px); /* 墊高按鈕避開 iPhone Home Indicator；必須寫在 padding shorthand 之後 */
+  flex-shrink: 0; border-top: 2px solid var(--primary);
+}
+.btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-family: inherit; transition: background 0.2s; font-weight: 600; }
+.btn:hover { background: var(--secondary); color: var(--ink); }
+.btn.warn { background: var(--warn); color: var(--ink); }
+.btn.warn:hover { background: white; }
+.btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.3); }
+.btn.ghost:hover { background: rgba(255,255,255,0.1); color: white; }
+.btn .ticon { font-style: normal; line-height: 1; }
+.btn .tlabel { margin-left: 6px; }
+.timeinfo { color: white; font-size: 14px; font-variant-numeric: tabular-nums; }
+.scene-chip { color: rgba(255,255,255,0.65); font-size: 13px; margin-left: auto; }
+.no-audio-note { color: var(--warn); font-size: 12px; padding: 6px 12px; background: rgba(232,169,60,0.15); border-radius: 4px; }
+audio { display: none; }
+
+/* CTA：未播放時播放鍵呼吸光環提示（setPlayBtn 以 .is-playing 開關） */
+@keyframes ctaPulse {
+  0%   { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0.55); }
+  70%  { box-shadow: 0 0 11px 3px rgba(var(--glow), 0.40), 0 0 0 14px rgba(var(--glow), 0); }
+  100% { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0); }
+}
+#playBtn:not(.is-playing) { animation: ctaPulse 1.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  #playBtn:not(.is-playing) { animation: none; box-shadow: 0 0 10px 2px rgba(var(--glow), 0.55); }
+}
+
+/* ── 首播 CTA：螢幕中央大型半透明 Play ─────────────────────────
+   使用者測試發現角落的播放鍵會被忽略；改在畫面正中放一顆半透明大 Play，
+   暈開光環循環提示。按下（或以任何方式開始播放）後縮小飛入下方控制列的
+   播放鍵位置（morph），之後播放暫停照常由控制列／空白鍵操作。 */
+.big-play {
+  position: absolute; z-index: 95;
+  left: 50%; top: 50%;
+  width: 112px; height: 112px; margin: -56px 0 0 -56px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  color: #fff; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40), 0 12px 48px rgba(0, 0, 0, 0.35);
+  opacity: 0.9;   /* 半透明再讓一成，減少對畫面的遮蔽；hover 回實體感 */
+  animation: bigPlayPulse 1.8s ease-in-out infinite;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease;
+}
+.big-play .big-play-icon { font-size: 44px; line-height: 1; margin-left: 8px; /* 三角形視覺置中 */ }
+.big-play:hover { background: rgba(255, 255, 255, 0.32); opacity: 1; }
+/* 首播前下方 dock 整條隱藏（opacity 保留佔位，morph 才能量測飛行落點）；
+   開始播放（has-bigplay 移除）後延遲 0.15s 淡入，與大 Play 飛入同步完成 */
+body.has-bigplay .controls { opacity: 0; pointer-events: none; }
+.controls { transition: opacity 0.5s ease 0.15s; }
+@keyframes bigPlayPulse {   /* 暈開：光環從按鈕邊緣向外擴散淡出 */
+  0%   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0.50); }
+  70%  { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 36px rgba(var(--glow), 0); }
+  100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0); }
+}
+.big-play.morph {   /* 過場：縮小飛向 dock 播放鍵（目標位移由 JS 量測寫入） */
+  transform: translate(var(--bp-dx, 0px), var(--bp-dy, 40vh)) scale(var(--bp-scale, 0.4));
+  opacity: 0; animation: none; pointer-events: none;
+}
+/* 大 Play 在場時，dock 播放鍵的光環先不閃（避免兩顆同時脈動搶焦點） */
+body.has-bigplay #playBtn:not(.is-playing) { animation: none; }
+@media (max-width: 540px) {
+  .big-play { width: 88px; height: 88px; margin: -44px 0 0 -44px; }
+  .big-play .big-play-icon { font-size: 34px; margin-left: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .big-play { animation: none; transition: opacity 0.3s ease; }
+}
+
+/* small screen */
+@media (max-width: 900px) {
+  .scene { padding: 32px 24px 120px; }
+  .h1 { font-size: 28px; }
+  .painpoint, .cards-3, .cards-2 { grid-template-columns: 1fr; }
+  .scene-title .display, .scene-outro .display { font-size: 44px; }
+  .subtitle-bar { left: 16px; right: 16px; font-size: 16px; }
+}
+
+/* mobile RWD: 控制列改成「左側純 icon 按鈕 + 右側時間」的標準播放器佈局。
+   窄螢幕容不下文字標籤與不定長度的段落／提示，留著會換行、溢出、把整條控制列撐破版，
+   因此一律移除按鈕文字、段落提示（.scene-chip）、無音檔提示（.no-audio-note）。
+   進度仍可從頂部 progress bar 與時間判讀，資訊不流失。
+   注意：.controls 這裡勿用 padding shorthand，會把上方的 padding-bottom 安全區重設為 0 */
+@media (max-width: 540px) {
+  .controls      { padding-left: 10px; padding-right: 10px; gap: 6px; }
+  .btn           { padding: 9px 11px; flex-shrink: 0; }   /* 按鈕不被壓縮變形 */
+  .btn .tlabel   { display: none; }                       /* 移除按鈕文字，只留 icon */
+  .btn .ticon    { font-size: 22px; }
+  .timeinfo      { font-size: 12px; white-space: nowrap; flex-shrink: 0; margin-left: auto; } /* 時間不換行、推到最右 */
+  .scene-chip    { display: none; }   /* 段落標題長度不定，手機移除避免破版 */
+  .no-audio-note { display: none; }   /* 異常提示，手機移除以保版面（播放遇錯仍會自動前進） */
+}
+
+/* ── Scene: storybook — full-bleed illustration ─── */
+.scene-storybook { padding: 0; }
+.scene-storybook .story-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene-storybook .story-eyebrow { position: absolute; top: 24px; left: 32px; font-size: 13px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.35); padding: 6px 14px; border-radius: 999px; backdrop-filter: blur(6px); }
+.scene-storybook .story-caption { position: absolute; top: 24px; right: 32px; max-width: 44%; font-size: 26px; font-weight: 800; line-height: 1.35; color: #fff; background: rgba(0,0,0,0.4); padding: 12px 20px; border-radius: 14px; backdrop-filter: blur(6px); }
+/* ── Hero image on title / outro ── */
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.45) 100%); }
+.scene-title > *:not(.hero-img):not(.hero-overlay), .scene-outro > *:not(.hero-img):not(.hero-overlay) { position: relative; z-index: 1; }
+/* ── Side illustration on generic ── */
+.side-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; flex: 1; min-height: 0; }
+.side-img { width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+@media (max-width: 900px) {
+  .side-grid { grid-template-columns: 1fr; }
+  .side-img { max-height: 40vh; }
+  .scene-storybook .story-caption { font-size: 18px; max-width: 60%; }
+}
+
+/* ── Cue system: one subtitle → one visual beat (筆記 §3) ─────────── */
+[data-cue]:not(.cue-mark) {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
+}
+[data-cue]:not(.cue-mark).cue-seen,
+[data-cue]:not(.cue-mark).cue-on { opacity: 1; transform: none; }
+.cue-mark { display: inline-block; transition: color .4s, text-shadow .4s; }
+.cue-mark.cue-on { animation: cueMark .65s ease both; }
+@keyframes cueMark { 0%{transform:scale(1)} 35%{transform:scale(1.16)} 100%{transform:scale(1)} }
+/* spotlight the current element */
+.card[data-cue].cue-on, .callout[data-cue].cue-on, .panel[data-cue].cue-on,
+.browser[data-cue].cue-on { box-shadow: 0 0 0 2px var(--secondary), 0 16px 40px rgba(0,0,0,.35); }
+/* mobile: scenes scroll so below-the-fold cues can be brought into view (筆記 §4) */
+/* NOTE: no `scroll-behavior: smooth` here — it hijacks programmatic scrollTop
+   assignment too (CSSOM), which silently never completes in throttled/background
+   contexts. Correct position always beats animated motion; the cue reveal
+   transition already provides the visual softness. */
+@media (max-width: 900px) { .scene { overflow-y: auto; -webkit-overflow-scrolling: touch; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-cue]:not(.cue-mark) { transition: none; }
+  .cue-mark.cue-on { animation: none; }
+}
+
+/* /* Theme: manga — 日本漫畫分鏡語言 */
+/* 高對比黑白 + 單一強調色、網點半調、粗黑分鏡框、對話框、集中線。
+   為互動 deck 設計：choice 畫面是這個主題的主場（集中線 + 三張對話框）。 */
+
+:root {
+  --primary: #111111;      /* 墨線黑 */
+  --secondary: #6E6E6E;    /* 網點灰 */
+  --accent: #E4002B;       /* 少年漫畫紅 —— 全篇唯一的彩色 */
+  --warn: #E4002B;
+  --glow: 228,0,43;
+  --cream: #F2F0EB;        /* 漫畫紙白（微暖，純白太刺眼） */
+  --ink: #111111;
+  --dim: #5A5A5A;
+  --white: #ffffff;
+
+  /* 字體分工：內文與字幕要「讀得下去」，只有標題吃漫畫感。
+     整站套 Impact 會讓 26px 的字幕變成一堵擠壓的牆 —— 試過，不能這樣。
+     不用 Bangers/Anton 這類 Google Fonts：deck 是 self-contained，
+     外部字體載不進來，寫了只是讓 fallback 鏈更長。 */
+  --display-font: "Helvetica Neue", Helvetica, Arial,
+                  "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --manga-title-font: "Impact", "Haettenschweiler", "Arial Black",
+                      "Hiragino Sans", sans-serif;
+}
+
+/* ── 紙張：網點半調鋪底 ───────────────────────────────── */
+.frame, .scene {
+  background-color: var(--cream);
+  background-image: radial-gradient(rgba(17,17,17,0.10) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.scene-storybook, .scene-title, .scene-outro { background-image: none; }
+
+/* ── 分鏡框：粗黑外框 + 硬陰影（漫畫沒有柔和陰影） ─────────── */
+.card, .panel, .callout, .browser, .story-img, .side-img, .hero-img {
+  border: 3px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 var(--ink) !important;
+}
+
+/* ── 標題：漫畫字重，內文維持可讀 ─────────────────────── */
+.h1, .h2, .display, .choice-prompt, .eyebrow, .story-eyebrow {
+  font-family: var(--manga-title-font);
+}
+.h1 { font-size: 52px !important; letter-spacing: 1px; text-transform: uppercase; }
+.scene-title .display, .scene-outro .display { font-size: 96px !important; letter-spacing: 2px; }
+.eyebrow { color: var(--accent) !important; }
+
+/* ── 字幕條：方框對話框，不要圓角 ───────────────────────── */
+.subtitle-bar {
+  background: rgba(255,255,255,0.96) !important;
+  color: var(--ink) !important;
+  border: 3px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0 var(--ink) !important;
+  font-size: 26px !important;
+  font-weight: 600;
+}
+.subtitle-bar .marker { color: var(--accent) !important; }
+
+/* ── choice：集中線 + 三張對話框 ────────────────────────── */
+.scene-choice { justify-content: center; align-items: center; text-align: center; }
+.speedlines {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(17,17,17,0.30) 0deg 0.7deg, transparent 0.7deg 3.4deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 34%, #000 78%);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 34%, #000 78%);
+  transition: opacity 0.45s ease;
+}
+.scene-choice.awaiting .speedlines { opacity: 1; animation: zoomLines 6s linear infinite; }
+@keyframes zoomLines { from { transform: scale(1); } to { transform: scale(1.12); } }
+
+.choice-prompt {
+  font-size: 34px; font-weight: 800; color: var(--ink);
+  margin-bottom: 34px; max-width: 22ch; line-height: 1.25;
+  position: relative; z-index: 1;
+}
+.choice-opts {
+  display: flex; flex-direction: column; gap: 16px;
+  width: min(760px, 88%); position: relative; z-index: 1;
+}
+.choice-opt {
+  position: relative; display: flex; align-items: center; gap: 16px;
+  padding: 20px 26px; cursor: pointer; text-align: left;
+  background: var(--white); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 0;
+  box-shadow: 6px 6px 0 var(--ink);
+  font-family: var(--display-font); font-size: 21px; font-weight: 600; line-height: 1.35;
+  transform: translate(0, 0);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+/* 還沒輪到選擇時，選項卡是「劇情的一部分」而不是可點的按鈕 */
+.scene-choice:not(.awaiting) .choice-opt { pointer-events: none; opacity: 0.55; }
+.choice-opt:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--accent); }
+.choice-opt:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--ink); }
+.choice-opt:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.choice-key {
+  flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--ink); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; font-weight: 800;
+}
+.choice-label { flex: 1; }
+.choice-tone {
+  flex-shrink: 0; font-size: 12px; font-weight: 800; letter-spacing: 2px;
+  color: var(--accent); border: 2px solid var(--accent); padding: 3px 8px;
+}
+.choice-opt.picked { background: var(--ink); color: var(--white); opacity: 1 !important; }
+.choice-opt.picked .choice-key { background: var(--accent); }
+.choice-opt.picked .choice-tone { color: var(--white); border-color: var(--white); }
+
+/* ── recap：走過的路，一列一列亮起來 ──────────────────────── */
+/* 這一場的內容最多（標題 + 三列 + 兩行結語），間距要比其他場緊，
+   否則結語會頂到字幕條上。 */
+.scene-recap .h1 { font-size: 40px !important; margin-bottom: 0; }
+.recap-stack { display: flex; flex-direction: column; gap: 11px; margin-top: 18px; }
+.recap-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 20px; background: var(--white);
+  border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0.25; transform: translateX(-8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.recap-row.filled { opacity: 1; transform: translateX(0); }
+.recap-num {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent); color: var(--white);
+  display: flex; align-items: center; justify-content: center; font-weight: 800;
+}
+.recap-line { flex: 1; font-size: 20px; font-weight: 600; }
+.recap-tone { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--accent); }
+.recap-notes { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.recap-note {
+  font-size: 20px; font-weight: 600; color: var(--dim);
+  padding-left: 16px; border-left: 4px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.recap-note.cue-on { color: var(--ink); border-left-color: var(--accent); }
+.recap-note.cue-seen { color: var(--ink); }
+
+/* ── 控制列：方鈕 ─────────────────────────────────────── */
+.btn { border-radius: 0 !important; border: 2px solid var(--ink) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-choice.awaiting .speedlines { animation: none; }
+}
+@media (max-width: 540px) {
+  .choice-prompt { font-size: 24px; margin-bottom: 22px; }
+  .choice-opt { font-size: 17px; padding: 15px 18px; gap: 12px; }
+  .choice-tone { display: none; }   /* 手機優先保住台詞本身 */
+  .choice-key { width: 32px; height: 32px; font-size: 16px; }
+  .h1 { font-size: 34px !important; }
+  .recap-line { font-size: 17px; }
+}
+ */
+/* :root { --display-font: "Inter", "Helvetica Neue", -apple-system, "Segoe UI", "Microsoft JhengHei", sans-serif; } /* injected for --lang en: correct glyphs win over theme font (see themes.md) */ */
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Top brand bar -->
+  <div class="topbar">
+    <div class="crumb">The Elevator — Morning English</div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div><div class="chapters" id="chapters"></div></div>
+    <div class="time" id="topTime">0:00 / 0:00</div>
+  </div>
+
+  <!-- Scene stage -->
+  <div class="frame" id="frame">
+
+    <div class="scene scene-storybook" data-id="s01">
+      <img class="story-img" src="images/s01-full.jpg" alt="">
+      <div class="story-eyebrow">MORNING ENGLISH · EP.01</div>
+      <div class="story-caption" data-cue="001">8:52 A.M.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s02">
+      <img class="story-img" src="images/s02-full.jpg" alt="">
+      
+      <div class="story-caption" data-cue="005">Eleven floors.</div>
+    </div>
+
+    <div class="scene scene-choice" data-id="s03">
+      <span class="speedlines"></span>
+      <div class="eyebrow">BEAT 1 · SMALL TALK</div>
+      <div class="choice-prompt" data-cue="009">The doors close. Thirty seconds. What do you say?</div>
+      <div class="choice-opts">
+        <button class="choice-opt" data-track="b1a" data-cue="010">
+          <span class="choice-key">1</span>
+          <span class="choice-label">Morning! Big day for the team, huh?</span>
+          <span class="choice-tone">CASUAL</span>
+        </button>
+        <button class="choice-opt" data-track="b1b">
+          <span class="choice-key">2</span>
+          <span class="choice-label">Good morning, Ms. Ward. It&#x27;s a pleasure to finally meet you.</span>
+          <span class="choice-tone">FORMAL</span>
+        </button>
+        <button class="choice-opt" data-track="b1c">
+          <span class="choice-key">3</span>
+          <span class="choice-label">Good morning.</span>
+          <span class="choice-tone">SAFE</span>
+        </button></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s04a">
+      <img class="story-img" src="images/s04a-full.jpg" alt="">
+      <div class="story-eyebrow">CASUAL</div>
+      <div class="story-caption" data-cue="011">The bet pays off.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s04b">
+      <img class="story-img" src="images/s04b-full.jpg" alt="">
+      <div class="story-eyebrow">FORMAL</div>
+      <div class="story-caption" data-cue="015">&quot;Diane, please.&quot;</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s04c">
+      <img class="story-img" src="images/s04c-full.jpg" alt="">
+      <div class="story-eyebrow">SAFE</div>
+      <div class="story-caption" data-cue="019">The silence comes back.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s05">
+      <img class="story-img" src="images/s05-full.jpg" alt="">
+      
+      <div class="story-caption" data-cue="023">&quot;So — what are you working on?&quot;</div>
+    </div>
+
+    <div class="scene scene-choice" data-id="s06">
+      <span class="speedlines"></span>
+      <div class="eyebrow">BEAT 2 · THE PITCH</div>
+      <div class="choice-prompt" data-cue="026">She asked. Twenty seconds. What do you do with them?</div>
+      <div class="choice-opts">
+        <button class="choice-opt" data-track="b2a" data-cue="027">
+          <span class="choice-key">1</span>
+          <span class="choice-label">I&#x27;m building a tool that uses AI to cut our campaign copy from three days to three hours.</span>
+          <span class="choice-tone">BOLD</span>
+        </button>
+        <button class="choice-opt" data-track="b2b">
+          <span class="choice-key">2</span>
+          <span class="choice-label">Can I ask you something first — what slows your marketing team down the most?</span>
+          <span class="choice-tone">STRATEGIC</span>
+        </button>
+        <button class="choice-opt" data-track="b2c">
+          <span class="choice-key">3</span>
+          <span class="choice-label">Honestly? I&#x27;m still learning where the coffee machine is.</span>
+          <span class="choice-tone">HUMAN</span>
+        </button></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s07a">
+      <img class="story-img" src="images/s07a-full.jpg" alt="">
+      <div class="story-eyebrow">BOLD</div>
+      <div class="story-caption" data-cue="028">Three days to three hours.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s07b">
+      <img class="story-img" src="images/s07b-full.jpg" alt="">
+      <div class="story-eyebrow">STRATEGIC</div>
+      <div class="story-caption" data-cue="032">You asked instead of pushed.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s07c">
+      <img class="story-img" src="images/s07c-full.jpg" alt="">
+      <div class="story-eyebrow">HUMAN</div>
+      <div class="story-caption" data-cue="036">8:52 in the morning.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s08">
+      <img class="story-img" src="images/s08-full.jpg" alt="">
+      
+      <div class="story-caption" data-cue="040">Nine. Ten.</div>
+    </div>
+
+    <div class="scene scene-choice" data-id="s09">
+      <span class="speedlines"></span>
+      <div class="eyebrow">BEAT 3 · THE FOLLOW-UP</div>
+      <div class="choice-prompt" data-cue="043">Floor eleven. The doors open. Last words?</div>
+      <div class="choice-opts">
+        <button class="choice-opt" data-track="b3a" data-cue="044">
+          <span class="choice-key">1</span>
+          <span class="choice-label">Could I get fifteen minutes with you next week?</span>
+          <span class="choice-tone">DIRECT</span>
+        </button>
+        <button class="choice-opt" data-track="b3b">
+          <span class="choice-key">2</span>
+          <span class="choice-label">I&#x27;ll send you one page. If it&#x27;s boring, you&#x27;ll never hear from me again.</span>
+          <span class="choice-tone">LIGHT</span>
+        </button>
+        <button class="choice-opt" data-track="b3c">
+          <span class="choice-key">3</span>
+          <span class="choice-label">Thanks for the chat, Diane. Have a good one.</span>
+          <span class="choice-tone">WARM</span>
+        </button></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s10a">
+      <img class="story-img" src="images/s10a-full.jpg" alt="">
+      <div class="story-eyebrow">DIRECT</div>
+      <div class="story-caption" data-cue="045">Name the size of the ask.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s10b">
+      <img class="story-img" src="images/s10b-full.jpg" alt="">
+      <div class="story-eyebrow">LIGHT</div>
+      <div class="story-caption" data-cue="049">One page.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s10c">
+      <img class="story-img" src="images/s10c-full.jpg" alt="">
+      <div class="story-eyebrow">WARM</div>
+      <div class="story-caption" data-cue="053">Nothing moves.</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s10z">
+      <img class="story-img" src="images/s10z-full.jpg" alt="">
+      
+      <div class="story-caption" data-cue="078">Thirty seconds.</div>
+    </div>
+
+    <div class="scene scene-recap" data-id="s11">
+      <div class="h1" data-cue="057">That was you. Three choices.</div>
+      <div class="recap-stack"><div class="recap-row" data-recap="s03"><span class="recap-num">1</span><span class="recap-line"></span><span class="recap-tone"></span></div><div class="recap-row" data-recap="s06"><span class="recap-num">2</span><span class="recap-line"></span><span class="recap-tone"></span></div><div class="recap-row" data-recap="s09"><span class="recap-num">3</span><span class="recap-line"></span><span class="recap-tone"></span></div></div>
+      <div class="recap-notes"><div class="recap-note" data-cue="061">None of them were wrong. They just cost different things.</div><div class="recap-note" data-cue="062">That&#x27;s the whole game — knowing what each one costs.</div></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s12">
+      <img class="story-img" src="images/s12-full.jpg" alt="">
+      <div class="story-eyebrow">TODAY&#x27;S CHALLENGE</div>
+      <div class="story-caption" data-cue="063">Say the one you didn&#x27;t pick.</div>
+    </div>
+  </div><!-- /.frame -->
+
+  <!-- Subtitle overlay -->
+  <div class="subtitle-bar empty" id="subtitleBar"></div>
+
+  <!-- First-play CTA: center big play, morphs into the dock play button -->
+  <button class="big-play" id="bigPlay" aria-label="Play"><span class="big-play-icon">▶</span></button>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn warn" id="playBtn"><span class="ticon">▶</span><span class="tlabel">Play</span></button>
+    <button class="btn ghost" id="prevBtn"><span class="ticon">⏮</span><span class="tlabel">Prev</span></button>
+    <button class="btn ghost" id="nextBtn"><span class="ticon">⏭</span><span class="tlabel">Next</span></button>
+    <button class="btn ghost" id="restartBtn"><span class="ticon">⟲</span><span class="tlabel">Restart</span></button>
+    <div class="timeinfo" id="timeinfo">0:00 / 0:00</div>
+    <div class="no-audio-note" id="audioNote" style="display:none">Some audio missing — falling back to estimated timing</div>
+    <div class="scene-chip" id="sceneChip">Scene 1</div>
+    <audio id="player" preload="auto"></audio>
+    
+  </div>
+
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+//  Subs (injected from {prefix}.subs.json)
+// ────────────────────────────────────────────────
+const PREFIX = "ME01";
+const AUDIO_DIR = "audio";
+const SUBS = [
+  {
+    "id": "001",
+    "scene": "s01",
+    "text": "It's 8:52. You're late.",
+    "dur": 2.37
+  },
+  {
+    "id": "002",
+    "scene": "s01",
+    "text": "Six days into your first real job, Leo — and you're already late.",
+    "dur": 5.8
+  },
+  {
+    "id": "003",
+    "scene": "s01",
+    "text": "Project manager. At least, that's what the badge says.",
+    "dur": 3.72
+  },
+  {
+    "id": "004",
+    "scene": "s01",
+    "text": "The elevator doors are closing. You run.",
+    "dur": 2.65
+  },
+  {
+    "id": "005",
+    "scene": "s02",
+    "text": "You make it. Perfect.",
+    "dur": 1.76
+  },
+  {
+    "id": "006",
+    "scene": "s02",
+    "text": "Except — you're not alone.",
+    "dur": 2.04
+  },
+  {
+    "id": "007",
+    "scene": "s02",
+    "text": "Standing right next to you is Diane Ward. She runs the whole company.",
+    "dur": 4.6
+  },
+  {
+    "id": "008",
+    "scene": "s02",
+    "text": "Eleven floors. About thirty seconds. Nobody is speaking.",
+    "dur": 4.27
+  },
+  {
+    "id": "009",
+    "scene": "s03",
+    "text": "The doors close. Thirty seconds.",
+    "dur": 2.28
+  },
+  {
+    "id": "010",
+    "scene": "s03",
+    "text": "What do you say?",
+    "dur": 1.16
+  },
+  {
+    "id": "011",
+    "scene": "s04a",
+    "track": "b1a",
+    "signature": true,
+    "text": "Morning! Big day for the team, huh?",
+    "voice": "leo",
+    "dur": 2.65
+  },
+  {
+    "id": "069",
+    "scene": "s04a",
+    "track": "b1a",
+    "voice": "diane",
+    "text": "It is. And you must be the new one.",
+    "dur": 2.65
+  },
+  {
+    "id": "012",
+    "scene": "s04a",
+    "track": "b1a",
+    "text": "That's warm, and it's natural.",
+    "dur": 1.86
+  },
+  {
+    "id": "013",
+    "scene": "s04a",
+    "track": "b1a",
+    "text": "\"Huh?\" does the real work. It hands her the turn, and a greeting becomes a conversation.",
+    "dur": 6.59
+  },
+  {
+    "id": "014",
+    "scene": "s04a",
+    "track": "b1a",
+    "text": "It's casual for a CEO you've never met. Small bet. This time, it pays off.",
+    "dur": 6.22
+  },
+  {
+    "id": "015",
+    "scene": "s04b",
+    "track": "b1b",
+    "signature": true,
+    "text": "Good morning, Ms. Ward. It's a pleasure to finally meet you.",
+    "voice": "leo",
+    "dur": 3.3
+  },
+  {
+    "id": "068",
+    "scene": "s04b",
+    "track": "b1b",
+    "voice": "diane",
+    "text": "Diane, please. Ms. Ward is my mother.",
+    "dur": 2.46
+  },
+  {
+    "id": "016",
+    "scene": "s04b",
+    "track": "b1b",
+    "text": "Safe, polite, correct. Nothing here can go wrong.",
+    "dur": 4.37
+  },
+  {
+    "id": "017",
+    "scene": "s04b",
+    "track": "b1b",
+    "text": "But listen to the word \"finally\" — it quietly says you've been hoping for this.",
+    "dur": 5.85
+  },
+  {
+    "id": "018",
+    "scene": "s04b",
+    "track": "b1b",
+    "text": "You just spent five seconds creating distance you now have to close.",
+    "dur": 4.64
+  },
+  {
+    "id": "019",
+    "scene": "s04c",
+    "track": "b1c",
+    "signature": true,
+    "text": "Good morning.",
+    "voice": "leo",
+    "dur": 1.11
+  },
+  {
+    "id": "070",
+    "scene": "s04c",
+    "track": "b1c",
+    "voice": "diane",
+    "text": "Good morning.",
+    "dur": 0.98
+  },
+  {
+    "id": "020",
+    "scene": "s04c",
+    "track": "b1c",
+    "text": "Two words. Nothing wrong with them.",
+    "dur": 2.18
+  },
+  {
+    "id": "021",
+    "scene": "s04c",
+    "track": "b1c",
+    "text": "And nothing memorable either. In a thirty-second window, that spends your turn without buying anything.",
+    "dur": 6.64
+  },
+  {
+    "id": "022",
+    "scene": "s04c",
+    "track": "b1c",
+    "text": "She nods. The silence comes back. Now it's heavier.",
+    "dur": 4.23
+  },
+  {
+    "id": "023",
+    "scene": "s05",
+    "text": "Floor six. Seven.",
+    "dur": 1.9
+  },
+  {
+    "id": "077",
+    "scene": "s05",
+    "text": "Then she does something she doesn't have to do.",
+    "dur": 2.93
+  },
+  {
+    "id": "067",
+    "scene": "s05",
+    "voice": "diane",
+    "text": "So — what are you working on?",
+    "dur": 1.76
+  },
+  {
+    "id": "024",
+    "scene": "s05",
+    "text": "Four words. This is the door.",
+    "dur": 2.14
+  },
+  {
+    "id": "025",
+    "scene": "s05",
+    "text": "You have maybe twenty seconds before floor eleven.",
+    "dur": 3.02
+  },
+  {
+    "id": "026",
+    "scene": "s06",
+    "text": "She asked. Twenty seconds.",
+    "dur": 2.14
+  },
+  {
+    "id": "027",
+    "scene": "s06",
+    "text": "What do you do with them?",
+    "dur": 1.3
+  },
+  {
+    "id": "028",
+    "scene": "s07a",
+    "track": "b2a",
+    "signature": true,
+    "text": "I'm building a tool that uses AI to cut our campaign copy from three days to three hours.",
+    "voice": "leo",
+    "dur": 6.22
+  },
+  {
+    "id": "071",
+    "scene": "s07a",
+    "track": "b2a",
+    "voice": "diane",
+    "text": "Three hours. Say that again in the meeting on Thursday.",
+    "dur": 3.11
+  },
+  {
+    "id": "029",
+    "scene": "s07a",
+    "track": "b2a",
+    "text": "That's a whole pitch in one breath.",
+    "dur": 2.37
+  },
+  {
+    "id": "030",
+    "scene": "s07a",
+    "track": "b2a",
+    "text": "Notice the shape: what it does, then the number. She'll remember three days to three hours long after she forgets your name.",
+    "dur": 9.89
+  },
+  {
+    "id": "031",
+    "scene": "s07a",
+    "track": "b2a",
+    "text": "Bold works when the number is real. If it isn't, this is the sentence that ends you.",
+    "dur": 6.22
+  },
+  {
+    "id": "032",
+    "scene": "s07b",
+    "track": "b2b",
+    "signature": true,
+    "text": "Can I ask you something first — what slows your marketing team down the most?",
+    "voice": "leo",
+    "dur": 4.83
+  },
+  {
+    "id": "072",
+    "scene": "s07b",
+    "track": "b2b",
+    "voice": "diane",
+    "text": "Huh. Nobody's asked me that in a while.",
+    "dur": 2.32
+  },
+  {
+    "id": "033",
+    "scene": "s07b",
+    "track": "b2b",
+    "text": "You just gave away your twenty seconds to buy better information.",
+    "dur": 3.67
+  },
+  {
+    "id": "034",
+    "scene": "s07b",
+    "track": "b2b",
+    "text": "Can I ask you something first — that asks permission before spending her attention. Senior people notice it.",
+    "dur": 7.48
+  },
+  {
+    "id": "035",
+    "scene": "s07b",
+    "track": "b2b",
+    "text": "She may not answer today. But she will remember that you asked instead of pushed.",
+    "dur": 5.43
+  },
+  {
+    "id": "036",
+    "scene": "s07c",
+    "track": "b2c",
+    "signature": true,
+    "text": "Honestly? I'm still learning where the coffee machine is.",
+    "voice": "leo",
+    "dur": 3.58
+  },
+  {
+    "id": "073",
+    "scene": "s07c",
+    "track": "b2c",
+    "voice": "diane",
+    "text": "Second floor, past the printers. The good one.",
+    "dur": 2.6
+  },
+  {
+    "id": "037",
+    "scene": "s07c",
+    "track": "b2c",
+    "text": "You didn't pitch. You made her laugh at 8:52 in the morning.",
+    "dur": 3.95
+  },
+  {
+    "id": "038",
+    "scene": "s07c",
+    "track": "b2c",
+    "text": "That is not nothing. Deals don't close in elevators.",
+    "dur": 4.32
+  },
+  {
+    "id": "039",
+    "scene": "s07c",
+    "track": "b2c",
+    "text": "People just decide whether they want the next conversation. She does.",
+    "dur": 4.6
+  },
+  {
+    "id": "040",
+    "scene": "s08",
+    "text": "Floor nine. Ten.",
+    "dur": 1.76
+  },
+  {
+    "id": "041",
+    "scene": "s08",
+    "text": "Whatever you just said, it landed. She's looking at you now.",
+    "dur": 3.53
+  },
+  {
+    "id": "042",
+    "scene": "s08",
+    "text": "The doors are about to open. This is the last thing she'll remember.",
+    "dur": 4.37
+  },
+  {
+    "id": "043",
+    "scene": "s09",
+    "text": "Floor eleven. The doors open.",
+    "dur": 2.51
+  },
+  {
+    "id": "044",
+    "scene": "s09",
+    "text": "Last words?",
+    "dur": 1.11
+  },
+  {
+    "id": "045",
+    "scene": "s10a",
+    "track": "b3a",
+    "signature": true,
+    "text": "Could I get fifteen minutes with you next week?",
+    "voice": "leo",
+    "dur": 2.41
+  },
+  {
+    "id": "074",
+    "scene": "s10a",
+    "track": "b3a",
+    "voice": "diane",
+    "text": "Fifteen. Tuesday. Email my assistant.",
+    "dur": 3.02
+  },
+  {
+    "id": "046",
+    "scene": "s10a",
+    "track": "b3a",
+    "text": "Direct, and specific.",
+    "dur": 1.63
+  },
+  {
+    "id": "047",
+    "scene": "s10a",
+    "track": "b3a",
+    "text": "Fifteen minutes is small enough to say yes to. A meeting is not.",
+    "dur": 4.74
+  },
+  {
+    "id": "048",
+    "scene": "s10a",
+    "track": "b3a",
+    "text": "Always name the size of the ask. Vague asks get vague answers.",
+    "dur": 6.08
+  },
+  {
+    "id": "049",
+    "scene": "s10b",
+    "track": "b3b",
+    "signature": true,
+    "text": "I'll send you one page. If it's boring, you'll never hear from me again.",
+    "voice": "leo",
+    "dur": 4.32
+  },
+  {
+    "id": "075",
+    "scene": "s10b",
+    "track": "b3b",
+    "voice": "diane",
+    "text": "One page. I'll read it. And I'll tell you if it's boring.",
+    "dur": 3.25
+  },
+  {
+    "id": "050",
+    "scene": "s10b",
+    "track": "b3b",
+    "text": "This is confidence with an escape hatch.",
+    "dur": 2.14
+  },
+  {
+    "id": "051",
+    "scene": "s10b",
+    "track": "b3b",
+    "text": "You promised one page, and you gave her permission to ignore it.",
+    "dur": 3.9
+  },
+  {
+    "id": "052",
+    "scene": "s10b",
+    "track": "b3b",
+    "text": "Low pressure, high memory. Busy people love a small, cancellable ask.",
+    "dur": 5.71
+  },
+  {
+    "id": "053",
+    "scene": "s10c",
+    "track": "b3c",
+    "signature": true,
+    "text": "Thanks for the chat, Diane. Have a good one.",
+    "voice": "leo",
+    "dur": 2.18
+  },
+  {
+    "id": "076",
+    "scene": "s10c",
+    "track": "b3c",
+    "voice": "diane",
+    "text": "You too, Leo. My door's not as far as it looks.",
+    "dur": 2.97
+  },
+  {
+    "id": "054",
+    "scene": "s10c",
+    "track": "b3c",
+    "text": "Clean, warm, no ask at all.",
+    "dur": 2.37
+  },
+  {
+    "id": "055",
+    "scene": "s10c",
+    "track": "b3c",
+    "text": "Sometimes that's exactly right. You're one week in; you don't have to close anything.",
+    "dur": 5.67
+  },
+  {
+    "id": "056",
+    "scene": "s10c",
+    "track": "b3c",
+    "text": "But nothing is scheduled. A warm door still needs someone to knock.",
+    "dur": 5.06
+  },
+  {
+    "id": "078",
+    "scene": "s10z",
+    "text": "The doors close behind her.",
+    "dur": 1.72
+  },
+  {
+    "id": "079",
+    "scene": "s10z",
+    "text": "You're alone in a hallway on the eleventh floor.",
+    "dur": 2.55
+  },
+  {
+    "id": "080",
+    "scene": "s10z",
+    "text": "Whatever happens next — it started in those thirty seconds.",
+    "dur": 4.13
+  },
+  {
+    "id": "057",
+    "scene": "s11",
+    "text": "Same elevator. Same thirty seconds. Three different versions of you.",
+    "dur": 5.48
+  },
+  {
+    "id": "058",
+    "scene": "s11",
+    "replay": "s03"
+  },
+  {
+    "id": "059",
+    "scene": "s11",
+    "replay": "s06"
+  },
+  {
+    "id": "060",
+    "scene": "s11",
+    "replay": "s09"
+  },
+  {
+    "id": "061",
+    "scene": "s11",
+    "text": "None of them were wrong. They just cost different things.",
+    "dur": 3.39
+  },
+  {
+    "id": "062",
+    "scene": "s11",
+    "text": "That's the whole game — knowing what each one costs.",
+    "dur": 3.62
+  },
+  {
+    "id": "063",
+    "scene": "s12",
+    "text": "Here's today's challenge.",
+    "dur": 1.63
+  },
+  {
+    "id": "064",
+    "scene": "s12",
+    "text": "Find one small window today. A hallway. A coffee line. A call before it starts.",
+    "dur": 6.83
+  },
+  {
+    "id": "065",
+    "scene": "s12",
+    "text": "Say the one you didn't pick.",
+    "dur": 1.58
+  },
+  {
+    "id": "066",
+    "scene": "s12",
+    "text": "See you tomorrow.",
+    "dur": 1.11
+  }
+];
+
+// scene id → human label (injected from scenes.json)
+const SCENE_LABELS = {"s01": "8:52", "s02": "Not alone", "s03": "Your move", "s04a": "Casual", "s04b": "Formal", "s04c": "Safe", "s05": "The door", "s06": "The pitch", "s07a": "Bold", "s07b": "Strategic", "s07c": "Human", "s08": "Floor ten", "s09": "Last words", "s10a": "Direct", "s10b": "Light", "s10c": "Warm", "s10z": "Aftermath", "s11": "Recap", "s12": "Challenge"};
+
+// ────────────────────────────────────────────────
+//  Player core (do not touch — proven on Kaohsiung pilot)
+// ────────────────────────────────────────────────
+function estDur(s) {
+  if (s.dur) return s.dur;
+  if (!s.text) return 1.5;
+  // ~4 Chinese chars/sec; ~2.5 English words/sec
+  const isAscii = /^[\x00-\x7f\s\p{P}]*$/u.test(s.text);
+  return Math.max(1.8, isAscii ? s.text.split(/\s+/).length / 2.5 : s.text.length / 4);
+}
+function sceneLabel(sid) { return SCENE_LABELS[sid] || sid; }
+
+// ── 互動分支：track 過濾 ──────────────────────────────────
+// SUBS 永遠是完整陣列（含所有分支）；播放時跳過「未被選中的 track」。
+// 不重建陣列的原因：cue、scene 對應、音檔命名全都以 SUBS 索引為準，
+// 重建會讓這些對應全部失效。
+// 位置必須在 gapOf / TOTAL_EST 之前 —— TOTAL_EST 是立即執行的 reduce，
+// 會呼叫 gapOf → prevActive → isActive → chosen，const 的 TDZ 不等人。
+const chosen = {};                     // { choiceSceneId: track }
+let awaiting = null;                   // 正在等待使用者選擇的 choice scene id
+function isActive(i) {
+  const t = SUBS[i].track;
+  if (!t) return true;                             // 主線永遠播
+  for (const k in chosen) if (chosen[k] === t) return true;
+  return false;
+}
+function nextActive(i) { while (i < SUBS.length && !isActive(i)) i++; return i; }
+function prevActive(i) { while (i > 0 && !isActive(i)) i--; return i; }
+function signatureFor(track) {
+  for (let i = 0; i < SUBS.length; i++) {
+    if (SUBS[i].track === track && SUBS[i].signature) return SUBS[i];
+  }
+  return null;
+}
+// 場景換場呼吸空拍（秒）：新場景畫面先進、旁白與字幕靜默 SCENE_GAP 秒再開始。
+// 旁白緊接著換場會給聽者壓迫感；預設 2 秒由 build_html.py --scene-gap 控制。
+const SCENE_GAP = 2.0;
+// 章節：分支 deck 的總長度隨選擇而變，線性百分比失去意義 → 改用章節點。
+// 兩者皆空時（舊 deck）沿用原本的線性進度條，行為完全不變。
+const CHAPTERS = ["COLD OPEN", "BEAT 1", "BEAT 2", "BEAT 3", "RECAP", "OUTRO"];
+const SCENE_CHAPTER = {"s01": "COLD OPEN", "s02": "COLD OPEN", "s03": "BEAT 1", "s04a": "BEAT 1", "s04b": "BEAT 1", "s04c": "BEAT 1", "s05": "BEAT 2", "s06": "BEAT 2", "s07a": "BEAT 2", "s07b": "BEAT 2", "s07c": "BEAT 2", "s08": "BEAT 3", "s09": "BEAT 3", "s10a": "BEAT 3", "s10b": "BEAT 3", "s10c": "BEAT 3", "s10z": "BEAT 3", "s11": "RECAP", "s12": "OUTRO"};
+function gapOf(i) {
+  if (i <= 0) return 0;
+  const p = prevActive(i - 1);          // 前一句可能是沒被選中的分支，要跳過
+  return SUBS[i].scene !== SUBS[p].scene ? SCENE_GAP : 0;
+}
+const TOTAL_EST = SUBS.reduce((a, s, i) => a + estDur(s) + gapOf(i), 0);
+
+const player = document.getElementById('player');
+const sceneEls = Array.from(document.querySelectorAll('.scene'));
+const subtitleBar = document.getElementById('subtitleBar');
+const progressBar = document.getElementById('progressBar');
+const topTime = document.getElementById('topTime');
+const timeinfo = document.getElementById('timeinfo');
+const sceneChip = document.getElementById('sceneChip');
+const audioNote = document.getElementById('audioNote');
+const playBtn = document.getElementById('playBtn');
+
+// ── BGM: starts on user Play only (autoplay policy); pauses with the deck; fades out at the end (筆記 §5.3) ──
+const bgm = document.getElementById('bgm');
+const BGM_VOLUME = 0.15;
+let bgmFadeTimer = null;
+function bgmStart() {
+  if (!bgm) return;
+  if (bgmFadeTimer) { clearInterval(bgmFadeTimer); bgmFadeTimer = null; }
+  bgm.volume = BGM_VOLUME;
+  const p = bgm.play();
+  if (p && p.catch) p.catch(() => {});
+}
+function bgmPause() { if (bgm) bgm.pause(); }
+function bgmFadeOut() {
+  if (!bgm || bgm.paused) return;
+  if (bgmFadeTimer) clearInterval(bgmFadeTimer);
+  bgmFadeTimer = setInterval(() => {
+    if (bgm.volume > 0.01) { bgm.volume = Math.max(0, bgm.volume - BGM_VOLUME / 35); }
+    else { bgm.pause(); clearInterval(bgmFadeTimer); bgmFadeTimer = null; }
+  }, 100);   // ≈3.5s fade — 結尾要有「留白收筆」的餘韻，太快像切斷
+}
+
+let curIdx = 0;
+let isPlaying = false;
+let virtualTimer = null;
+let elapsedBefore = 0;
+const actualDur = {};
+
+function fmt(t) {
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+function durOf(s) { return actualDur[s.id] || estDur(s); }
+function recalcElapsedBefore(idx) {
+  let t = 0;
+  for (let i = 0; i < idx; i++) if (isActive(i)) t += durOf(SUBS[i]) + gapOf(i);
+  elapsedBefore = t + gapOf(idx);   // 自身的換場空拍也算已經過的時間
+}
+function audioUrl(s) { return `${AUDIO_DIR}/${PREFIX}-${s.id}.mp3`; }
+function showScene(sid) {
+  sceneEls.forEach(el => el.classList.toggle('active', el.getAttribute('data-id') === sid));
+}
+function showSub(s) {
+  // replay sub 自己沒有 text —— 字幕要顯示被重播那句的原文
+  const t = s.replay ? (signatureFor(chosen[s.replay]) || {}).text : s.text;
+  if (t && t.trim()) {
+    subtitleBar.innerHTML = `<span class="marker">▸</span>${t}`;
+    subtitleBar.classList.remove('empty');
+  } else {
+    subtitleBar.classList.add('empty');
+  }
+}
+
+// ── Cue engine: one subtitle → one visual beat (筆記 §3–4) ──
+// scrollCueIntoView uses offsetTop/offsetHeight (layout coords — the reveal
+// translateY makes getBoundingClientRect lie) and sets scrollTop directly
+// (native smooth scrollTo can silently no-op; smoothness comes from CSS only).
+var _lastCueScene = null;
+function scrollCueIntoView(el, scene) {
+  var topR = 20, botR = 140;   // botR reserves the subtitle-bar band (incl. iOS safe area)
+  var view = scene.clientHeight - topR - botR;
+  if (view <= 0) return;
+  var elTop = el.offsetTop, elH = el.offsetHeight, elBot = elTop + elH;
+  var curTop = scene.scrollTop, visTop = curTop + topR, visBot = curTop + scene.clientHeight - botR;
+  var target;
+  if (elH >= view) { target = elTop - topR; }
+  else if (elBot > visBot) { target = elBot - (scene.clientHeight - botR) + 12; }
+  else if (elTop < visTop) { target = elTop - topR - 12; }
+  else { return; }
+  var max = scene.scrollHeight - scene.clientHeight;
+  // Force an instant scroll: if any CSS sets scroll-behavior:smooth, plain
+  // scrollTop assignment becomes an animated scroll that throttled/background
+  // tabs silently never run (measured in the v0.3.0 harness).
+  var prevSB = scene.style.scrollBehavior;
+  scene.style.scrollBehavior = 'auto';
+  scene.scrollTop = Math.max(0, Math.min(target, max));
+  scene.style.scrollBehavior = prevSB || '';
+}
+function showCues(s) {
+  var scene = document.querySelector('.scene[data-id="' + s.scene + '"]');
+  if (!scene) return;
+  var cur = s.id, els = scene.querySelectorAll('[data-cue]');
+  for (var i = 0; i < els.length; i++) {
+    var c = els[i].getAttribute('data-cue');
+    els[i].classList.remove('cue-on', 'cue-seen');
+    if (c < cur) { els[i].classList.add('cue-seen'); }
+    else if (c === cur) { els[i].classList.add('cue-on'); }
+  }
+  if (scene.scrollHeight > scene.clientHeight + 4) {      // only when the scene scrolls (= mobile)
+    if (_lastCueScene !== s.scene) { scene.scrollTop = 0; } // every scene starts at the top
+    var onEl = scene.querySelector('[data-cue="' + cur + '"].cue-on') || scene.querySelector('[data-cue].cue-on');
+    if (onEl) { setTimeout(function () { scrollCueIntoView(onEl, scene); }, 60); } // setTimeout, NOT rAF
+  }
+  _lastCueScene = s.scene;
+}
+const chaptersEl = document.getElementById('chapters');
+if (CHAPTERS.length) {
+  chaptersEl.innerHTML = CHAPTERS.map(c =>
+    '<span class="chapter-dot" data-chapter="' + c + '"></span>').join('');
+  progressBar.style.display = 'none';   // 章節模式下不用線性條
+}
+function updateChrome(curT) {
+  if (CHAPTERS.length) {
+    const cur = SCENE_CHAPTER[SUBS[curIdx].scene];
+    const at = CHAPTERS.indexOf(cur);
+    Array.from(chaptersEl.children).forEach((d, i) => {
+      d.classList.toggle('seen', i < at);
+      d.classList.toggle('now', i === at);
+    });
+    // 分支讓總長不可預測 → 只報已播時間，不報一個會說謊的總長
+    topTime.textContent = fmt(curT);
+    timeinfo.textContent = fmt(curT);                              // 控制列左：時間
+    sceneChip.textContent = cur || sceneLabel(SUBS[curIdx].scene); // 控制列右：章節
+    return;
+  }
+  const total = Math.max(TOTAL_EST, curT);
+  const pct = Math.min(100, curT / total * 100);
+  progressBar.style.width = pct + '%';
+  topTime.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  timeinfo.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  sceneChip.textContent = `${curIdx+1} / ${SUBS.length} ‧ ${sceneLabel(SUBS[curIdx].scene)}`;
+}
+function render(curIntra=0) {
+  const s = SUBS[curIdx];
+  showScene(s.scene);
+  showSub(s);
+  showCues(s);
+  updateChrome(elapsedBefore + curIntra);
+}
+function clearTimers() {
+  if (virtualTimer) { clearTimeout(virtualTimer); virtualTimer = null; }
+}
+// per-play token: every state change invalidates in-flight callbacks so a
+// stale onended / timer can never advance twice (筆記 §5.1)
+let playToken = 0;
+function requestAdvance(tok) { if (tok !== playToken) return; advance(); }
+
+function isLastSubOfScene(i) {
+  const j = nextActive(i + 1);
+  return j >= SUBS.length || SUBS[j].scene !== SUBS[i].scene;
+}
+
+function advance() {
+  const s = SUBS[curIdx];
+  if (player.duration && !isNaN(player.duration) && player.duration > 0.1) {
+    actualDur[s.id] = player.duration;
+  }
+  clearTimers();
+  // 這一場是 choice 且還沒選 → 停在這裡等使用者，不推進
+  if (choiceScenes[s.scene] && !chosen[s.scene] && isLastSubOfScene(curIdx)) {
+    enterChoice(s.scene);
+    return;
+  }
+  const nxt = nextActive(curIdx + 1);
+  if (nxt < SUBS.length) {
+    curIdx = nxt;
+    elapsedBefore += durOf(s) + gapOf(curIdx);
+    render(0);
+    if (isPlaying) {
+      const g = gapOf(curIdx);
+      if (g > 0) {
+        // 呼吸空拍：畫面已換場（含 cue），字幕先收起、旁白延後 g 秒（手動跳轉不套用）
+        subtitleBar.classList.add('empty');
+        const tok = ++playToken;
+        virtualTimer = setTimeout(() => {
+          if (tok !== playToken) return;
+          render(0);          // 字幕與旁白同步出現
+          playCurrent();
+        }, g * 1000);
+      } else {
+        playCurrent();
+      }
+    }
+  } else {
+    // 播完最後一段：停在當前畫面，不要重置（讓使用者能點 CTA 按鈕、填表單等互動元素）
+    // 重要：不要呼叫 stop()（那會把 curIdx 重置為 0、跳回開頭），否則 final CTA 會消失。
+    isPlaying = false;
+    setPlayBtn(false);
+    player.pause();
+    render(durOf(s));  // 進度條跳到 100%、停留在最後場景
+    bgmFadeOut();
+  }
+}
+
+const preloader = new Audio();
+preloader.preload = 'auto';
+function preloadNext() {
+  for (let j = curIdx + 1; j < SUBS.length; j++) {
+    if (SUBS[j].text && SUBS[j].text.trim()) {
+      preloader.src = audioUrl(SUBS[j]);
+      preloader.load();
+      return;
+    }
+  }
+}
+
+function playCurrent() {
+  const s = SUBS[curIdx];
+  clearTimers();
+  const tok = ++playToken;
+  if (s.replay) {
+    // 個人化重播：不產生新音檔，直接放使用者選過的那句的 mp3
+    fillRecapRow(s.replay);
+    const sig = signatureFor(chosen[s.replay]);
+    if (sig) {
+      player.onended = () => requestAdvance(tok);
+      player.onerror = () => {
+        console.warn('audio error for replay', s.replay);
+        audioNote.style.display = '';
+        if (isPlaying) {
+          clearTimers();
+          virtualTimer = setTimeout(() => requestAdvance(tok), estDur(sig) * 1000);
+        }
+      };
+      player.src = audioUrl(sig);
+      player.load();
+      const pr = player.play();
+      if (pr && pr.catch) pr.catch(() => {
+        virtualTimer = setTimeout(() => requestAdvance(tok), estDur(sig) * 1000);
+      });
+    } else {
+      // 沒選過（例如直接跳到 recap）→ 當靜音幀跳過
+      player.onended = null; player.onerror = null;
+      player.removeAttribute('src'); player.load();
+      virtualTimer = setTimeout(() => requestAdvance(tok), 800);
+    }
+    preloadNext();
+    return;
+  }
+  if (s.text && s.text.trim()) {
+    player.onended = () => requestAdvance(tok);
+    player.onerror = () => {
+      console.warn('audio error for', s.id);
+      audioNote.style.display = '';
+      if (isPlaying) {
+        clearTimers();
+        virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+      }
+    };
+    player.src = audioUrl(s);
+    player.load();
+    const promise = player.play();
+    if (promise && promise.catch) promise.catch(err => {
+      console.warn('audio play failed:', err);
+      virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+    });
+    audioNote.style.display = 'none';
+  } else {
+    // silent frame: drop handlers + src so nothing can replay the previous clip (筆記 §5.1)
+    player.onended = null; player.onerror = null;
+    player.removeAttribute('src'); player.load();
+    virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+  }
+  preloadNext();
+}
+function setPlayBtn(playing) {
+  const ic = playBtn.querySelector('.ticon'), lb = playBtn.querySelector('.tlabel');
+  if (ic) ic.textContent = playing ? '⏸' : '▶';
+  if (lb) lb.textContent = playing ? 'Pause' : 'Play';
+  playBtn.classList.toggle('is-playing', playing);
+}
+// ── 首播 CTA：中央大 Play → 縮小飛入 dock 播放鍵（過場約 0.65s） ──
+const bigPlay = document.getElementById('bigPlay');
+if (bigPlay) document.body.classList.add('has-bigplay');
+function morphBigPlay() {
+  if (!bigPlay || bigPlay.classList.contains('morph')) return;
+  const from = bigPlay.getBoundingClientRect();
+  const to = playBtn.getBoundingClientRect();
+  bigPlay.style.setProperty('--bp-dx', ((to.left + to.width / 2) - (from.left + from.width / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-dy', ((to.top + to.height / 2) - (from.top + from.height / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-scale', (to.width / from.width).toFixed(3));
+  bigPlay.classList.add('morph');
+  document.body.classList.remove('has-bigplay');   // dock 播放鍵的光環提示恢復運作
+  // 不靠 transitionend：reduced-motion 或分頁節流時可能不觸發 → 定時保底移除
+  setTimeout(() => bigPlay.remove(), 900);
+}
+if (bigPlay) bigPlay.addEventListener('click', () => play());
+
+function play() { isPlaying = true; setPlayBtn(true); morphBigPlay(); bgmStart(); playCurrent(); }
+function pause() { isPlaying = false; setPlayBtn(false); playToken++; clearTimers(); player.pause(); bgmPause(); }
+function stop() {
+  pause();
+  // 重播＝重玩：清掉選擇，讓使用者可以走不同分支
+  for (const k in chosen) delete chosen[k];
+  awaiting = null;
+  document.querySelectorAll('.choice-opt.picked').forEach(b => b.classList.remove('picked'));
+  document.querySelectorAll('.scene-choice.awaiting').forEach(e => e.classList.remove('awaiting'));
+  document.querySelectorAll('.recap-row.filled').forEach(r => {
+    r.classList.remove('filled');
+    r.querySelector('.recap-line').textContent = '';
+    r.querySelector('.recap-tone').textContent = '';
+  });
+  curIdx = 0; elapsedBefore = 0; render(0);
+}
+function goTo(idx, autoplay = isPlaying) {
+  playToken++;
+  clearTimers();
+  player.pause();
+  curIdx = Math.max(0, Math.min(SUBS.length - 1, idx));
+  recalcElapsedBefore(curIdx);
+  render(0);
+  if (autoplay) playCurrent();
+}
+function gotoScene(direction) {
+  const curScene = SUBS[curIdx].scene;
+  if (direction === 'next') {
+    let i = nextActive(curIdx + 1);
+    while (i < SUBS.length && SUBS[i].scene === curScene) i = nextActive(i + 1);
+    if (i >= SUBS.length) i = curIdx;
+    goTo(i);
+  } else {
+    let i = curIdx;
+    while (i > 0 && SUBS[prevActive(i - 1)].scene === curScene) i = prevActive(i - 1);
+    if (i === curIdx && i > 0) {
+      const prevScene = SUBS[prevActive(i - 1)].scene;
+      i = prevActive(i - 1);
+      while (i > 0 && SUBS[prevActive(i - 1)].scene === prevScene) i = prevActive(i - 1);
+    }
+    goTo(i);
+  }
+}
+
+// ── 互動分支：選擇畫面的暫停與跳轉 ──────────────────────────
+const choiceScenes = {};
+document.querySelectorAll('.scene-choice').forEach(el => {
+  choiceScenes[el.getAttribute('data-id')] = el;
+});
+function enterChoice(sid) {
+  awaiting = sid;
+  isPlaying = false;
+  setPlayBtn(false);
+  playToken++;              // 讓任何在途的 onended / timer 失效
+  player.pause();
+  choiceScenes[sid].classList.add('awaiting');
+}
+function pickChoice(sid, track) {
+  if (awaiting !== sid) return;
+  chosen[sid] = track;
+  const el = choiceScenes[sid];
+  el.classList.remove('awaiting');
+  el.querySelectorAll('.choice-opt').forEach(b =>
+    b.classList.toggle('picked', b.getAttribute('data-track') === track));
+  awaiting = null;
+  let i = -1;
+  for (let k = 0; k < SUBS.length; k++) { if (SUBS[k].track === track) { i = k; break; } }
+  if (i < 0) i = nextActive(curIdx + 1);   // 該分支沒有任何 sub → 直接回主線
+  isPlaying = true;
+  setPlayBtn(true);
+  bgmStart();
+  goTo(i, true);
+}
+document.querySelectorAll('.choice-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sceneEl = btn.closest('.scene-choice');
+    pickChoice(sceneEl.getAttribute('data-id'), btn.getAttribute('data-track'));
+  });
+});
+// 個人化回顧：把使用者選中的那張選項卡的字，搬到 recap 列上。
+// 資料來源是已渲染的 DOM（不是 JSON）——「選了什麼」只有執行期才知道。
+function fillRecapRow(sid) {
+  const row = document.querySelector('.recap-row[data-recap="' + sid + '"]');
+  if (!row) return;
+  const el = choiceScenes[sid];
+  const btn = el && el.querySelector('.choice-opt.picked');
+  if (!btn) return;
+  const label = btn.querySelector('.choice-label');
+  const tone = btn.querySelector('.choice-tone');
+  if (label) row.querySelector('.recap-line').textContent = label.textContent;
+  if (tone) row.querySelector('.recap-tone').textContent = tone.textContent;
+  row.classList.add('filled');
+}
+
+player.addEventListener('timeupdate', () => {
+  if (isPlaying) render(player.currentTime || 0);
+});
+
+playBtn.addEventListener('click', () => {
+  if (awaiting) return;            // 等使用者選擇時，播放鍵不作用（否則會卡在選擇畫面空轉）
+  isPlaying ? pause() : play();
+});
+document.getElementById('restartBtn').addEventListener('click', stop);
+document.getElementById('prevBtn').addEventListener('click', () => gotoScene('prev'));
+document.getElementById('nextBtn').addEventListener('click', () => gotoScene('next'));
+
+document.addEventListener('keydown', e => {
+  if (awaiting && /^Digit[1-9]$/.test(e.code)) {   // 數字鍵選擇，與滑鼠等效
+    e.preventDefault();
+    const btns = choiceScenes[awaiting].querySelectorAll('.choice-opt');
+    const b = btns[Number(e.code.slice(5)) - 1];
+    if (b) b.click();
+    return;
+  }
+  if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+  if (e.code === 'ArrowLeft') gotoScene('prev');
+  if (e.code === 'ArrowRight') gotoScene('next');
+});
+
+render(0);
+</script>
+</body>
+</html>
