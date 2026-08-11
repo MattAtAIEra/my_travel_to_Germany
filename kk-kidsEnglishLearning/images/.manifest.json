@@ -1,0 +1,80 @@
+{
+  "s02-full.jpg": {
+    "prompt_hash": "b8303a6c74d0af8d",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s01-full.jpg": {
+    "prompt_hash": "500ffd54a7f2b631",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04a-full.jpg": {
+    "prompt_hash": "1a1985c03dd09993",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04b-full.jpg": {
+    "prompt_hash": "d544e92fb61fb8eb",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04c-full.jpg": {
+    "prompt_hash": "ea0ede21bd5f7bc7",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s06a-full.jpg": {
+    "prompt_hash": "1040e51d34c26e2d",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s06b-full.jpg": {
+    "prompt_hash": "bd746a2fac29e994",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s06c-full.jpg": {
+    "prompt_hash": "b7861b46b881f209",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s07-full.jpg": {
+    "prompt_hash": "887c6bdffd35c460",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s09a-full.jpg": {
+    "prompt_hash": "4a7e1552f26250c3",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s09b-full.jpg": {
+    "prompt_hash": "71d6ca38b2bb15c5",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s09c-full.jpg": {
+    "prompt_hash": "a291dce637a338c3",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s10-full.jpg": {
+    "prompt_hash": "fa0c5fdc9a05deb9",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  }
+}

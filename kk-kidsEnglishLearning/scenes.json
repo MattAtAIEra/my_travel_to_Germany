@@ -1,0 +1,350 @@
+{
+  "meta": {
+    "style": "Bright full-colour cartoon illustration in a clean modern storybook style: bold uniform dark-brown outlines of even weight, flat colour fills with soft simple cel shading, no gradients and no painterly texture, warm cream background, friendly rounded shapes, wholesome and cheerful, expressive exaggerated cartoon acting. Children's English-learning material for six to ten year olds. No written words, speech bubbles, captions or signage anywhere in the image.",
+    "characters": {
+      "CAPTAIN_A": "A gentle, handsome young Taiwanese man in his early twenties, tall and slim, soft messy black hair with spiky bangs, warm dark eyes, a shy kind smile, wearing a bright royal-blue polo shirt with a small white letter A patch on the chest. Calm, patient, a little bashful; he never looks stern.",
+      "FUNKY": "A cheerful Taiwanese woman in her fifties, chin-length wavy auburn-brown hair with silver streaks, round rosy cheeks, warm smiling eyes with gentle laugh lines, an enormous crown of colourful flowers, strawberries and small school supplies sitting on her head, a cream cable-knit cardigan over a small-floral blouse, layered colourful beaded necklaces and bracelets. Wildly enthusiastic and expressive, always caught mid-gesture.",
+      "REX": "A small friendly cartoon dinosaur: a chubby grey-brown long-necked sauropod with soft cream spots, big round expressive eyes, a wide happy smile, wearing a little royal-blue baseball cap with a white letter A and a red paisley bandana around his neck. He rides on CAPTAIN_A's shoulder. Clever, and a little bit of a show-off."
+    }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "storybook",
+      "chapter": "WARM-UP",
+      "label": "The secret",
+      "props": {
+        "eyebrow": "CAPTAIN A ‧ EP.01",
+        "caption": "Shhh...",
+        "image": {
+          "characters": [
+            "CAPTAIN_A",
+            "REX"
+          ],
+          "prompt": "CAPTAIN_A leans down conspiratorially with one hand cupped beside his mouth, whispering a secret; REX sits on his shoulder and tilts his big head in close to listen, one small claw beside his ear. They are in a bright cosy home kitchen corner. Playful mischievous mood, both of them clearly enjoying the secret."
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "type": "storybook",
+      "chapter": "WARM-UP",
+      "label": "She heard that",
+      "props": {
+        "caption": "She heard that.",
+        "image": {
+          "characters": [
+            "FUNKY",
+            "CAPTAIN_A",
+            "REX"
+          ],
+          "prompt": "FUNKY bursts into the frame from the left with both hands on her hips and eyes sparkling, holding one shiny red apple triumphantly above her head; CAPTAIN_A jumps in fright with his shoulders up around his ears; REX topples backwards on his shoulder laughing. High-energy comedic entrance in the same kitchen."
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "type": "choice",
+      "chapter": "ROUND 1",
+      "label": "Your move",
+      "cue": "006",
+      "props": {
+        "eyebrow": "ROUND 1 ‧ HELP CAPTAIN A",
+        "prompt": "What does Captain A say?",
+        "options": [
+          {
+            "label": "It's an apple.",
+            "track": "b1a",
+            "tone": "FULL SENTENCE",
+            "cue": "007"
+          },
+          {
+            "label": "Apple. A - P - P - L - E.",
+            "track": "b1b",
+            "tone": "SPELL IT"
+          },
+          {
+            "label": "You just said it, Funky.",
+            "track": "b1c",
+            "tone": "CHEEKY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04a",
+      "type": "storybook",
+      "chapter": "ROUND 1",
+      "label": "Full sentence",
+      "props": {
+        "eyebrow": "FULL SENTENCE",
+        "image": {
+          "characters": [
+            "CAPTAIN_A",
+            "FUNKY",
+            "REX"
+          ],
+          "prompt": "CAPTAIN_A calmly holds up a single index finger with a gentle patient smile; FUNKY leans in very close with an enormous delighted open-mouthed realisation, both hands flying up beside her face; REX nods approvingly on the shoulder. The red apple rests on the counter between them."
+        }
+      }
+    },
+    {
+      "id": "s04b",
+      "type": "storybook",
+      "chapter": "ROUND 1",
+      "label": "Spell it",
+      "props": {
+        "eyebrow": "SPELL IT",
+        "image": {
+          "characters": [
+            "CAPTAIN_A",
+            "FUNKY",
+            "REX"
+          ],
+          "prompt": "CAPTAIN_A patiently holds up five fingers, counting them off one at a time with a gentle encouraging smile; FUNKY copies him with both hands up, counting on her own fingers, her whole face lit up with a huge delighted open-mouthed grin and bright wide eyes — she is thrilled that she can follow along. She must look warm, joyful and kind at all times: never frowning, never scowling, never squinting crossly. REX bounces up and down on CAPTAIN_A's shoulder, unable to wait his turn. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s04c",
+      "type": "storybook",
+      "chapter": "ROUND 1",
+      "label": "Cheeky",
+      "props": {
+        "eyebrow": "CHEEKY",
+        "caption": "(Funky... you already said it.)",
+        "image": {
+          "characters": [
+            "CAPTAIN_A",
+            "FUNKY",
+            "REX"
+          ],
+          "prompt": "CAPTAIN_A gives a tiny shy amused smile while rubbing the back of his neck and glancing away; FUNKY points at her own nose with a completely baffled expression, head tilted; REX covers his mouth with both little claws, snickering. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "type": "choice",
+      "chapter": "ROUND 2",
+      "label": "Rex shows off",
+      "cue": "020",
+      "props": {
+        "eyebrow": "ROUND 2 ‧ HELP REX",
+        "prompt": "How does Rex show off?",
+        "options": [
+          {
+            "label": "Of course! Apple!",
+            "track": "b2a",
+            "tone": "PROUD",
+            "cue": "021"
+          },
+          {
+            "label": "A - P - P - L - E! Very easy!",
+            "track": "b2b",
+            "tone": "SPELLING STAR"
+          },
+          {
+            "label": "Apple, apple, apple!",
+            "track": "b2c",
+            "tone": "CAN'T STOP"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06a",
+      "type": "storybook",
+      "chapter": "ROUND 2",
+      "label": "Proud",
+      "props": {
+        "eyebrow": "PROUD",
+        "image": {
+          "characters": [
+            "REX",
+            "FUNKY",
+            "CAPTAIN_A"
+          ],
+          "prompt": "REX stands up tall on CAPTAIN_A's shoulder puffing his chest out enormously, chin high, tail curled proudly; FUNKY throws both arms straight up in exaggerated amazement with her flower crown bouncing; CAPTAIN_A laughs warmly with his eyes closed. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s06b",
+      "type": "storybook",
+      "chapter": "ROUND 2",
+      "label": "Spelling star",
+      "props": {
+        "eyebrow": "SPELLING STAR",
+        "image": {
+          "characters": [
+            "REX",
+            "FUNKY",
+            "CAPTAIN_A"
+          ],
+          "prompt": "REX spreads his little front claws wide mid-performance with his mouth open in a confident announcement; FUNKY covers her mouth with both hands, eyes enormous with astonishment; CAPTAIN_A smiles gently and proudly at his small friend."
+        }
+      }
+    },
+    {
+      "id": "s06c",
+      "type": "storybook",
+      "chapter": "ROUND 2",
+      "label": "Can't stop",
+      "props": {
+        "eyebrow": "CAN'T STOP",
+        "image": {
+          "characters": [
+            "REX",
+            "FUNKY",
+            "CAPTAIN_A"
+          ],
+          "prompt": "REX chatters nonstop with his mouth wide open and eyes squeezed shut in pure enthusiasm; FUNKY holds up both palms in a laughing 'okay okay, enough!' gesture; CAPTAIN_A presses his lips together trying very hard not to laugh. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s07",
+      "type": "storybook",
+      "chapter": "QUIZ",
+      "label": "Two apples",
+      "props": {
+        "eyebrow": "QUIZ",
+        "caption": "Two of them.",
+        "image": {
+          "characters": [
+            "FUNKY",
+            "CAPTAIN_A",
+            "REX"
+          ],
+          "prompt": "FUNKY holds up two shiny red apples, one in each hand, and thrusts them forward toward CAPTAIN_A with a commanding delighted grin; CAPTAIN_A accepts them with a resigned but affectionate gentle smile; REX leans down from the shoulder to peer closely at the two apples. The two apples are clearly and prominently visible in the centre of the frame. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "type": "choice",
+      "chapter": "QUIZ",
+      "label": "How do you say it",
+      "cue": "037",
+      "props": {
+        "eyebrow": "QUIZ ‧ HELP FUNKY",
+        "prompt": "Funky has 2. What does she say?",
+        "options": [
+          {
+            "label": "Two apple!",
+            "track": "b3a"
+          },
+          {
+            "label": "Two apples!",
+            "track": "b3b"
+          },
+          {
+            "label": "Apple two!",
+            "track": "b3c"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09a",
+      "type": "storybook",
+      "chapter": "QUIZ",
+      "label": "So close",
+      "props": {
+        "eyebrow": "SO CLOSE",
+        "image": {
+          "characters": [
+            "FUNKY",
+            "REX",
+            "CAPTAIN_A"
+          ],
+          "prompt": "FUNKY announces something proudly with her chin up and one finger raised, holding the two red apples; REX gently lifts one small claw with a kind encouraging expression, as if to say 'so close'; CAPTAIN_A smiles warmly and does not correct her. Nobody looks disappointed. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s09b",
+      "type": "storybook",
+      "chapter": "QUIZ",
+      "label": "Correct",
+      "props": {
+        "eyebrow": "CORRECT!",
+        "image": {
+          "characters": [
+            "FUNKY",
+            "REX",
+            "CAPTAIN_A"
+          ],
+          "prompt": "FUNKY beams with both fists raised in triumph and her eyes squeezed shut in joy, the two red apples tucked under one arm; REX cheers with both claws in the air on the shoulder; CAPTAIN_A applauds softly with a proud warm smile. Bright celebratory sparkles and confetti shapes fill the air around them. The scene takes place in the same bright cosy home kitchen as always: warm wood cabinets, a patterned tile backsplash, a sunny window and a wooden countertop. REX is small — about the size of a house cat — and stays perched on CAPTAIN_A's shoulder; he is never standing on the ground and never full size."
+        }
+      }
+    },
+    {
+      "id": "s09c",
+      "type": "storybook",
+      "chapter": "QUIZ",
+      "label": "Wrong order",
+      "props": {
+        "eyebrow": "WRONG ORDER",
+        "image": {
+          "characters": [
+            "FUNKY",
+            "REX",
+            "CAPTAIN_A"
+          ],
+          "prompt": "FUNKY tilts her head with a puzzled but cheerful expression, one eyebrow up; REX gestures with both small claws from left to right as if putting two things in the correct order; the two red apples sit clearly on the counter in front of them; CAPTAIN_A watches fondly."
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "type": "storybook",
+      "chapter": "QUIZ",
+      "label": "Washing apples",
+      "props": {
+        "caption": "Apple washing time!",
+        "image": {
+          "characters": [
+            "CAPTAIN_A",
+            "FUNKY",
+            "REX"
+          ],
+          "prompt": "All three at a bright kitchen sink washing two red apples together under running water, cheerful water droplets and bubbles splashing everywhere; FUNKY laughs with her head back; CAPTAIN_A holds an apple under the tap with a contented smile; REX catches a droplet on his nose. Warm, joyful, sunlit ending."
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "type": "recap-choices",
+      "chapter": "RECAP",
+      "label": "Your three lines",
+      "props": {
+        "title": "You chose these three.",
+        "choices": [
+          "s03",
+          "s05",
+          "s08"
+        ],
+        "footer": [
+          {
+            "text": "One from Captain A. One from Rex. One from Funky.",
+            "cue": "057"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s12",
+      "type": "generic",
+      "chapter": "RECAP",
+      "label": "Today's words",
+      "cue": "058",
+      "props": {
+        "eyebrow": "TODAY'S WORDS",
+        "title": "Today you learned",
+        "body_html": "<div class='kk-cards' data-cue=\"059\"><div class='kk-word'>apple<div class='kk-zh'>just one</div></div><div class='kk-word'>two apple<span class='kk-s'>s</span><div class='kk-zh'>more than one</div></div></div><div class='kk-bye' data-cue=\"060\">More than one? Add an <span class='kk-s'>s</span>! &nbsp;See you tomorrow!</div>"
+      }
+    }
+  ]
+}

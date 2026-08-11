@@ -1,0 +1,527 @@
+{
+  "prefix": "KK01",
+  "title": "Two Apples — Captain A ‧ EP.01",
+  "voices": {
+    "captain_a": "hd5CZt9EmlupFYXziBnV",
+    "funky": "cgSgspJ2msm6clMCkdW9",
+    "rex": "iHiL14jSTiWXy4nzDtbq"
+  },
+  "subs": [
+    {
+      "id": "001",
+      "scene": "s01",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Pssst... Rex. Come here.",
+      "dur": 1.58
+    },
+    {
+      "id": "002",
+      "scene": "s01",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Funky is so crazy today!",
+      "dur": 1.72
+    },
+    {
+      "id": "003",
+      "scene": "s01",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Shhh! Don't let her hear!",
+      "dur": 2.09
+    },
+    {
+      "id": "004",
+      "scene": "s02",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Captain A~~~~!",
+      "dur": 1.11
+    },
+    {
+      "id": "005",
+      "scene": "s02",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Quick, quick! Look what I have!",
+      "dur": 1.76
+    },
+    {
+      "id": "006",
+      "scene": "s03",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Apple! Look! Apple!",
+      "dur": 1.49
+    },
+    {
+      "id": "007",
+      "scene": "s03",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Wait, no... how do you say it in English?",
+      "dur": 2.79
+    },
+    {
+      "id": "008",
+      "scene": "s04a",
+      "track": "b1a",
+      "signature": true,
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "It's an apple.",
+      "dur": 1.07
+    },
+    {
+      "id": "009",
+      "scene": "s04a",
+      "track": "b1a",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "It's an apple... Ohhh! You put an 'an' in front!",
+      "dur": 3.67
+    },
+    {
+      "id": "010",
+      "scene": "s04a",
+      "track": "b1a",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "An apple. One apple.",
+      "dur": 1.53
+    },
+    {
+      "id": "011",
+      "scene": "s04a",
+      "track": "b1a",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Yes. One apple.",
+      "dur": 1.35
+    },
+    {
+      "id": "012",
+      "scene": "s04b",
+      "track": "b1b",
+      "signature": true,
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Apple. A - P - P - L - E.",
+      "dur": 2.65
+    },
+    {
+      "id": "013",
+      "scene": "s04b",
+      "track": "b1b",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "A - P - P - L - E... Oh! Slowly, I can do it!",
+      "dur": 8.22
+    },
+    {
+      "id": "014",
+      "scene": "s04b",
+      "track": "b1b",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "A - P - P - L - E! Apple!",
+      "dur": 3.81
+    },
+    {
+      "id": "015",
+      "scene": "s04b",
+      "track": "b1b",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Rex! You are too fast!",
+      "dur": 1.67
+    },
+    {
+      "id": "016",
+      "scene": "s04c",
+      "track": "b1c",
+      "signature": true,
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "You just said it, Funky.",
+      "dur": 1.49
+    },
+    {
+      "id": "017",
+      "scene": "s04c",
+      "track": "b1c",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "I said it? ...Did I?",
+      "dur": 1.53
+    },
+    {
+      "id": "018",
+      "scene": "s04c",
+      "track": "b1c",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "You did. Apple.",
+      "dur": 1.44
+    },
+    {
+      "id": "019",
+      "scene": "s04c",
+      "track": "b1c",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Oh! Then I am very good!",
+      "dur": 1.58
+    },
+    {
+      "id": "020",
+      "scene": "s05",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "And Rex? Rex, do you know it too?",
+      "dur": 2.69
+    },
+    {
+      "id": "021",
+      "scene": "s05",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Ask me! Ask me!",
+      "dur": 1.72
+    },
+    {
+      "id": "022",
+      "scene": "s06a",
+      "track": "b2a",
+      "signature": true,
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Of course! Apple!",
+      "dur": 1.63
+    },
+    {
+      "id": "023",
+      "scene": "s06a",
+      "track": "b2a",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Wow! Rex is so smart!",
+      "dur": 1.72
+    },
+    {
+      "id": "024",
+      "scene": "s06a",
+      "track": "b2a",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Super... Big Smart!",
+      "dur": 1.63
+    },
+    {
+      "id": "025",
+      "scene": "s06a",
+      "track": "b2a",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Very smart, Funky. Very smart.",
+      "dur": 2.23
+    },
+    {
+      "id": "026",
+      "scene": "s06b",
+      "track": "b2b",
+      "signature": true,
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "A - P - P - L - E! Very easy!",
+      "dur": 4.37
+    },
+    {
+      "id": "027",
+      "scene": "s06b",
+      "track": "b2b",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Amazing! The little dinosaur can spell!",
+      "dur": 2.41
+    },
+    {
+      "id": "028",
+      "scene": "s06b",
+      "track": "b2b",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "He practices every day.",
+      "dur": 1.58
+    },
+    {
+      "id": "029",
+      "scene": "s06b",
+      "track": "b2b",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Every day!",
+      "dur": 1.07
+    },
+    {
+      "id": "030",
+      "scene": "s06c",
+      "track": "b2c",
+      "signature": true,
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Apple, apple, apple!",
+      "dur": 1.39
+    },
+    {
+      "id": "031",
+      "scene": "s06c",
+      "track": "b2c",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Okay, okay! I know, I know!",
+      "dur": 1.72
+    },
+    {
+      "id": "032",
+      "scene": "s06c",
+      "track": "b2c",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "He gets excited.",
+      "dur": 1.25
+    },
+    {
+      "id": "033",
+      "scene": "s06c",
+      "track": "b2c",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "...Apple.",
+      "dur": 0.88
+    },
+    {
+      "id": "034",
+      "scene": "s07",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Captain A~~~! Quick, quick!",
+      "dur": 1.95
+    },
+    {
+      "id": "035",
+      "scene": "s07",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Go wash them for me and Rex! Now!",
+      "dur": 2.18
+    },
+    {
+      "id": "036",
+      "scene": "s07",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Yes, Funky...",
+      "dur": 1.07
+    },
+    {
+      "id": "037",
+      "scene": "s08",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Wait... I have 2. How do I say it?",
+      "dur": 2.97
+    },
+    {
+      "id": "038",
+      "scene": "s09a",
+      "track": "b3a",
+      "signature": true,
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Two apple!",
+      "dur": 0.93
+    },
+    {
+      "id": "039",
+      "scene": "s09a",
+      "track": "b3a",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Ooh! Almost! Two apples.",
+      "dur": 2.18
+    },
+    {
+      "id": "040",
+      "scene": "s09a",
+      "track": "b3a",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Two! So we add an s. Apples!",
+      "dur": 2.18
+    },
+    {
+      "id": "041",
+      "scene": "s09a",
+      "track": "b3a",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Ohhh! I need an s!",
+      "dur": 1.58
+    },
+    {
+      "id": "042",
+      "scene": "s09b",
+      "track": "b3b",
+      "signature": true,
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Two apples!",
+      "dur": 0.98
+    },
+    {
+      "id": "043",
+      "scene": "s09b",
+      "track": "b3b",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Yes! Two apples!",
+      "dur": 1.53
+    },
+    {
+      "id": "044",
+      "scene": "s09b",
+      "track": "b3b",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Perfect, Funky.",
+      "dur": 1.25
+    },
+    {
+      "id": "045",
+      "scene": "s09b",
+      "track": "b3b",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "I did it! I said it right!",
+      "dur": 1.53
+    },
+    {
+      "id": "046",
+      "scene": "s09c",
+      "track": "b3c",
+      "signature": true,
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Apple two!",
+      "dur": 0.88
+    },
+    {
+      "id": "047",
+      "scene": "s09c",
+      "track": "b3c",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Hmm! Number first — two apples.",
+      "dur": 2.6
+    },
+    {
+      "id": "048",
+      "scene": "s09c",
+      "track": "b3c",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Two apples. With an s!",
+      "dur": 1.9
+    },
+    {
+      "id": "049",
+      "scene": "s09c",
+      "track": "b3c",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Oh! The number goes first!",
+      "dur": 1.67
+    },
+    {
+      "id": "050",
+      "scene": "s10",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Captain A! Rex! Let's wash the apples!",
+      "dur": 2.41
+    },
+    {
+      "id": "051",
+      "scene": "s10",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Two apples, coming up.",
+      "dur": 1.58
+    },
+    {
+      "id": "052",
+      "scene": "s10",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "Two apples! With an s!",
+      "dur": 1.81
+    },
+    {
+      "id": "053",
+      "scene": "s10",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "What a wonderful day!",
+      "dur": 1.35
+    },
+    {
+      "id": "054",
+      "scene": "s11",
+      "replay": "s03"
+    },
+    {
+      "id": "055",
+      "scene": "s11",
+      "replay": "s05"
+    },
+    {
+      "id": "056",
+      "scene": "s11",
+      "replay": "s08"
+    },
+    {
+      "id": "057",
+      "scene": "s11",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "These three lines — you chose them all!",
+      "dur": 2.09
+    },
+    {
+      "id": "058",
+      "scene": "s12",
+      "voice": "captain_a",
+      "speaker": "Captain A",
+      "text": "Today's words.",
+      "dur": 1.25
+    },
+    {
+      "id": "059",
+      "scene": "s12",
+      "voice": "funky",
+      "speaker": "Funky",
+      "text": "Apple... two apples! I remember!",
+      "dur": 2.79
+    },
+    {
+      "id": "060",
+      "scene": "s12",
+      "voice": "rex",
+      "speaker": "Rex",
+      "text": "See you tomorrow!",
+      "dur": 1.35
+    }
+  ]
+}
