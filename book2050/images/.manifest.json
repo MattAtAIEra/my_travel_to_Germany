@@ -1,0 +1,81 @@
+{
+  "s01-hero.jpg": {
+    "prompt_hash": "657e761222a154a0",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s02-full.jpg": {
+    "prompt_hash": "bd99fb3c78fe10aa",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s04-side.jpg": {
+    "prompt_hash": "05a83771c268f449",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s06-full.jpg": {
+    "prompt_hash": "82fcce169cc35de6",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s07-full.jpg": {
+    "prompt_hash": "04d367df772ae189",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s09-side.jpg": {
+    "prompt_hash": "1810396024f721cc",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s11-full.jpg": {
+    "prompt_hash": "0c9c4917b3d426ba",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s14-full.jpg": {
+    "prompt_hash": "c9b5ef56bed27044",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s15-full.jpg": {
+    "prompt_hash": "a4f976b021b256e2",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s17-full.jpg": {
+    "prompt_hash": "b1d8f42a65730dd1",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s18-side.jpg": {
+    "prompt_hash": "640c68f39ccae8c0",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s19-hero.jpg": {
+    "prompt_hash": "0a0bd3c45c41819c",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "characters/李國憲.jpg": {
+    "prompt_hash": "51a8692931fd83bf",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1",
+    "note": "由真人照 doctor.webp 轉繪，勿用純文字描述覆蓋"
+  }
+}

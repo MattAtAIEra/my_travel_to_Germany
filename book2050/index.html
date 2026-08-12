@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>2050自主智慧時代 ‧ 書籍介紹</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+/* ── Theme tokens (overridden by themes/{theme}.css below) ──────── */
+:root {
+  --primary: #2C5F2D;
+  --secondary: #97BC62;
+  --accent: #C7392F;
+  --warn: #E8A93C;
+  --glow: 232,169,60;      /* CTA 脈動光環，RGB 三元組（= --warn）— 主題覆寫 --warn 時請一併覆寫 */
+  --cream: #F5F4EC;
+  --ink: #1A2E1B;
+  --dim: #6B7770;
+  --white: #ffffff;
+  --display-font: "Microsoft JhengHei", "PingFang TC", "Noto Sans CJK TC", "Source Han Sans TC", sans-serif;
+
+  /* ── 液態玻璃操作面板（公版預設）────────────────────────────────
+     頂欄、控制列、字幕條一律是懸浮的煙燻玻璃膠囊，畫面本身滿版。
+     --glass-rgb 是玻璃的底色，主題可覆寫成自家品牌色（例如元大深藍）。
+     不透明度預設偏高（0.72／0.60）：玻璃要同時蓋在淺色資訊版面與深色照片上，
+     太透明會讓白字在淺底上掉到 4:1 以下。以照片為主角的主題（glass）
+     自行調低，換取通透感。 */
+  --glass-rgb: 16, 24, 36;
+  --glass-bg: linear-gradient(150deg, rgba(var(--glass-rgb), 0.72), rgba(var(--glass-rgb), 0.60));
+  --glass-border: 1px solid rgba(255, 255, 255, 0.22);
+  --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+                  inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+                  0 12px 40px rgba(0, 0, 0, 0.32);
+  --glass-blur: blur(24px) saturate(170%);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--display-font);
+  background: #000; color: var(--ink);
+}
+#stage {
+  position: relative; width: 100vw;
+  height: 100vh;       /* fallback：不支援 dvh 的舊瀏覽器 */
+  height: 100dvh;      /* iOS Safari 100vh 含工具列高度，會把控制列推出畫面；dvh 隨工具列收合即時調整 */
+  background: var(--cream); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ── Top bar：懸浮玻璃膠囊（置中） ─────────────────── */
+.topbar {
+  position: absolute; z-index: 100;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 50%; transform: translateX(-50%);
+  width: min(640px, calc(100% - 28px));
+  height: 44px; border-radius: 999px;
+  color: white; display: flex; align-items: center;
+  padding: 0 20px; font-size: 13px; gap: 14px; flex-shrink: 0;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.crumb { opacity: 0.9; font-weight: 700; letter-spacing: 2px; font-size: 12px;
+         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 42%; }
+.topbar .time { display: none; }   /* 時間資訊集中在下方 dock，頂欄保持極簡 */
+.progress { flex: 1; height: 3px; background: rgba(255,255,255,0.22); border-radius: 2px; position: relative; }
+.progress-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--warn); border-radius: 2px; transition: width 0.15s; }
+/* 章節式進度：分支 deck 的總長度隨選擇而變，線性百分比會說謊 → 改標章節。
+   沒有章節資料時 .chapters 是空的（:empty 不顯示），舊 deck 外觀完全不變。 */
+.chapters { position: absolute; inset: -7px 0; display: flex; gap: 6px; align-items: center; }
+.chapters:empty { display: none; }
+.chapter-dot { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.18); transition: background 0.3s, box-shadow 0.3s; }
+.chapter-dot.seen { background: rgba(255,255,255,0.45); }
+.chapter-dot.now { background: var(--warn); box-shadow: 0 0 8px 1px rgba(var(--glow), 0.6); }
+.time { font-variant-numeric: tabular-nums; opacity: 0.85; }
+
+/* ── Stage frame ────────────────────────────────── */
+/* 玻璃 chrome 懸浮於畫面之上 → 舞台滿版，不再被頂欄／控制列切掉 */
+.frame { position: absolute; inset: 0; overflow: hidden; background: var(--cream); }
+
+/* ── Generic scene ──────────────────────────────── */
+.scene {
+  /* 上緣讓開懸浮頂欄（14 + 44 + 呼吸），下緣讓開字幕條與 dock */
+  position: absolute; inset: 0; padding: 88px 64px 200px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none; display: flex; flex-direction: column;
+}
+.scene.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.eyebrow { font-size: 13px; letter-spacing: 4px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+.h1 { font-size: 42px; font-weight: 800; color: var(--ink); margin-bottom: 28px; line-height: 1.2; }
+.h2 { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.lead { font-size: 18px; color: var(--dim); line-height: 1.6; }
+
+/* ── Scene: title / outro shared ──────────────────── */
+.scene-title, .scene-outro {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--ink) 100%);
+  padding: 64px 80px 200px;
+  color: white;
+  justify-content: center;
+}
+.scene-title .eyebrow, .scene-outro .eyebrow { color: var(--secondary); }
+/* 疊在 hero 照片上時：eyebrow 的品牌色可能撞到照片亮部 → 轉白並全體加字影 */
+.scene-title:has(.hero-img) .eyebrow, .scene-outro:has(.hero-img) .eyebrow { color: #fff; opacity: .92; }
+.scene-title:has(.hero-img) *, .scene-outro:has(.hero-img) * { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55); }
+.scene-title .display, .scene-outro .display { font-size: 88px; font-weight: 800; line-height: 1.05; color: white; margin: 24px 0; }
+.scene-title .display .accent, .scene-outro .display .accent { color: var(--warn); }
+.scene-title .tagline, .scene-outro .tagline { font-size: 22px; color: var(--cream); margin-top: 24px; opacity: 0.9; }
+.scene-title .ribbon { width: 80px; height: 6px; background: var(--warn); margin: 32px 0 16px; border-radius: 3px; }
+.scene-title .series, .scene-outro .next { font-size: 14px; color: var(--cream); opacity: 0.7; letter-spacing: 2px; }
+.scene-title .blob, .scene-outro .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.scene-title .blob.b1 { right: -200px; top: -200px; width: 600px; height: 600px; background: var(--secondary); opacity: 0.25; }
+.scene-title .blob.b2 { right: 200px; bottom: -100px; width: 320px; height: 320px; background: var(--warn); opacity: 0.18; }
+.scene-outro .blob.b1 { left: -150px; top: -150px; width: 500px; height: 500px; background: var(--secondary); opacity: 0.2; }
+.scene-outro .blob.b2 { right: -100px; bottom: -200px; width: 480px; height: 480px; background: var(--warn); opacity: 0.15; }
+
+/* ── Scene: 2-column painpoint ────────────────────── */
+.painpoint { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px; }
+.panel { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.panel.dark { background: var(--primary); color: white; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.panel h3 { font-size: 22px; margin-bottom: 16px; }
+.panel.dark h3 { color: var(--warn); }
+.panel ul { list-style: none; padding: 0; margin: 0 0 16px; }
+.panel li { padding: 8px 0; font-size: 16px; line-height: 1.5; }
+.panel li::before { content: "‧ "; color: var(--secondary); font-weight: bold; }
+.panel.dark li::before { color: var(--warn); }
+.panel .stat { font-size: 14px; color: var(--dim); margin-top: 16px; }
+.panel.dark .stat { color: rgba(255,255,255,0.7); }
+.panel .stat .num { font-size: 32px; font-weight: 800; color: var(--accent); margin-left: 8px; vertical-align: middle; }
+.panel.dark .stat .num { color: var(--warn); }
+
+/* ── Scene: 3-card row (objectives / takeaways / etc.) ──────────── */
+.cards-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 24px; }
+.cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+.card { background: white; border-radius: 12px; padding: 28px; display: flex; gap: 20px; align-items: flex-start; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.card-num { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; font-weight: 800; flex-shrink: 0; }
+.card-num.c1 { background: var(--primary); }
+.card-num.c2 { background: var(--secondary); }
+.card-num.c3 { background: var(--accent); }
+.card-num.c4 { background: var(--warn); color: var(--ink); }
+.card-title { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.card-body { font-size: 14px; color: var(--dim); line-height: 1.5; }
+.tagline-center { margin-top: 36px; text-align: center; font-style: italic; color: var(--primary); font-size: 22px; font-weight: 700; }
+
+/* ── Scene: callout stack (FAQ / answers / 3-color signal) ────── */
+.callout-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.callout { background: white; border-radius: 10px; padding: 18px 22px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.callout-icon { width: 44px; height: 44px; border-radius: 50%; color: white; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+.cl-p { background: var(--primary); }
+.cl-s { background: var(--secondary); }
+.cl-a { background: var(--accent); }
+.cl-w { background: var(--warn); color: var(--ink); }
+.cl-blue { background: #3b82c4; }
+.callout-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+.callout-desc { font-size: 14px; color: var(--dim); line-height: 1.55; margin-top: 4px; }
+
+/* ── Scene: browser-style demo ──────────────────── */
+.browser { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); margin-top: 18px; }
+.browser-bar { background: var(--ink); padding: 8px 12px; display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: var(--accent); } .dot.y { background: var(--warn); } .dot.g { background: var(--secondary); }
+.browser-url { color: var(--cream); font-size: 11px; margin-left: 12px; opacity: 0.8; }
+.browser-body { padding: 24px; min-height: 280px; }
+.browser-body h4 { font-size: 18px; color: var(--primary); margin-bottom: 12px; }
+
+/* ── Subtitle bar ───────────────────────────────── */
+.subtitle-bar {
+  position: absolute; left: 50%; right: auto; transform: translateX(-50%);
+  bottom: calc(98px + env(safe-area-inset-bottom, 0px));
+  width: min(860px, calc(100% - 28px));
+  color: white;
+  padding: 16px 26px; border-radius: 20px;
+  font-size: 21px; line-height: 1.5;
+  min-height: 60px; display: flex; align-items: center;
+  justify-content: center; text-align: center;
+  transition: opacity 0.3s;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  z-index: 90;
+}
+.subtitle-bar .marker { display: none; }   /* 置中排版，拿掉側標箭頭 */
+.subtitle-bar.empty { opacity: 0; pointer-events: none; }  /* 重要：opacity:0 不關 pointer-events，會吃掉下方互動元素的點擊（例如 feedback form 按鈕）*/
+
+/* 說話者角標：多角色 deck 用（subs 的 speaker 欄位）。預設中性樣式，
+   theme 用 .spk[data-speaker="名字"] 給每個角色自己的顏色。 */
+.subtitle-bar .spk {
+  flex-shrink: 0; margin-right: 12px; align-self: center;
+  padding: 3px 11px; border-radius: 999px;
+  font-size: .62em; font-weight: 800; letter-spacing: .04em;
+  background: rgba(255, 255, 255, 0.18); color: #fff;
+  text-shadow: none; white-space: nowrap;
+}
+
+/* ── Controls：懸浮玻璃 dock（置中、純 icon 圓鈕） ───────────── */
+.controls {
+  position: absolute; z-index: 100;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  left: 50%; transform: translateX(-50%);
+  width: fit-content; max-width: calc(100% - 20px);
+  height: 64px; border-radius: 999px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px; flex-shrink: 0;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+/* 玻璃圓鈕：內緣高光、hover 浮起。文字標籤收起 → 按鈕靠 aria-label／title 表意 */
+.btn {
+  width: 44px; height: 44px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; cursor: pointer;
+  font-size: 14px; font-family: inherit; font-weight: 600;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 2px 10px rgba(0, 0, 0, 0.28);
+  transition: background .25s, transform .15s, box-shadow .25s;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.22); color: #fff; transform: translateY(-1px); }
+.btn:active { transform: scale(0.95); }
+.btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.btn .ticon { font-style: normal; line-height: 1; font-size: 18px; margin: 0; }
+.btn .tlabel { display: none; }
+/* 播放鍵（CTA）：亮玻璃、深色 icon，比其他鈕大一號 */
+.btn.warn, #playBtn {
+  width: 54px; height: 54px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.62));
+  color: var(--primary);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+}
+.btn.warn:hover, #playBtn:hover { background: #fff; color: var(--primary); transform: translateY(-1px); }
+#playBtn .ticon { font-size: 22px; }
+.timeinfo { color: rgba(255,255,255,0.92); font-size: 13px; font-variant-numeric: tabular-nums; padding-left: 4px; }
+.scene-chip { color: rgba(255,255,255,0.60); font-size: 12px; margin-left: 4px; }
+.no-audio-note { color: var(--warn); font-size: 12px; padding: 6px 12px; background: rgba(var(--glow), 0.18); border-radius: 999px; }
+audio { display: none; }
+
+/* CTA：未播放時播放鍵呼吸光環提示（setPlayBtn 以 .is-playing 開關） */
+@keyframes ctaPulse {
+  0%   { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0.55); }
+  70%  { box-shadow: 0 0 11px 3px rgba(var(--glow), 0.40), 0 0 0 14px rgba(var(--glow), 0); }
+  100% { box-shadow: 0 0 8px 2px rgba(var(--glow), 0.55), 0 0 0 0 rgba(var(--glow), 0); }
+}
+#playBtn:not(.is-playing) { animation: ctaPulse 1.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  #playBtn:not(.is-playing) { animation: none; box-shadow: 0 0 10px 2px rgba(var(--glow), 0.55); }
+}
+
+/* ── 首播 CTA：螢幕中央大型半透明 Play ─────────────────────────
+   使用者測試發現角落的播放鍵會被忽略；改在畫面正中放一顆半透明大 Play，
+   暈開光環循環提示。按下（或以任何方式開始播放）後縮小飛入下方控制列的
+   播放鍵位置（morph），之後播放暫停照常由控制列／空白鍵操作。 */
+.big-play {
+  position: absolute; z-index: 95;
+  left: 50%; top: 50%;
+  width: 112px; height: 112px; margin: -56px 0 0 -56px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  color: #fff; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40), 0 12px 48px rgba(0, 0, 0, 0.35);
+  opacity: 0.9;   /* 半透明再讓一成，減少對畫面的遮蔽；hover 回實體感 */
+  animation: bigPlayPulse 1.8s ease-in-out infinite;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.65s ease;
+}
+.big-play .big-play-icon { font-size: 44px; line-height: 1; margin-left: 8px; /* 三角形視覺置中 */ }
+.big-play:hover { background: rgba(255, 255, 255, 0.32); opacity: 1; }
+/* 首播前下方 dock 整條隱藏（opacity 保留佔位，morph 才能量測飛行落點）；
+   開始播放（has-bigplay 移除）後延遲 0.15s 淡入，與大 Play 飛入同步完成 */
+body.has-bigplay .controls { opacity: 0; pointer-events: none; }
+.controls { transition: opacity 0.5s ease 0.15s; }
+@keyframes bigPlayPulse {   /* 暈開：光環從按鈕邊緣向外擴散淡出 */
+  0%   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0.50); }
+  70%  { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 36px rgba(var(--glow), 0); }
+  100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 12px 48px rgba(0,0,0,0.35), 0 0 0 0 rgba(var(--glow), 0); }
+}
+.big-play.morph {   /* 過場：縮小飛向 dock 播放鍵（目標位移由 JS 量測寫入） */
+  transform: translate(var(--bp-dx, 0px), var(--bp-dy, 40vh)) scale(var(--bp-scale, 0.4));
+  opacity: 0; animation: none; pointer-events: none;
+}
+/* 大 Play 在場時，dock 播放鍵的光環先不閃（避免兩顆同時脈動搶焦點） */
+body.has-bigplay #playBtn:not(.is-playing) { animation: none; }
+@media (max-width: 540px) {
+  .big-play { width: 88px; height: 88px; margin: -44px 0 0 -44px; }
+  .big-play .big-play-icon { font-size: 34px; margin-left: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .big-play { animation: none; transition: opacity 0.3s ease; }
+}
+
+/* small screen */
+@media (max-width: 900px) {
+  .scene { padding: 32px 24px 120px; }
+  .h1 { font-size: 28px; }
+  .painpoint, .cards-3, .cards-2 { grid-template-columns: 1fr; }
+  .scene-title .display, .scene-outro .display { font-size: 44px; }
+  .subtitle-bar { width: calc(100% - 24px); font-size: 16px; padding: 12px 18px;
+                  bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+  .topbar { height: 38px; padding: 0 14px; }
+  .controls { height: 56px; gap: 8px; padding: 0 12px; }
+  .btn { width: 40px; height: 40px; }
+  .btn.warn, #playBtn { width: 48px; height: 48px; }
+}
+
+/* mobile RWD: 控制列改成「左側純 icon 按鈕 + 右側時間」的標準播放器佈局。
+   窄螢幕容不下文字標籤與不定長度的段落／提示，留著會換行、溢出、把整條控制列撐破版，
+   因此一律移除按鈕文字、段落提示（.scene-chip）、無音檔提示（.no-audio-note）。
+   進度仍可從頂部 progress bar 與時間判讀，資訊不流失。
+   注意：.controls 這裡勿用 padding shorthand，會把上方的 padding-bottom 安全區重設為 0 */
+@media (max-width: 540px) {
+  .controls      { padding-left: 10px; padding-right: 10px; gap: 6px; }
+  .btn           { padding: 9px 11px; flex-shrink: 0; }   /* 按鈕不被壓縮變形 */
+  .btn .tlabel   { display: none; }                       /* 移除按鈕文字，只留 icon */
+  .btn .ticon    { font-size: 22px; }
+  .timeinfo      { font-size: 12px; white-space: nowrap; flex-shrink: 0; margin-left: auto; } /* 時間不換行、推到最右 */
+  .scene-chip    { display: none; }   /* 段落標題長度不定，手機移除避免破版 */
+  .no-audio-note { display: none; }   /* 異常提示，手機移除以保版面（播放遇錯仍會自動前進） */
+}
+
+/* ── Scene: storybook — full-bleed illustration ─── */
+.scene-storybook { padding: 0; }
+.scene-storybook .story-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene-storybook .story-eyebrow { position: absolute; top: 24px; left: 32px; font-size: 13px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.35); padding: 6px 14px; border-radius: 999px; backdrop-filter: blur(6px); }
+.scene-storybook .story-caption { position: absolute; top: 24px; right: 32px; max-width: 44%; font-size: 26px; font-weight: 800; line-height: 1.35; color: #fff; background: rgba(0,0,0,0.4); padding: 12px 20px; border-radius: 14px; backdrop-filter: blur(6px); }
+/* ── Hero image on title / outro ── */
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.45) 100%); }
+.scene-title > *:not(.hero-img):not(.hero-overlay):not(.author-badge), .scene-outro > *:not(.hero-img):not(.hero-overlay):not(.author-badge) { position: relative; z-index: 1; }
+
+/* ── Author badge（title / outro 的選填 props.author）────────
+   作者本人的真實照片。hero 的文字欄靠左，右半邊是空的 —— badge 就佔那半邊。
+   定位用 scene 自己的 padding 當錨點（top/bottom 對齊 64 / 200），再靠
+   `margin: auto 0` + `height: fit-content` 在該區間內垂直置中；改 padding 時
+   不必回頭修魔術數字。 */
+.author-badge {
+  position: absolute; z-index: 2; right: 80px; top: 64px; bottom: 200px;
+  margin: auto 0; height: fit-content; width: 200px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.author-photo {
+  width: 168px; height: 168px; object-fit: cover; border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.9); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.author-meta { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.author-name { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+.author-role { font-size: 13px; color: var(--cream); opacity: 0.82; line-height: 1.5; }
+
+/* 窄螢幕沒有「空的右半邊」可以佔 —— hero 文字是置中的一整塊，左右都被它吃掉。
+   改貼右上角（頂欄之下、文字塊之上），縮小並拿掉職稱行：兩行小字在手機上只會
+   糊成一團，姓名才是要留住的資訊。
+   ⚠ 這段必須排在上面的 .author-badge 之後 —— 同分特異性靠順序決勝，寫進上方
+   那個 max-width:900px 區塊會被後面的桌機規則整組蓋掉（卡片會壓在標題上）。 */
+@media (max-width: 900px) {
+  .author-badge { right: 16px; top: 62px; bottom: auto; width: 96px; gap: 8px; margin: 0; }
+  .author-photo { width: 76px; height: 76px; border-width: 3px; }
+  .author-name { font-size: 13px; letter-spacing: 0; }
+  .author-role { display: none; }
+}
+/* ── Side illustration on generic ── */
+/* grid-template-rows 一定要寫 minmax(0, 1fr)：沒有它，列高由內容撐出來，
+   .side-img 的 max-height:100% 就是參照自己撐出來的高度 —— 等於沒有約束，
+   高的配圖會頂穿場景的下 padding、壓到字幕條上。min-height:0 只解決 flex 那一層。 */
+.side-grid { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: minmax(0, 1fr);
+             gap: 32px; align-items: center; flex: 1; min-height: 0; }
+.side-grid > * { min-height: 0; min-width: 0; }
+.side-img { width: 100%; height: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+@media (max-width: 900px) {
+  .side-grid { grid-template-columns: 1fr; }
+  .side-img { max-height: 40vh; }
+  .scene-storybook .story-caption { font-size: 18px; max-width: 60%; }
+}
+
+/* ── Cue system: one subtitle → one visual beat (筆記 §3) ─────────── */
+[data-cue]:not(.cue-mark) {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
+}
+[data-cue]:not(.cue-mark).cue-seen,
+[data-cue]:not(.cue-mark).cue-on { opacity: 1; transform: none; }
+.cue-mark { display: inline-block; transition: color .4s, text-shadow .4s; }
+.cue-mark.cue-on { animation: cueMark .65s ease both; }
+@keyframes cueMark { 0%{transform:scale(1)} 35%{transform:scale(1.16)} 100%{transform:scale(1)} }
+/* spotlight the current element */
+.card[data-cue].cue-on, .callout[data-cue].cue-on, .panel[data-cue].cue-on,
+.browser[data-cue].cue-on { box-shadow: 0 0 0 2px var(--secondary), 0 16px 40px rgba(0,0,0,.35); }
+/* mobile: scenes scroll so below-the-fold cues can be brought into view (筆記 §4) */
+/* NOTE: no `scroll-behavior: smooth` here — it hijacks programmatic scrollTop
+   assignment too (CSSOM), which silently never completes in throttled/background
+   contexts. Correct position always beats animated motion; the cue reveal
+   transition already provides the visual softness. */
+@media (max-width: 900px) { .scene { overflow-y: auto; -webkit-overflow-scrolling: touch; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-cue]:not(.cue-mark) { transition: none; }
+  .cue-mark.cue-on { animation: none; }
+}
+
+/* /* Theme: manga-color — 彩色日式漫畫（少年／青年漫畫彩頁印刷感） */
+/* 與 `manga` 的關係：沿用同一套分鏡語言（粗墨線外框、硬陰影、方框對話框、
+   退出液態玻璃），但**色彩策略完全相反**。
+     manga       = 全篇黑白，唯一的紅色本身就是強調。
+     manga-color = 彩色插圖是主角，版面提供有限的高飽和印刷色去承接它。
+   兩者不可互換：manga 的 meta.style 寫死 monochrome，套到彩圖上會打架。
+
+   字型：manga 的標題字是 Impact 系（只覆蓋拉丁字母），中文會 fallback 成
+   混排的醜字。這份主題是純中文，兩層字型 stack **一律中文字型優先**，
+   漫畫的字重由 font-weight: 900 提供，不靠 Impact。 */
+
+:root {
+  /* ── 墨與紙 ───────────────────────────────────────────
+     純黑 #000 在彩頁上會顯得髒；日漫彩頁的線稿通常是帶藍的深墨。
+     紙張維持暖白（純白配高飽和插圖會刺眼、也失去印刷感）。 */
+  --ink:    #16181D;
+  --cream:  #FBF7EE;
+  --dim:    #5A6472;
+  --white:  #ffffff;
+
+  /* ── 彩度四色 ─────────────────────────────────────────
+     刻意只有四個色相，且都是印刷等級的高飽和 —— 日漫彩頁的顏色是「有限
+     色數、大面積平塗」，不是漸層堆疊。四色各有固定語意，不隨場景改用途。 */
+  --primary:   #1F3A93;   /* 深群青 —— 標題、頂欄、dark panel、近未來的夜色 */
+  --secondary: #00A39B;   /* 青碧   —— 次要卡片、輔助標示 */
+  --accent:    #E4002B;   /* 少年漫畫紅 —— 從 manga 繼承的血統；強調與警示 */
+  --warn:      #FFB020;   /* 琥珀黃 —— 進度條、cue 高亮、CTA 脈動 */
+  --glow: 255, 176, 32;   /* = --warn 的 RGB，播放鍵光環用 */
+
+  /* ── 字型：中文優先，漫畫感靠字重不靠 Impact ──────────── */
+  --display-font: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC",
+                  "Source Han Sans TC", "Heiti TC", "Hiragino Sans TC", sans-serif;
+  --manga-title-font: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC",
+                      "Source Han Sans TC", "Heiti TC", sans-serif;
+}
+
+/* ── 紙張：彩色網點 ─────────────────────────────────────
+   manga 用中性灰網點。這裡把網點染成群青的極低透明度 —— 遠看是暖白紙，
+   近看有印刷網點，且色溫和插圖同一家族。 */
+.frame, .scene {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(rgba(31, 58, 147, 0.085) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.scene-storybook, .scene-title, .scene-outro { background-image: none; }
+
+/* ── 分鏡框：粗墨線 + 硬陰影（漫畫沒有柔和陰影） ────────── */
+.card, .panel, .callout, .browser, .story-img, .side-img, .hero-img {
+  border: 3px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 var(--ink) !important;
+}
+
+/* cue 高亮：base template 的 .cue-on 用柔和光暈，且會被上面那條
+   `box-shadow ... !important` 蓋掉（manga 就是這樣把 cue 高亮弄丟的）。
+   這裡改成「硬陰影換色」—— 同一個漫畫語言，顏色本身就是聚光燈。 */
+.card[data-cue].cue-on, .callout[data-cue].cue-on,
+.panel[data-cue].cue-on, .browser[data-cue].cue-on {
+  box-shadow: 6px 6px 0 var(--accent) !important;
+  transform: translate(-2px, -2px);
+}
+[data-cue]:not(.cue-mark) { transition: opacity .45s ease, transform .45s ease, box-shadow .25s ease; }
+.cue-mark.cue-on { color: var(--accent); }
+
+/* ── 標題：中文字重 900，不做 uppercase ──────────────────
+   manga 對 .h1 下了 text-transform: uppercase —— 對中文無效，卻會把夾雜的
+   英數字強制大寫，反而破壞「Q2050」這類刻意的大小寫。這裡不做。 */
+.h1, .h2, .display, .choice-prompt, .eyebrow, .story-eyebrow {
+  font-family: var(--manga-title-font);
+}
+.h1 {
+  font-size: 40px !important; font-weight: 900; letter-spacing: 1px;
+  margin-bottom: 22px; position: relative; padding-bottom: 14px;
+}
+/* 標題下的彩色實心橫槓 —— 漫畫標題框的簡化，比 text-shadow 描邊乾淨 */
+.h1::after {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  width: 84px; height: 7px; background: var(--warn);
+  border-bottom: 3px solid var(--ink);
+}
+.h2 { font-weight: 900; }
+.scene-title .display, .scene-outro .display {
+  font-size: 62px !important; font-weight: 900; letter-spacing: 2px; line-height: 1.22;
+}
+.scene-title .display .accent, .scene-outro .display .accent { color: var(--warn); }
+.eyebrow { color: var(--accent) !important; font-weight: 900; letter-spacing: 3px; }
+.scene-title .eyebrow, .scene-outro .eyebrow { color: var(--warn) !important; }
+.scene-title .ribbon { border-radius: 0; height: 8px; border: 2px solid var(--ink); }
+.tagline-center { font-style: normal !important; font-weight: 900; color: var(--primary) !important; }
+
+/* title / outro 的副標區塊：display 是 raw HTML 欄位，多句旁白要各自有
+   視覺 beat 時只能靠 .cue-mark。62px 的主標下面需要一個明顯降級的字級，
+   否則三行都是巨大字會擠爆 hero 場景。 */
+.scene-title .display .t-sub, .scene-outro .display .t-sub {
+  margin-top: 26px; font-size: 23px; font-weight: 700;
+  line-height: 1.75; letter-spacing: 0;
+}
+
+/* ── formula-row：公式條 ──────────────────────────────────
+   一列可讀的算式（term / op / term …）＋右側註解。用於「這是乘法不是加法」
+   這類必須讓算式本身成為主角的場景。用 class 而非 inline style，手機
+   media query 才收得起來（cue_authoring.md 踩雷 #2）。 */
+.formula-stack { display: flex; flex-direction: column; gap: 18px; margin-top: 6px; }
+.formula-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 20px 24px; background: var(--white);
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+}
+.formula-term { font-size: 30px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+.formula-term.zero { color: var(--accent); }
+.formula-op { font-size: 24px; font-weight: 900; color: var(--ink); opacity: 0.5; }
+.formula-note { margin-left: auto; font-size: 15px; font-weight: 800; color: var(--dim); }
+.formula-row[data-cue].cue-on {
+  box-shadow: 6px 6px 0 var(--accent) !important;
+  transform: translate(-2px, -2px);
+}
+
+/* ── cta-link：outro 的導購按鈕 ────────────────────────────
+   outro 的 display 是 raw HTML，可以放真的 <a>。做成漫畫硬邊按鈕，
+   跟 dock 的方鈕同一種語言。 */
+.scene-outro .cta-link {
+  display: inline-block; margin-top: 24px; padding: 14px 28px;
+  background: var(--warn); color: var(--ink) !important; text-decoration: none;
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+  font-size: 21px; font-weight: 900; letter-spacing: 1px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.scene-outro .cta-link:hover {
+  background: var(--white); transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.scene-outro .cta-link:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+
+/* ── 作者照：日漫單行本書衣的作者欄 ────────────────────────
+   真人照**不畫成漫畫** —— 作者照本來就該有真人感，那正是它在一頁彩圖裡的作用。
+   融合靠外框：照片與姓名牌合成一張卡，用的是全站分鏡框同一組 3px 深墨線 +
+   6px 硬陰影，方角（照片本身也是 400×400 的方圖，配 border-radius: 0 剛好）。
+   base 的圓形白圈是給玻璃／公版主題用的，這裡整組覆蓋掉。 */
+.scene-title .author-badge, .scene-outro .author-badge {
+  width: 198px; gap: 0;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.scene-title .author-photo, .scene-outro .author-photo {
+  display: block; width: 100%; height: auto;
+  border: 0; border-bottom: 3px solid var(--ink);
+  border-radius: 0; box-shadow: none;
+}
+.scene-title .author-meta, .scene-outro .author-meta { padding: 11px 10px 12px; gap: 3px; }
+.scene-title .author-name, .scene-outro .author-name {
+  color: var(--ink); font-weight: 900; font-size: 19px; letter-spacing: 1px;
+}
+.scene-title .author-role, .scene-outro .author-role {
+  color: var(--dim); opacity: 1; font-size: 12px; font-weight: 700; letter-spacing: 0;
+}
+/* 白底牌上不要 hero 的字影 —— base 的 `.scene-title:has(.hero-img) *` 會一路
+   灑到這張卡裡，深墨字加黑色光暈會糊成一團。同分特異性，靠後載入取勝。 */
+.scene-title .author-badge *, .scene-outro .author-badge * { text-shadow: none; }
+
+/* ── 內文可讀性 ─────────────────────────────────────────
+   標題吃漫畫字重，內文與描述維持正常字重 —— 整頁 900 會變成一堵牆。 */
+.lead, .card-body, .callout-desc, .panel li { font-weight: 500; }
+.card-title, .callout-title { font-weight: 800; }
+.panel h3 { font-weight: 900; }
+
+/* callout-stack 收緊 —— 這個主題把每張 callout 都加了 3px 墨線外框，
+   四條疊起來就比 base 高出約 24px，剛好頂穿場景下 padding 壓到字幕條。
+   本檔的 s03 / s05 / s13 三場都是四條 callout，實測溢出 22px。 */
+.callout-stack { gap: 10px; margin-top: 12px; }
+.callout { padding: 13px 20px; gap: 14px; }
+.callout-icon { width: 38px; height: 38px; font-size: 16px; }
+.callout-desc { margin-top: 3px; }
+
+/* 卡片編號 / callout 圓標：漫畫用實心色塊，加墨線描邊 */
+.card-num, .callout-icon { border: 3px solid var(--ink); font-weight: 900; }
+.card-num.c4, .cl-w { color: var(--ink) !important; }
+.cl-blue { background: var(--primary); }
+
+/* ── 滿版插圖場景：字幕 chip 改成漫畫對話框 ──────────────
+   base template 用圓角 + backdrop blur 的半透明黑 pill；那是玻璃語言。
+   彩色漫畫頁上的旁白框是白底墨線硬陰影，字才讀得出來、也才像漫畫。 */
+.scene-storybook .story-img { border: none !important; box-shadow: none !important; }
+.scene-storybook .story-caption {
+  background: var(--white) !important; color: var(--ink) !important;
+  border: 3px solid var(--ink); border-radius: 0 !important;
+  box-shadow: 6px 6px 0 var(--ink);
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  font-weight: 900; line-height: 1.35; max-width: 46%;
+}
+.scene-storybook .story-eyebrow {
+  background: var(--accent) !important; color: var(--white) !important;
+  border: 3px solid var(--ink); border-radius: 0 !important;
+  box-shadow: 4px 4px 0 var(--ink);
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  font-weight: 900;
+}
+
+/* 圖文兩欄（generic + side image） */
+.side-img { border-radius: 0 !important; }
+
+/* ── 字幕條：方框對話框 ─────────────────────────────────── */
+.subtitle-bar {
+  background: var(--white) !important;
+  color: var(--ink) !important;
+  border: 3px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 var(--ink) !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  font-size: 25px !important;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.subtitle-bar .marker { color: var(--accent) !important; }
+.subtitle-bar .spk {
+  border-radius: 0 !important; border: 2px solid var(--ink);
+  background: var(--warn); color: var(--ink);
+}
+
+/* ── 退出公版的液態玻璃 chrome ────────────────────────────
+   漫畫語言沒有柔和模糊。manga 改成純黑硬邊；這裡改成**群青硬邊** ——
+   彩色主題的操作介面也該有顏色，否則整頁彩圖配一條黑棒很突兀。
+   四個選擇器（topbar / controls / btn / btn:hover）必須一起處理，
+   只改一半會出現「圓角毛玻璃 dock 裡塞方形按鈕」的違和感。 */
+.topbar, .controls {
+  border-radius: 0 !important;
+  background: var(--primary) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: 3px solid var(--ink) !important;
+  box-shadow: 6px 6px 0 rgba(22, 24, 29, 0.85) !important;
+}
+.btn {
+  border-radius: 0 !important;
+  border: 2px solid var(--ink) !important;
+  background: var(--white) !important; color: var(--ink) !important;
+  box-shadow: 3px 3px 0 rgba(22, 24, 29, 0.85) !important;
+}
+.btn:hover { background: var(--warn) !important; color: var(--ink) !important; }
+.btn.warn, #playBtn { background: var(--accent) !important; color: #fff !important; }
+.btn.warn:hover, #playBtn:hover { background: var(--warn) !important; color: var(--ink) !important; }
+.big-play {
+  border-radius: 0 !important;
+  background: var(--accent) !important;
+  border: 4px solid var(--ink) !important;
+  box-shadow: 8px 8px 0 rgba(22, 24, 29, 0.85) !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  opacity: 1;
+}
+.big-play:hover { background: var(--warn) !important; color: var(--ink) !important; }
+.progress { border-radius: 0; background: rgba(255,255,255,0.25); }
+.progress-bar { border-radius: 0; }
+.chapter-dot { border-radius: 0; }
+
+@media (max-width: 900px) {
+  .h1 { font-size: 30px !important; }
+  .scene-title .display, .scene-outro .display { font-size: 38px !important; letter-spacing: 1px; }
+  .scene-title .display .t-sub, .scene-outro .display .t-sub { font-size: 17px; margin-top: 18px; }
+  .subtitle-bar { font-size: 17px !important; box-shadow: 4px 4px 0 var(--ink) !important; }
+  .scene-storybook .story-caption { font-size: 17px; max-width: 62%; box-shadow: 4px 4px 0 var(--ink); }
+  .formula-row { padding: 14px 16px; gap: 8px; box-shadow: 4px 4px 0 var(--ink); }
+  .formula-term { font-size: 21px; }
+  .formula-op { font-size: 17px; }
+  .formula-note { margin-left: 0; flex-basis: 100%; font-size: 13px; }
+  .scene-outro .cta-link { font-size: 17px; padding: 11px 20px; margin-top: 16px; }
+  /* 手機：base 已把 badge 縮成右下小章，這裡跟著收 —— 卡片外框與硬陰影等比縮小 */
+  .scene-title .author-badge, .scene-outro .author-badge {
+    width: 104px; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .scene-title .author-meta, .scene-outro .author-meta { padding: 6px 4px 7px; }
+  .scene-title .author-name, .scene-outro .author-name { font-size: 13px; letter-spacing: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card[data-cue].cue-on, .callout[data-cue].cue-on,
+  .panel[data-cue].cue-on, .browser[data-cue].cue-on { transform: none; }
+}
+ */
+/*  */
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Top brand bar -->
+  <div class="topbar">
+    <div class="crumb">2050自主智慧時代 ‧ 書籍介紹</div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div><div class="chapters" id="chapters"></div></div>
+    <div class="time" id="topTime">0:00 / 0:00</div>
+  </div>
+
+  <!-- Scene stage -->
+  <div class="frame" id="frame">
+
+    <div class="scene scene-title" data-id="s01">
+      <img class="hero-img" src="images/s01-hero.jpg" alt=""><div class="hero-overlay"></div>
+      <div class="eyebrow">書籍介紹 ‧ 李國憲 博士 著</div>
+      <div class="display"><span class="cue-mark" data-cue="002">如果一覺醒來，<br>已經是<span class="accent">二〇五〇年</span></span><div class="t-sub"><span class="cue-mark" data-cue="003">你想像中的那個世界，長什麼樣子？</span><br><span class="cue-mark" data-cue="004">這本書，就從這個問題開始。</span></div></div>
+      <div class="ribbon"></div>
+      
+      <div class="series">2050自主智慧時代</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s02">
+      <img class="story-img" src="images/s02-full.jpg" alt="">
+      
+      <div class="story-caption" data-cue="005">未來不是預測出來的</div>
+    </div>
+
+    <div class="scene" data-id="s03">
+      <div class="eyebrow">Q2050 ‧ 核心思考框架</div>
+      <div class="h1" data-cue="008">AI × Data × ESG × Human</div>
+      <div class="callout-stack">
+        <div class="callout" data-cue="009">
+          <div class="callout-icon cl-p">能</div>
+          <div>
+            <div class="callout-title">AI ── 能力</div>
+            <div class="callout-desc">提供生成、推理、代理與執行力。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="010">
+          <div class="callout-icon cl-s">憶</div>
+          <div>
+            <div class="callout-title">Data ── 記憶</div>
+            <div class="callout-desc">保存經驗、決策脈絡與組織資產。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="011">
+          <div class="callout-icon cl-w">界</div>
+          <div>
+            <div class="callout-title">ESG ── 邊界</div>
+            <div class="callout-desc">設定環境、社會治理與倫理界線。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="012">
+          <div class="callout-icon cl-a">向</div>
+          <div>
+            <div class="callout-title">Human ── 方向</div>
+            <div class="callout-desc">提供核心價值、意義與最終責任。</div>
+          </div>
+        </div></div>
+    </div>
+
+    <div class="scene" data-id="s04">
+      <div class="side-grid"><div class="side-text"><div class="eyebrow">為什麼是乘號</div><div class="h1" data-cue="013">是乘法，不是加法</div><div class="formula-stack"><div class="formula-row" data-cue="014"><span class="formula-term">AI</span><span class="formula-op">＋</span><span class="formula-term">Data</span><span class="formula-op">＋</span><span class="formula-term">ESG</span><span class="formula-op">＋</span><span class="formula-term">Human</span><span class="formula-note">強的可以補弱的</span></div><div class="formula-row" data-cue="015"><span class="formula-term">AI</span><span class="formula-op">×</span><span class="formula-term">Data</span><span class="formula-op">×</span><span class="formula-term">ESG</span><span class="formula-op">×</span><span class="formula-term zero">0</span><span class="formula-op">＝</span><span class="formula-term zero">0</span><span class="formula-note">一項歸零，全部歸零</span></div></div></div><img class="side-img" src="images/s04-side.jpg" alt=""></div>
+    </div>
+
+    <div class="scene" data-id="s05">
+      <div class="eyebrow">第一章 ‧ 第二章</div>
+      <div class="h1" data-cue="016">從工具，走到自主智慧</div>
+      <div class="callout-stack">
+        <div class="callout" data-cue="017">
+          <div class="callout-icon cl-s">1</div>
+          <div>
+            <div class="callout-title">工具</div>
+            <div class="callout-desc">你按下按鈕，它才動作。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="018">
+          <div class="callout-icon cl-blue">2</div>
+          <div>
+            <div class="callout-title">助手</div>
+            <div class="callout-desc">你開口說一句話，它幫你完成。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="019">
+          <div class="callout-icon cl-w">3</div>
+          <div>
+            <div class="callout-title">代理人</div>
+            <div class="callout-desc">你給一個目標，它自己拆解、自己行動。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="020">
+          <div class="callout-icon cl-a">4</div>
+          <div>
+            <div class="callout-title">自主智慧</div>
+            <div class="callout-desc">在你授權的範圍內，它持續地運作下去。</div>
+          </div>
+        </div></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s06">
+      <img class="story-img" src="images/s06-full.jpg" alt="">
+      <div class="story-eyebrow">第一章</div>
+      <div class="story-caption" data-cue="021">生成內容 ── 生成行動</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s07">
+      <img class="story-img" src="images/s07-full.jpg" alt="">
+      <div class="story-eyebrow">第三章</div>
+      <div class="story-caption" data-cue="024">正中紅心，靶卻放錯了地方</div>
+    </div>
+
+    <div class="scene" data-id="s08">
+      <div class="eyebrow">第三章</div>
+      <div class="h1" data-cue="027">報表很漂亮，方向卻是錯的</div>
+      <div class="callout-stack">
+        <div class="callout" data-cue="028">
+          <div class="callout-icon cl-a">標</div>
+          <div>
+            <div class="callout-title">目標沒有人回頭檢查</div>
+            <div class="callout-desc">系統沒有故障、指標全部達成，錯的是一開始那個目標。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="029">
+          <div class="callout-icon cl-w">序</div>
+          <div>
+            <div class="callout-title">排序就是權力</div>
+            <div class="callout-desc">決定什麼先被看見，就決定了結果。演算法也是一種權力。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="030">
+          <div class="callout-icon cl-p">責</div>
+          <div>
+            <div class="callout-title">責任鏈留在人身上</div>
+            <div class="callout-desc">重要決策必須留下人類的控制點，與說得清楚的責任歸屬。</div>
+          </div>
+        </div></div>
+    </div>
+
+    <div class="scene" data-id="s09">
+      <div class="side-grid"><div class="side-text"><div class="eyebrow">第四章</div><div class="h1" data-cue="031">數據不是石油</div><div class="callout-stack"><div class="callout" data-cue="032"><div class="callout-icon cl-a">油</div><div><div class="callout-title">石油用完就沒了</div><div class="callout-desc">把數據當成可消耗的燃料，只會越用越少。</div></div></div><div class="callout" data-cue="033"><div class="callout-icon cl-s">輪</div><div><div class="callout-title">數據越用越多</div><div class="callout-desc">用得越多、學得越準，轉成一個會自己加速的智慧飛輪。</div></div></div><div class="callout" data-cue="034"><div class="callout-icon cl-p">憶</div><div><div class="callout-title">真正值錢的是組織記憶</div><div class="callout-desc">不是海量資料，而是保存了決策脈絡與經驗的那一份。</div></div></div></div></div><img class="side-img" src="images/s09-side.jpg" alt=""></div>
+    </div>
+
+    <div class="scene" data-id="s10">
+      <div class="eyebrow">第五章</div>
+      <div class="h1" data-cue="035">企業的資產表要重寫</div>
+      <div class="painpoint"><div class="panel" data-cue="036"><h3>智慧資產</h3><ul><li>數據與組織記憶</li><li>模型與代理人</li><li>算力</li><li>信任</li></ul><div class="stat">特性<span class="num">可複利</span></div></div><div class="panel dark" data-cue="037"><h3>智慧負債</h3><ul><li>沒有人維護的模型</li><li>失去脈絡的資料</li><li>無人負責的自動流程</li></ul><div class="stat">特性<span class="num">會累積</span></div></div></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s11">
+      <img class="story-img" src="images/s11-full.jpg" alt="">
+      <div class="story-eyebrow">第十三章</div>
+      <div class="story-caption" data-cue="038">效率不再是唯一的答案</div>
+    </div>
+
+    <div class="scene" data-id="s12">
+      <div class="eyebrow">第十五章</div><div class="h1" data-cue="041">永續不再是成本，而是商業模式</div><div class="cards-3"><div class="card" data-cue="042"><div class="card-num c1">1</div><div><div class="card-title">產品即服務</div><div class="card-body">賣的是使用，不是所有權。</div></div></div><div class="card" data-cue="043"><div class="card-num c2">2</div><div><div class="card-title">預測維修</div><div class="card-body">在故障真的發生之前就先處理掉。</div></div></div><div class="card" data-cue="044"><div class="card-num c3">3</div><div><div class="card-title">再製造</div><div class="card-body">讓用過的零件重新回到產線上。</div></div></div></div><div class="tagline-center" data-cue="045">成長越多，解決的問題也越多。</div>
+    </div>
+
+    <div class="scene" data-id="s13">
+      <div class="eyebrow">第七章 ‧ 第十章</div>
+      <div class="h1" data-cue="046">AI 真的會搶走工作嗎？</div>
+      <div class="callout-stack">
+        <div class="callout" data-cue="047">
+          <div class="callout-icon cl-s">務</div>
+          <div>
+            <div class="callout-title">取代的是任務，不是職業</div>
+            <div class="callout-desc">被拆走的是一個個任務，不是一整個工作的意義。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="048">
+          <div class="callout-icon cl-a">問</div>
+          <div>
+            <div class="callout-title">會問問題的人變貴了</div>
+            <div class="callout-desc">當技能與答案被商品化，提問能力與判斷力反而更昂貴。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="049">
+          <div class="callout-icon cl-w">模</div>
+          <div>
+            <div class="callout-title">規模與人數脫鉤</div>
+            <div class="callout-desc">企業的規模，不再等於員工人數。</div>
+          </div>
+        </div>
+        <div class="callout" data-cue="050">
+          <div class="callout-icon cl-p">個</div>
+          <div>
+            <div class="callout-title">超級個體</div>
+            <div class="callout-desc">一個人只要能調度人工智慧，就能做出一支團隊的產出。</div>
+          </div>
+        </div></div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s14">
+      <img class="story-img" src="images/s14-full.jpg" alt="">
+      <div class="story-eyebrow">第十八章</div>
+      <div class="story-caption" data-cue="051">主權，是關鍵時刻還有得選</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s15">
+      <img class="story-img" src="images/s15-full.jpg" alt="">
+      <div class="story-eyebrow">第十九章</div>
+      <div class="story-caption" data-cue="055">人生不是一道最佳化的數學題</div>
+    </div>
+
+    <div class="scene" data-id="s16">
+      <div class="eyebrow">第十一章 ‧ 全書的答案</div><div class="h1" data-cue="059">人類的四種核心能力</div><div class="cards-2"><div class="card" data-cue="060"><div class="card-num c1">問</div><div><div class="card-title">找出真正的問題</div><div class="card-body">答案已經很便宜了，值錢的是問對問題。</div></div></div><div class="card" data-cue="061"><div class="card-num c2">選</div><div><div class="card-title">排出價值的順序</div><div class="card-body">在許多個都可行的方案之中，決定什麼比較重要。</div></div></div><div class="card" data-cue="062"><div class="card-num c3">創</div><div><div class="card-title">開創新的可能</div><div class="card-body">做出還沒有人做過的組合。</div></div></div><div class="card" data-cue="063"><div class="card-num c4">責</div><div><div class="card-title">承擔選擇的後果</div><div class="card-body">為自己的選擇，也為自己的授權負責。</div></div></div></div><div class="tagline-center" data-cue="064">問、選、創、責 ── 這就是全書的答案。</div>
+    </div>
+
+    <div class="scene scene-storybook" data-id="s17">
+      <img class="story-img" src="images/s17-full.jpg" alt="">
+      <div class="story-eyebrow">第二十章</div>
+      <div class="story-caption" data-cue="065">把時間與選擇，還給人</div>
+    </div>
+
+    <div class="scene" data-id="s18">
+      <div class="side-grid"><div class="side-text"><div class="eyebrow">關於這本書</div><div class="h1" data-cue="068">《2050自主智慧時代》</div><div class="callout-stack"><div class="callout" data-cue="069"><div class="callout-icon cl-p">章</div><div><div class="callout-title">二十一章 ＋ 序章 ‧ 後記 ‧ 附錄</div><div class="callout-desc">從生成式 AI 談到文明的方向，一條完整的線。</div></div></div><div class="callout" data-cue="070"><div class="callout-icon cl-s">構</div><div><div class="callout-title">四個構面貫穿全書</div><div class="callout-desc">AI、Data、ESG、Human ── 從企業、教育到國家競爭。</div></div></div><div class="callout" data-cue="071"><div class="callout-icon cl-w">錄</div><div><div class="callout-title">附錄：自主智慧框架</div><div class="callout-desc">盤點這四個構面的實踐步驟。</div></div></div><div class="callout" data-cue="072"><div class="callout-icon cl-a">行</div><div><div class="callout-title">把未來思考變成今天的行動</div><div class="callout-desc">給企業與個人各自可以動手的起點。</div></div></div></div></div><img class="side-img" src="images/s18-side.jpg" alt=""></div>
+    </div>
+
+    <div class="scene scene-outro" data-id="s19">
+      <img class="hero-img" src="images/s19-hero.jpg" alt=""><div class="hero-overlay"></div>
+      <div class="display"><span class="cue-mark" data-cue="073">不要成為<br>被演算法替換的<span class="accent">執行者</span></span><div class="t-sub"><span class="cue-mark" data-cue="074">掌握「問、選、創、責」的核心架構</span><br><span class="cue-mark" data-cue="075">現在就入手《2050自主智慧時代》</span><br><a class="cta-link" href="https://q2050-book.vercel.app/" target="_blank" rel="noopener">q2050-book.vercel.app</a></div></div>
+      <div class="next">《2050自主智慧時代》 ‧ 李國憲 博士 著</div>
+    </div>
+  </div><!-- /.frame -->
+
+  <!-- Subtitle overlay -->
+  <div class="subtitle-bar empty" id="subtitleBar"></div>
+
+  <!-- First-play CTA: center big play, morphs into the dock play button -->
+  <button class="big-play" id="bigPlay" aria-label="播放"><span class="big-play-icon">▶</span></button>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn warn" id="playBtn" aria-label="播放" title="播放"><span class="ticon" aria-hidden="true">▶</span><span class="tlabel">播放</span></button>
+    <button class="btn ghost" id="prevBtn" aria-label="上一段" title="上一段"><span class="ticon" aria-hidden="true">⏮</span><span class="tlabel">上一段</span></button>
+    <button class="btn ghost" id="nextBtn" aria-label="下一段" title="下一段"><span class="ticon" aria-hidden="true">⏭</span><span class="tlabel">下一段</span></button>
+    <button class="btn ghost" id="restartBtn" aria-label="重播" title="重播"><span class="ticon" aria-hidden="true">⟲</span><span class="tlabel">重播</span></button>
+    <div class="timeinfo" id="timeinfo">0:00 / 0:00</div>
+    <div class="no-audio-note" id="audioNote" style="display:none">部分配音檔尚未產生（將以預估秒數播放靜音）</div>
+    <div class="scene-chip" id="sceneChip">場景 1</div>
+    <audio id="player" preload="auto"></audio>
+    <audio class="bgm" preload="auto" src="BGM/BGM.mp3"></audio><audio class="bgm" preload="auto" src="BGM/BGM.mp3"></audio>
+  </div>
+
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+//  Subs (injected from {prefix}.subs.json)
+// ────────────────────────────────────────────────
+const PREFIX = "Q2050";
+const AUDIO_DIR = "audio";
+const SUBS = [
+  {
+    "id": "001",
+    "scene": "s01",
+    "text": "",
+    "dur": 4
+  },
+  {
+    "id": "002",
+    "scene": "s01",
+    "text": "如果明天一覺醒來，我們已經到了二零五零年。",
+    "dur": 3.13
+  },
+  {
+    "id": "003",
+    "scene": "s01",
+    "text": "你想像中的那個世界，會是什麼樣子？",
+    "dur": 2.33
+  },
+  {
+    "id": "004",
+    "scene": "s01",
+    "text": "這是《二零五零自主智慧時代》問的第一個問題。",
+    "dur": 3.17
+  },
+  {
+    "id": "005",
+    "scene": "s02",
+    "text": "李國憲博士在序章裡，提醒我們一件事。",
+    "dur": 2.45
+  },
+  {
+    "id": "006",
+    "scene": "s02",
+    "text": "未來，不是預測出來的。",
+    "dur": 1.81
+  },
+  {
+    "id": "007",
+    "scene": "s02",
+    "text": "它是從今天開始，一次一次選擇、一點一點累積出來的。",
+    "dur": 3.77
+  },
+  {
+    "id": "008",
+    "scene": "s03",
+    "text": "整本書的骨幹，是一條乘法公式。",
+    "dur": 2.73
+  },
+  {
+    "id": "009",
+    "scene": "s03",
+    "text": "人工智慧，負責能力。它提供生成、推理、代理與執行力。",
+    "dur": 5.14
+  },
+  {
+    "id": "010",
+    "scene": "s03",
+    "text": "數據，負責記憶。它保存經驗，也保存決策的脈絡。",
+    "dur": 4.34
+  },
+  {
+    "id": "011",
+    "scene": "s03",
+    "text": "E S G，負責邊界。它畫出環境、社會與治理的那條線。",
+    "dur": 4.54
+  },
+  {
+    "id": "012",
+    "scene": "s03",
+    "text": "而人，負責方向。決定什麼有意義，也承擔最後的責任。",
+    "dur": 4.54
+  },
+  {
+    "id": "013",
+    "scene": "s04",
+    "text": "請特別注意，它們之間是乘號，不是加號。",
+    "dur": 3.01
+  },
+  {
+    "id": "014",
+    "scene": "s04",
+    "text": "加法可以互相彌補，強的補弱的，總分還是好看。",
+    "dur": 3.65
+  },
+  {
+    "id": "015",
+    "scene": "s04",
+    "text": "乘法不行。只要任何一項歸零，整個結果就是零。",
+    "dur": 4.33
+  },
+  {
+    "id": "016",
+    "scene": "s05",
+    "text": "那麼，人工智慧現在走到哪裡了？",
+    "dur": 2.69
+  },
+  {
+    "id": "017",
+    "scene": "s05",
+    "text": "一開始，它是工具。你按下按鈕，它才動作。",
+    "dur": 4.02
+  },
+  {
+    "id": "018",
+    "scene": "s05",
+    "text": "接著，它成為助手。你開口說一句話，它幫你完成。",
+    "dur": 4.14
+  },
+  {
+    "id": "019",
+    "scene": "s05",
+    "text": "再來，它是代理人。你給一個目標，它自己拆解、自己行動。",
+    "dur": 4.1
+  },
+  {
+    "id": "020",
+    "scene": "s05",
+    "text": "最後是自主智慧。在你授權的範圍內，它持續地運作下去。",
+    "dur": 4.26
+  },
+  {
+    "id": "021",
+    "scene": "s06",
+    "text": "介面也跟著改變，從按鈕操作，走向直接表達意圖。",
+    "dur": 4.01
+  },
+  {
+    "id": "022",
+    "scene": "s06",
+    "text": "這裡有一句話，值得你記住。",
+    "dur": 1.85
+  },
+  {
+    "id": "023",
+    "scene": "s06",
+    "text": "生成式人工智慧，生成的是內容；自主智慧，生成的是行動。",
+    "dur": 4.86
+  },
+  {
+    "id": "024",
+    "scene": "s07",
+    "text": "當它開始行動，風險的形狀也跟著改變。",
+    "dur": 3.29
+  },
+  {
+    "id": "025",
+    "scene": "s07",
+    "text": "我們最常擔心的，是人工智慧會不會出錯。",
+    "dur": 3.01
+  },
+  {
+    "id": "026",
+    "scene": "s07",
+    "text": "但書裡說，最危險的，是它精準地達成了一個錯誤的目標。",
+    "dur": 4.13
+  },
+  {
+    "id": "027",
+    "scene": "s08",
+    "text": "系統沒有故障，指標全部達成，報表漂亮得不得了。",
+    "dur": 3.77
+  },
+  {
+    "id": "028",
+    "scene": "s08",
+    "text": "錯的是一開始那個目標，而一路上沒有人回頭檢查。",
+    "dur": 3.97
+  },
+  {
+    "id": "029",
+    "scene": "s08",
+    "text": "所以書裡提醒，排序是一種權力，演算法也是一種權力。",
+    "dur": 3.93
+  },
+  {
+    "id": "030",
+    "scene": "s08",
+    "text": "重要的決策，必須留下人類的控制點，還有清楚的責任鏈。",
+    "dur": 4.13
+  },
+  {
+    "id": "031",
+    "scene": "s09",
+    "text": "那麼，撐起這一切的燃料是什麼？",
+    "dur": 2.49
+  },
+  {
+    "id": "032",
+    "scene": "s09",
+    "text": "很多人說，數據是新的石油。這本書不同意。",
+    "dur": 3.54
+  },
+  {
+    "id": "033",
+    "scene": "s09",
+    "text": "石油用完就沒了，數據卻是越用越多，會轉成一個智慧飛輪。",
+    "dur": 4.81
+  },
+  {
+    "id": "034",
+    "scene": "s09",
+    "text": "真正值錢的不是海量資料，而是保存了決策脈絡的組織記憶。",
+    "dur": 4.69
+  },
+  {
+    "id": "035",
+    "scene": "s10",
+    "text": "於是，企業的資產表也要跟著重寫。",
+    "dur": 2.89
+  },
+  {
+    "id": "036",
+    "scene": "s10",
+    "text": "數據、模型、代理人、算力與信任，都是可以複利的智慧資產。",
+    "dur": 4.97
+  },
+  {
+    "id": "037",
+    "scene": "s10",
+    "text": "但它們也可能變成智慧負債，所以兩邊要同步管理。",
+    "dur": 3.61
+  },
+  {
+    "id": "038",
+    "scene": "s11",
+    "text": "說到邊界，書裡談了一件很容易被忽略的事。",
+    "dur": 3.05
+  },
+  {
+    "id": "039",
+    "scene": "s11",
+    "text": "每一次推理、每一個代理人，背後都有真實的物理與能源成本。",
+    "dur": 4.61
+  },
+  {
+    "id": "040",
+    "scene": "s11",
+    "text": "所以效率不再是唯一的答案，永續治理要為效率畫出那條線。",
+    "dur": 4.53
+  },
+  {
+    "id": "041",
+    "scene": "s12",
+    "text": "不過，作者沒有把永續停在成本這一面。",
+    "dur": 2.85
+  },
+  {
+    "id": "042",
+    "scene": "s12",
+    "text": "第一條路是產品即服務，賣的是使用，不是所有權。",
+    "dur": 3.81
+  },
+  {
+    "id": "043",
+    "scene": "s12",
+    "text": "第二條是預測維修，在故障真的發生之前就先處理掉。",
+    "dur": 4.85
+  },
+  {
+    "id": "044",
+    "scene": "s12",
+    "text": "第三條是再製造，讓用過的零件重新回到產線上。",
+    "dur": 4.61
+  },
+  {
+    "id": "045",
+    "scene": "s12",
+    "text": "獲利與永續站在同一邊，成長越多，解決的問題也越多。",
+    "dur": 4.17
+  },
+  {
+    "id": "046",
+    "scene": "s13",
+    "text": "那，人工智慧真的會搶走工作嗎？",
+    "dur": 2.81
+  },
+  {
+    "id": "047",
+    "scene": "s13",
+    "text": "書裡的答案是：它取代的是任務，不是一整個職業。",
+    "dur": 3.57
+  },
+  {
+    "id": "048",
+    "scene": "s13",
+    "text": "當技能與答案被商品化，提問能力與判斷力反而更昂貴。",
+    "dur": 4.77
+  },
+  {
+    "id": "049",
+    "scene": "s13",
+    "text": "而企業的規模，也開始和員工人數脫鉤。",
+    "dur": 3.05
+  },
+  {
+    "id": "050",
+    "scene": "s13",
+    "text": "一個人只要能調度人工智慧，就可能成為所謂的超級個體。",
+    "dur": 4.21
+  },
+  {
+    "id": "051",
+    "scene": "s14",
+    "text": "講到這裡，你可能會想到主權這兩個字。",
+    "dur": 2.53
+  },
+  {
+    "id": "052",
+    "scene": "s14",
+    "text": "人工智慧主權、數據主權、智慧主權。",
+    "dur": 3.17
+  },
+  {
+    "id": "053",
+    "scene": "s14",
+    "text": "但主權的核心，不是把所有東西都關起來、全部自己做。",
+    "dur": 4.05
+  },
+  {
+    "id": "054",
+    "scene": "s14",
+    "text": "而是在關鍵時刻，你還保有選擇權、備援方案，與最終的決策力。",
+    "dur": 4.93
+  },
+  {
+    "id": "055",
+    "scene": "s15",
+    "text": "那如果有一天，機器真的比人聰明呢？",
+    "dur": 2.77
+  },
+  {
+    "id": "056",
+    "scene": "s15",
+    "text": "書裡的回答，很溫柔，也很堅定。",
+    "dur": 2.33
+  },
+  {
+    "id": "057",
+    "scene": "s15",
+    "text": "人的價值，本來就超越市場產值。人生不是一道最佳化的數學題。",
+    "dur": 5.46
+  },
+  {
+    "id": "058",
+    "scene": "s15",
+    "text": "脆弱、愛、有限性，還有回頭看自己的能力，才構成一個人。",
+    "dur": 3.97
+  },
+  {
+    "id": "059",
+    "scene": "s16",
+    "text": "所以，人最不可替代的能力，收在四個字裡。",
+    "dur": 3.29
+  },
+  {
+    "id": "060",
+    "scene": "s16",
+    "text": "問。找出那個真正該被解決的問題。",
+    "dur": 2.61
+  },
+  {
+    "id": "061",
+    "scene": "s16",
+    "text": "選。在許多個都可行的方案之中，排出價值的順序。",
+    "dur": 3.49
+  },
+  {
+    "id": "062",
+    "scene": "s16",
+    "text": "創。做出還沒有人做過的組合。",
+    "dur": 2.33
+  },
+  {
+    "id": "063",
+    "scene": "s16",
+    "text": "責。為自己的選擇，也為自己的授權，承擔後果。",
+    "dur": 3.45
+  },
+  {
+    "id": "064",
+    "scene": "s16",
+    "text": "問、選、創、責。這就是全書的答案。",
+    "dur": 2.98
+  },
+  {
+    "id": "065",
+    "scene": "s17",
+    "text": "李博士說，科技最後的目標，是把時間與選擇還給人。",
+    "dur": 4.41
+  },
+  {
+    "id": "066",
+    "scene": "s17",
+    "text": "讓機器去做機器擅長的事，",
+    "dur": 2.09
+  },
+  {
+    "id": "067",
+    "scene": "s17",
+    "text": "讓人有空間，成為一個更好的人。",
+    "dur": 2.57
+  },
+  {
+    "id": "068",
+    "scene": "s18",
+    "text": "《二零五零自主智慧時代》，李國憲博士著。",
+    "dur": 3.21
+  },
+  {
+    "id": "069",
+    "scene": "s18",
+    "text": "全書二十一章，加上序章、後記，以及一份附錄。",
+    "dur": 3.57
+  },
+  {
+    "id": "070",
+    "scene": "s18",
+    "text": "從人工智慧、數據、E S G，一路談到人。",
+    "dur": 3.37
+  },
+  {
+    "id": "071",
+    "scene": "s18",
+    "text": "附錄提供了盤點這四個構面的實踐步驟，",
+    "dur": 3.09
+  },
+  {
+    "id": "072",
+    "scene": "s18",
+    "text": "讓未來思考，變成今天就可以開始的具體行動。",
+    "dur": 3.69
+  },
+  {
+    "id": "073",
+    "scene": "s19",
+    "text": "不要成為被演算法替換的執行者。",
+    "dur": 2.73
+  },
+  {
+    "id": "074",
+    "scene": "s19",
+    "text": "掌握「問、選、創、責」的核心架構，",
+    "dur": 2.69
+  },
+  {
+    "id": "075",
+    "scene": "s19",
+    "text": "現在就入手《二零五零自主智慧時代》。",
+    "dur": 2.93
+  },
+  {
+    "id": "076",
+    "scene": "s19",
+    "text": "",
+    "dur": 8
+  }
+];
+
+// scene id → human label (injected from scenes.json)
+const SCENE_LABELS = {"s01": "序章的提問", "s02": "未來是累積出來的", "s03": "Q2050 四個因子", "s04": "是乘法，不是加法", "s05": "AI 的四個階段", "s06": "生成內容 vs 生成行動", "s07": "精準達成錯誤目標", "s08": "真正的風險", "s09": "數據是組織記憶", "s10": "智慧資產與智慧負債", "s11": "算力也有重量", "s12": "永續作為商業模式", "s13": "工作會被搶走嗎", "s14": "主權是選擇權", "s15": "人還剩下什麼", "s16": "問、選、創、責", "s17": "成為更好的人", "s18": "關於這本書", "s19": "立即入手"};
+
+// ────────────────────────────────────────────────
+//  Player core (do not touch — proven on Kaohsiung pilot)
+// ────────────────────────────────────────────────
+function estDur(s) {
+  if (s.dur) return s.dur;
+  if (!s.text) return 1.5;
+  // ~4 Chinese chars/sec; ~2.5 English words/sec
+  const isAscii = /^[\x00-\x7f\s\p{P}]*$/u.test(s.text);
+  return Math.max(1.8, isAscii ? s.text.split(/\s+/).length / 2.5 : s.text.length / 4);
+}
+function sceneLabel(sid) { return SCENE_LABELS[sid] || sid; }
+
+// ── 互動分支：track 過濾 ──────────────────────────────────
+// SUBS 永遠是完整陣列（含所有分支）；播放時跳過「未被選中的 track」。
+// 不重建陣列的原因：cue、scene 對應、音檔命名全都以 SUBS 索引為準，
+// 重建會讓這些對應全部失效。
+// 位置必須在 gapOf / TOTAL_EST 之前 —— TOTAL_EST 是立即執行的 reduce，
+// 會呼叫 gapOf → prevActive → isActive → chosen，const 的 TDZ 不等人。
+const chosen = {};                     // { choiceSceneId: track }
+let awaiting = null;                   // 正在等待使用者選擇的 choice scene id
+function isActive(i) {
+  const t = SUBS[i].track;
+  if (!t) return true;                             // 主線永遠播
+  for (const k in chosen) if (chosen[k] === t) return true;
+  return false;
+}
+function nextActive(i) { while (i < SUBS.length && !isActive(i)) i++; return i; }
+function prevActive(i) { while (i > 0 && !isActive(i)) i--; return i; }
+function signatureFor(track) {
+  for (let i = 0; i < SUBS.length; i++) {
+    if (SUBS[i].track === track && SUBS[i].signature) return SUBS[i];
+  }
+  return null;
+}
+// 場景換場呼吸空拍（秒）：新場景畫面先進、旁白與字幕靜默 SCENE_GAP 秒再開始。
+// 旁白緊接著換場會給聽者壓迫感；預設 2 秒由 build_html.py --scene-gap 控制。
+const SCENE_GAP = 2.0;
+// 章節：分支 deck 的總長度隨選擇而變，線性百分比失去意義 → 改用章節點。
+// 兩者皆空時（舊 deck）沿用原本的線性進度條，行為完全不變。
+const CHAPTERS = [];
+const SCENE_CHAPTER = {};
+function gapOf(i) {
+  if (i <= 0) return 0;
+  const p = prevActive(i - 1);          // 前一句可能是沒被選中的分支，要跳過
+  return SUBS[i].scene !== SUBS[p].scene ? SCENE_GAP : 0;
+}
+const TOTAL_EST = SUBS.reduce((a, s, i) => a + estDur(s) + gapOf(i), 0);
+
+const player = document.getElementById('player');
+const sceneEls = Array.from(document.querySelectorAll('.scene'));
+const subtitleBar = document.getElementById('subtitleBar');
+const progressBar = document.getElementById('progressBar');
+const topTime = document.getElementById('topTime');
+const timeinfo = document.getElementById('timeinfo');
+const sceneChip = document.getElementById('sceneChip');
+const audioNote = document.getElementById('audioNote');
+const playBtn = document.getElementById('playBtn');
+
+// ── BGM: starts on user Play only (autoplay policy); pauses with the deck (筆記 §5.3) ──
+// 銜接：BGM 幾乎一定比 deck 短，所以要循環。但 <audio loop> 是「播到底→跳回 0」，
+// 曲子頭尾若都是滿音量（多數配樂如此），接縫會聽到明顯的切斷再起頭。改用 A/B 兩顆
+// <audio>：快到尾端時讓另一顆從頭淡入、這顆淡出，接縫聽起來是連續的。
+// 收尾：片尾預留 BGM_FADE 秒淡出，且淡出「結束」正好落在最後一幀播完的瞬間 ——
+// 播完才開始淡，音樂會比畫面多拖一段，收不乾淨。
+const bgmEls = Array.from(document.querySelectorAll('.bgm'));
+const BGM_VOLUME = 0.15;
+const BGM_FADE = 3.5;   // 片尾淡出長度（秒）
+const BGM_XFADE = 1.6;           // 循環接縫的交叉淡接長度（秒）
+let bgmIdx = 0, bgmTimer = null, bgmXfade = null, bgmFadeAt = null;
+let bgmFadeT0 = 0, bgmFadeSecs = 0;
+const clamp01 = v => Math.max(0, Math.min(1, v));
+
+function bgmLevels() {
+  const m = bgmFadeT0 ? clamp01(1 - (performance.now() - bgmFadeT0) / (bgmFadeSecs * 1000)) : 1;
+  const k = bgmXfade ? clamp01((performance.now() - bgmXfade.t0) / (BGM_XFADE * 1000)) : 1;
+  bgmEls.forEach((el, i) => {
+    const v = i === bgmIdx ? k : (bgmXfade && i === bgmXfade.from ? 1 - k : 0);
+    el.volume = clamp01(BGM_VOLUME * m * v);
+  });
+  if (bgmXfade && k >= 1) {
+    const old = bgmEls[bgmXfade.from];
+    old.pause();
+    try { old.currentTime = 0; } catch (e) {}
+    bgmXfade = null;
+  }
+  if (bgmFadeT0 && m <= 0) bgmStop();
+}
+function bgmTick() {
+  const cur = bgmEls[bgmIdx];
+  if (!bgmXfade && bgmEls.length > 1 && cur && cur.duration
+      && cur.currentTime >= cur.duration - BGM_XFADE) {
+    const nxt = (bgmIdx + 1) % bgmEls.length, el = bgmEls[nxt];
+    try { el.currentTime = 0; } catch (e) {}
+    el.volume = 0;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {});
+    bgmXfade = { from: bgmIdx, t0: performance.now() };
+    bgmIdx = nxt;
+  }
+  bgmLevels();
+}
+function bgmStart() {
+  if (!bgmEls.length) return;
+  bgmFadeT0 = 0;
+  if (bgmFadeAt) { clearTimeout(bgmFadeAt); bgmFadeAt = null; }
+  const p = bgmEls[bgmIdx].play();
+  if (p && p.catch) p.catch(() => {});
+  bgmLevels();
+  if (!bgmTimer) bgmTimer = setInterval(bgmTick, 100);
+}
+function bgmPause() {
+  bgmEls.forEach(el => el.pause());
+  if (bgmTimer) { clearInterval(bgmTimer); bgmTimer = null; }
+  if (bgmFadeAt) { clearTimeout(bgmFadeAt); bgmFadeAt = null; }
+}
+function bgmStop() {
+  bgmPause();
+  bgmXfade = null; bgmFadeT0 = 0; bgmIdx = 0;
+  bgmEls.forEach(el => { try { el.currentTime = 0; } catch (e) {} });
+}
+function bgmFadeOut(seconds) {
+  if (!bgmEls.length || bgmFadeT0) return;
+  if (bgmEls.every(el => el.paused)) return;
+  bgmFadeSecs = Math.max(0.3, seconds || BGM_FADE);
+  bgmFadeT0 = performance.now();
+  if (!bgmTimer) bgmTimer = setInterval(bgmTick, 100);
+}
+// 每換一句就重算一次剩餘時間並重排淡出 —— 估算誤差（載入延遲、使用者跳轉、
+// 分支 deck 選了不同長度的路線）都會在下一句被修正回來。
+function bgmScheduleFade() {
+  if (!bgmEls.length || !BGM_FADE || bgmFadeT0) return;
+  if (bgmFadeAt) { clearTimeout(bgmFadeAt); bgmFadeAt = null; }
+  let left = 0;
+  for (let i = curIdx; i < SUBS.length; i++) {
+    if (!isActive(i)) continue;
+    left += durOf(SUBS[i]) + (i > curIdx ? gapOf(i) : 0);
+  }
+  const lead = left - BGM_FADE;
+  if (lead <= 0) bgmFadeOut(Math.max(0.3, left));
+  else bgmFadeAt = setTimeout(() => bgmFadeOut(), lead * 1000);
+}
+
+let curIdx = 0;
+let isPlaying = false;
+let virtualTimer = null;
+let elapsedBefore = 0;
+const actualDur = {};
+
+function fmt(t) {
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+function durOf(s) { return actualDur[s.id] || estDur(s); }
+function recalcElapsedBefore(idx) {
+  let t = 0;
+  for (let i = 0; i < idx; i++) if (isActive(i)) t += durOf(SUBS[i]) + gapOf(i);
+  elapsedBefore = t + gapOf(idx);   // 自身的換場空拍也算已經過的時間
+}
+function audioUrl(s) { return `${AUDIO_DIR}/${PREFIX}-${s.id}.mp3`; }
+function showScene(sid) {
+  sceneEls.forEach(el => el.classList.toggle('active', el.getAttribute('data-id') === sid));
+}
+function showSub(s) {
+  // replay sub 自己沒有 text —— 字幕要顯示被重播那句的原文（連同它的說話者）
+  const src = s.replay ? (signatureFor(chosen[s.replay]) || {}) : s;
+  const t = src.text;
+  if (t && t.trim()) {
+    // speaker 是給眼睛看的角色名，不進 TTS（TTS 只讀 text）。顏色由 theme 用
+    // [data-speaker="..."] 決定 —— 內容層說「誰」，樣式層說「什麼顏色」。
+    const head = src.speaker
+      ? `<span class="spk" data-speaker="${esc(src.speaker)}">${esc(src.speaker)}</span>`
+      : `<span class="marker">▸</span>`;
+    subtitleBar.innerHTML = head + t;
+    subtitleBar.classList.remove('empty');
+  } else {
+    subtitleBar.classList.add('empty');
+  }
+}
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+// ── Cue engine: one subtitle → one visual beat (筆記 §3–4) ──
+// scrollCueIntoView uses offsetTop/offsetHeight (layout coords — the reveal
+// translateY makes getBoundingClientRect lie) and sets scrollTop directly
+// (native smooth scrollTo can silently no-op; smoothness comes from CSS only).
+var _lastCueScene = null;
+function scrollCueIntoView(el, scene) {
+  var topR = 20, botR = 140;   // botR reserves the subtitle-bar band (incl. iOS safe area)
+  var view = scene.clientHeight - topR - botR;
+  if (view <= 0) return;
+  var elTop = el.offsetTop, elH = el.offsetHeight, elBot = elTop + elH;
+  var curTop = scene.scrollTop, visTop = curTop + topR, visBot = curTop + scene.clientHeight - botR;
+  var target;
+  if (elH >= view) { target = elTop - topR; }
+  else if (elBot > visBot) { target = elBot - (scene.clientHeight - botR) + 12; }
+  else if (elTop < visTop) { target = elTop - topR - 12; }
+  else { return; }
+  var max = scene.scrollHeight - scene.clientHeight;
+  // Force an instant scroll: if any CSS sets scroll-behavior:smooth, plain
+  // scrollTop assignment becomes an animated scroll that throttled/background
+  // tabs silently never run (measured in the v0.3.0 harness).
+  var prevSB = scene.style.scrollBehavior;
+  scene.style.scrollBehavior = 'auto';
+  scene.scrollTop = Math.max(0, Math.min(target, max));
+  scene.style.scrollBehavior = prevSB || '';
+}
+function showCues(s) {
+  var scene = document.querySelector('.scene[data-id="' + s.scene + '"]');
+  if (!scene) return;
+  var cur = s.id, els = scene.querySelectorAll('[data-cue]');
+  for (var i = 0; i < els.length; i++) {
+    var c = els[i].getAttribute('data-cue');
+    els[i].classList.remove('cue-on', 'cue-seen');
+    if (c < cur) { els[i].classList.add('cue-seen'); }
+    else if (c === cur) { els[i].classList.add('cue-on'); }
+  }
+  if (scene.scrollHeight > scene.clientHeight + 4) {      // only when the scene scrolls (= mobile)
+    if (_lastCueScene !== s.scene) { scene.scrollTop = 0; } // every scene starts at the top
+    var onEl = scene.querySelector('[data-cue="' + cur + '"].cue-on') || scene.querySelector('[data-cue].cue-on');
+    if (onEl) { setTimeout(function () { scrollCueIntoView(onEl, scene); }, 60); } // setTimeout, NOT rAF
+  }
+  _lastCueScene = s.scene;
+}
+const chaptersEl = document.getElementById('chapters');
+if (CHAPTERS.length) {
+  chaptersEl.innerHTML = CHAPTERS.map(c =>
+    '<span class="chapter-dot" data-chapter="' + c + '"></span>').join('');
+  progressBar.style.display = 'none';   // 章節模式下不用線性條
+}
+function updateChrome(curT) {
+  if (CHAPTERS.length) {
+    const cur = SCENE_CHAPTER[SUBS[curIdx].scene];
+    const at = CHAPTERS.indexOf(cur);
+    Array.from(chaptersEl.children).forEach((d, i) => {
+      d.classList.toggle('seen', i < at);
+      d.classList.toggle('now', i === at);
+    });
+    // 分支讓總長不可預測 → 只報已播時間，不報一個會說謊的總長
+    topTime.textContent = fmt(curT);
+    timeinfo.textContent = fmt(curT);                              // 控制列左：時間
+    sceneChip.textContent = cur || sceneLabel(SUBS[curIdx].scene); // 控制列右：章節
+    return;
+  }
+  const total = Math.max(TOTAL_EST, curT);
+  const pct = Math.min(100, curT / total * 100);
+  progressBar.style.width = pct + '%';
+  topTime.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  timeinfo.textContent = `${fmt(curT)} / ${fmt(total)}`;
+  sceneChip.textContent = `${curIdx+1} / ${SUBS.length} ‧ ${sceneLabel(SUBS[curIdx].scene)}`;
+}
+function render(curIntra=0) {
+  const s = SUBS[curIdx];
+  showScene(s.scene);
+  showSub(s);
+  showCues(s);
+  updateChrome(elapsedBefore + curIntra);
+}
+function clearTimers() {
+  if (virtualTimer) { clearTimeout(virtualTimer); virtualTimer = null; }
+}
+// per-play token: every state change invalidates in-flight callbacks so a
+// stale onended / timer can never advance twice (筆記 §5.1)
+let playToken = 0;
+function requestAdvance(tok) { if (tok !== playToken) return; advance(); }
+
+function isLastSubOfScene(i) {
+  const j = nextActive(i + 1);
+  return j >= SUBS.length || SUBS[j].scene !== SUBS[i].scene;
+}
+
+function advance() {
+  const s = SUBS[curIdx];
+  if (player.duration && !isNaN(player.duration) && player.duration > 0.1) {
+    actualDur[s.id] = player.duration;
+  }
+  clearTimers();
+  // 這一場是 choice 且還沒選 → 停在這裡等使用者，不推進
+  if (choiceScenes[s.scene] && !chosen[s.scene] && isLastSubOfScene(curIdx)) {
+    enterChoice(s.scene);
+    return;
+  }
+  const nxt = nextActive(curIdx + 1);
+  if (nxt < SUBS.length) {
+    curIdx = nxt;
+    elapsedBefore += durOf(s) + gapOf(curIdx);
+    render(0);
+    if (isPlaying) {
+      const g = gapOf(curIdx);
+      if (g > 0) {
+        // 呼吸空拍：畫面已換場（含 cue），字幕先收起、旁白延後 g 秒（手動跳轉不套用）
+        subtitleBar.classList.add('empty');
+        const tok = ++playToken;
+        virtualTimer = setTimeout(() => {
+          if (tok !== playToken) return;
+          render(0);          // 字幕與旁白同步出現
+          playCurrent();
+        }, g * 1000);
+      } else {
+        playCurrent();
+      }
+    }
+  } else {
+    // 播完最後一段：停在當前畫面，不要重置（讓使用者能點 CTA 按鈕、填表單等互動元素）
+    // 重要：不要呼叫 stop()（那會把 curIdx 重置為 0、跳回開頭），否則 final CTA 會消失。
+    isPlaying = false;
+    setPlayBtn(false);
+    player.pause();
+    render(durOf(s));  // 進度條跳到 100%、停留在最後場景
+    bgmFadeOut();      // 保險：正常情況 bgmScheduleFade 已經在片尾靜默幀內開始淡出
+  }
+}
+
+const preloader = new Audio();
+preloader.preload = 'auto';
+function preloadNext() {
+  for (let j = curIdx + 1; j < SUBS.length; j++) {
+    if (SUBS[j].text && SUBS[j].text.trim()) {
+      preloader.src = audioUrl(SUBS[j]);
+      preloader.load();
+      return;
+    }
+  }
+}
+
+function playCurrent() {
+  const s = SUBS[curIdx];
+  clearTimers();
+  const tok = ++playToken;
+  if (s.replay) {
+    // 個人化重播：不產生新音檔，直接放使用者選過的那句的 mp3
+    fillRecapRow(s.replay);
+    const sig = signatureFor(chosen[s.replay]);
+    if (sig) {
+      player.onended = () => requestAdvance(tok);
+      player.onerror = () => {
+        console.warn('audio error for replay', s.replay);
+        audioNote.style.display = '';
+        if (isPlaying) {
+          clearTimers();
+          virtualTimer = setTimeout(() => requestAdvance(tok), estDur(sig) * 1000);
+        }
+      };
+      player.src = audioUrl(sig);
+      player.load();
+      const pr = player.play();
+      if (pr && pr.catch) pr.catch(() => {
+        virtualTimer = setTimeout(() => requestAdvance(tok), estDur(sig) * 1000);
+      });
+    } else {
+      // 沒選過（例如直接跳到 recap）→ 當靜音幀跳過
+      player.onended = null; player.onerror = null;
+      player.removeAttribute('src'); player.load();
+      virtualTimer = setTimeout(() => requestAdvance(tok), 800);
+    }
+    preloadNext();
+    return;
+  }
+  if (s.text && s.text.trim()) {
+    player.onended = () => requestAdvance(tok);
+    player.onerror = () => {
+      console.warn('audio error for', s.id);
+      audioNote.style.display = '';
+      if (isPlaying) {
+        clearTimers();
+        virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+      }
+    };
+    player.src = audioUrl(s);
+    player.load();
+    const promise = player.play();
+    if (promise && promise.catch) promise.catch(err => {
+      console.warn('audio play failed:', err);
+      virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+    });
+    audioNote.style.display = 'none';
+  } else {
+    // silent frame: drop handlers + src so nothing can replay the previous clip (筆記 §5.1)
+    player.onended = null; player.onerror = null;
+    player.removeAttribute('src'); player.load();
+    virtualTimer = setTimeout(() => requestAdvance(tok), estDur(s) * 1000);
+  }
+  preloadNext();
+  bgmScheduleFade();
+}
+function setPlayBtn(playing) {
+  const ic = playBtn.querySelector('.ticon'), lb = playBtn.querySelector('.tlabel');
+  if (ic) ic.textContent = playing ? '⏸' : '▶';
+  if (lb) lb.textContent = playing ? '暫停' : '播放';
+  playBtn.classList.toggle('is-playing', playing);
+}
+// ── 首播 CTA：中央大 Play → 縮小飛入 dock 播放鍵（過場約 0.65s） ──
+const bigPlay = document.getElementById('bigPlay');
+if (bigPlay) document.body.classList.add('has-bigplay');
+function morphBigPlay() {
+  if (!bigPlay || bigPlay.classList.contains('morph')) return;
+  const from = bigPlay.getBoundingClientRect();
+  const to = playBtn.getBoundingClientRect();
+  bigPlay.style.setProperty('--bp-dx', ((to.left + to.width / 2) - (from.left + from.width / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-dy', ((to.top + to.height / 2) - (from.top + from.height / 2)) + 'px');
+  bigPlay.style.setProperty('--bp-scale', (to.width / from.width).toFixed(3));
+  bigPlay.classList.add('morph');
+  document.body.classList.remove('has-bigplay');   // dock 播放鍵的光環提示恢復運作
+  // 不靠 transitionend：reduced-motion 或分頁節流時可能不觸發 → 定時保底移除
+  setTimeout(() => bigPlay.remove(), 900);
+}
+if (bigPlay) bigPlay.addEventListener('click', () => play());
+
+function play() { isPlaying = true; setPlayBtn(true); morphBigPlay(); bgmStart(); playCurrent(); }
+function pause() { isPlaying = false; setPlayBtn(false); playToken++; clearTimers(); player.pause(); bgmPause(); }
+function stop() {
+  pause();
+  // 重播＝重玩：清掉選擇，讓使用者可以走不同分支
+  for (const k in chosen) delete chosen[k];
+  awaiting = null;
+  document.querySelectorAll('.choice-opt.picked').forEach(b => b.classList.remove('picked'));
+  document.querySelectorAll('.scene-choice.awaiting').forEach(e => e.classList.remove('awaiting'));
+  document.querySelectorAll('.recap-row.filled').forEach(r => {
+    r.classList.remove('filled');
+    r.querySelector('.recap-line').textContent = '';
+    r.querySelector('.recap-tone').textContent = '';
+  });
+  curIdx = 0; elapsedBefore = 0; render(0);
+}
+function goTo(idx, autoplay = isPlaying) {
+  playToken++;
+  clearTimers();
+  player.pause();
+  curIdx = Math.max(0, Math.min(SUBS.length - 1, idx));
+  recalcElapsedBefore(curIdx);
+  render(0);
+  if (autoplay) playCurrent();
+}
+function gotoScene(direction) {
+  const curScene = SUBS[curIdx].scene;
+  if (direction === 'next') {
+    let i = nextActive(curIdx + 1);
+    while (i < SUBS.length && SUBS[i].scene === curScene) i = nextActive(i + 1);
+    if (i >= SUBS.length) i = curIdx;
+    goTo(i);
+  } else {
+    let i = curIdx;
+    while (i > 0 && SUBS[prevActive(i - 1)].scene === curScene) i = prevActive(i - 1);
+    if (i === curIdx && i > 0) {
+      const prevScene = SUBS[prevActive(i - 1)].scene;
+      i = prevActive(i - 1);
+      while (i > 0 && SUBS[prevActive(i - 1)].scene === prevScene) i = prevActive(i - 1);
+    }
+    goTo(i);
+  }
+}
+
+// ── 互動分支：選擇畫面的暫停與跳轉 ──────────────────────────
+const choiceScenes = {};
+document.querySelectorAll('.scene-choice').forEach(el => {
+  choiceScenes[el.getAttribute('data-id')] = el;
+});
+function enterChoice(sid) {
+  awaiting = sid;
+  isPlaying = false;
+  setPlayBtn(false);
+  playToken++;              // 讓任何在途的 onended / timer 失效
+  player.pause();
+  choiceScenes[sid].classList.add('awaiting');
+}
+function pickChoice(sid, track) {
+  if (awaiting !== sid) return;
+  chosen[sid] = track;
+  const el = choiceScenes[sid];
+  el.classList.remove('awaiting');
+  el.querySelectorAll('.choice-opt').forEach(b =>
+    b.classList.toggle('picked', b.getAttribute('data-track') === track));
+  awaiting = null;
+  let i = -1;
+  for (let k = 0; k < SUBS.length; k++) { if (SUBS[k].track === track) { i = k; break; } }
+  if (i < 0) i = nextActive(curIdx + 1);   // 該分支沒有任何 sub → 直接回主線
+  isPlaying = true;
+  setPlayBtn(true);
+  bgmStart();
+  goTo(i, true);
+}
+document.querySelectorAll('.choice-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sceneEl = btn.closest('.scene-choice');
+    pickChoice(sceneEl.getAttribute('data-id'), btn.getAttribute('data-track'));
+  });
+});
+// 個人化回顧：把使用者選中的那張選項卡的字，搬到 recap 列上。
+// 資料來源是已渲染的 DOM（不是 JSON）——「選了什麼」只有執行期才知道。
+function fillRecapRow(sid) {
+  const row = document.querySelector('.recap-row[data-recap="' + sid + '"]');
+  if (!row) return;
+  const el = choiceScenes[sid];
+  const btn = el && el.querySelector('.choice-opt.picked');
+  if (!btn) return;
+  const label = btn.querySelector('.choice-label');
+  const tone = btn.querySelector('.choice-tone');
+  if (label) row.querySelector('.recap-line').textContent = label.textContent;
+  if (tone) row.querySelector('.recap-tone').textContent = tone.textContent;
+  row.classList.add('filled');
+}
+
+player.addEventListener('timeupdate', () => {
+  if (isPlaying) render(player.currentTime || 0);
+});
+
+playBtn.addEventListener('click', () => {
+  if (awaiting) return;            // 等使用者選擇時，播放鍵不作用（否則會卡在選擇畫面空轉）
+  isPlaying ? pause() : play();
+});
+document.getElementById('restartBtn').addEventListener('click', stop);
+document.getElementById('prevBtn').addEventListener('click', () => gotoScene('prev'));
+document.getElementById('nextBtn').addEventListener('click', () => gotoScene('next'));
+
+document.addEventListener('keydown', e => {
+  if (awaiting && /^Digit[1-9]$/.test(e.code)) {   // 數字鍵選擇，與滑鼠等效
+    e.preventDefault();
+    const btns = choiceScenes[awaiting].querySelectorAll('.choice-opt');
+    const b = btns[Number(e.code.slice(5)) - 1];
+    if (b) b.click();
+    return;
+  }
+  if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+  if (e.code === 'ArrowLeft') gotoScene('prev');
+  if (e.code === 'ArrowRight') gotoScene('next');
+});
+
+render(0);
+</script>
+</body>
+</html>

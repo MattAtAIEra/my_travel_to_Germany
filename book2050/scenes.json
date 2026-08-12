@@ -1,0 +1,396 @@
+{
+  "meta": {
+    "style": "彩色日式漫畫插畫，現代青年漫畫的彩色原稿風格。乾淨銳利的黑色墨線輪廓，cel-shading 平塗上色，硬邊陰影，有限色數的高飽和度，局部網點作為質感點綴而非主體。主色調：深群青藍、青碧綠、琥珀黃，少量少年漫畫紅作為強調。畫面明亮、樂觀、有速度感。構圖是滿版單一畫面：影像必須完全填滿整個畫布的四個邊，不得有任何頁邊留白、白色邊框、分鏡格線、對話框、標題列，也不得在底部或任何一側留下空白色帶或第二個空畫格。畫面中不得出現任何文字、字母、數字、招牌文字、介面標籤或商標；所有螢幕、招牌與介面一律畫成抽象發光的幾何圖形與純圖示，絕對不要有可讀的字。世界觀統一為二零五零年的近未來東亞城市：垂直綠化的高樓、乾淨的街道、柔和發光的介面、人與機器共存。人物皆為東亞面孔，表情溫暖友善、有精神，絕不皺眉或兇惡。嚴格排除：黑白、單色調、無彩色的純網點畫面、水彩暈染、油畫、寫實照片、3D CGI 渲染、賽博龐克霓虹的陰暗調性。",
+    "characters": {
+    "李國憲": "李國憲 博士，六十歲上下的東亞男性學者兼企業顧問。銀灰色短髮往後梳、兩鬢灰白，濃眉，戴細金屬框的方形眼鏡，臉型方正、下顎線清楚，眼角有笑紋，嘴角帶著溫和而自信的淺笑，眼神沉穩、有見識、令人安心。穿深藏青近黑的合身西裝外套、白襯衫、不打領帶，胸前口袋插一方酒紅色口袋巾。氣質是慈祥而有威望的長者，絕不嚴厲、不兇惡、不皺眉。"
+  }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "title",
+      "label": "序章的提問",
+      "props": {
+        "eyebrow": "書籍介紹 ‧ 李國憲 博士 著",
+        "display": "<span class=\"cue-mark\" data-cue=\"002\">如果一覺醒來，<br>已經是<span class=\"accent\">二〇五〇年</span></span><div class=\"t-sub\"><span class=\"cue-mark\" data-cue=\"003\">你想像中的那個世界，長什麼樣子？</span><br><span class=\"cue-mark\" data-cue=\"004\">這本書，就從這個問題開始。</span></div>",
+        "series": "2050自主智慧時代",
+        "image": {
+          "prompt": "二零五零年東亞城市的清晨，晨光斜照。畫面右側是李國憲博士，四分之三側背身站在人行天橋上，一手輕搭在天橋欄杆上，望向遠方的城市天際線；側臉清楚可見，神情從容、帶著溫和的笑意，沒有背任何包。畫面左側到中央留給城市：由垂直綠化的高樓構成，樓體間有柔和發光的資訊帶，天空有安靜滑行的空中運輸艙。街道乾淨、有行道樹，遠處人們與低矮的服務型機器人並行。氣氛清新、充滿希望，不是陰暗的賽博龐克。",
+          "characters": ["李國憲"],
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "type": "storybook",
+      "label": "未來是累積出來的",
+      "cue": "005",
+      "props": {
+        "caption": "未來不是預測出來的",
+        "image": {
+          "prompt": "同一座二零五零年東亞城市的日間廣場，鏡頭略微俯視。畫面中散布著許多不同年齡的東亞市民，各自在做一個小小的決定：一位工程師在半透明的懸浮抽象發光的幾何面板上點下確認、一位老師蹲下來和孩子說話、一位店主把回收箱推向再生站、一位研究員在筆記本上寫字。每個人腳下都延伸出一條細細的發光軌跡，所有軌跡朝畫面深處匯聚成一條寬闊的光路，通向遠方的城市。溫暖明亮，強調「許多小選擇匯聚成未來」。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "type": "callout-stack",
+      "label": "Q2050 四個因子",
+      "cue": "008",
+      "props": {
+        "eyebrow": "Q2050 ‧ 核心思考框架",
+        "title": "AI × Data × ESG × Human",
+        "items": [
+          {
+            "icon": "能",
+            "color": "p",
+            "title": "AI ── 能力",
+            "desc": "提供生成、推理、代理與執行力。",
+            "cue": "009"
+          },
+          {
+            "icon": "憶",
+            "color": "s",
+            "title": "Data ── 記憶",
+            "desc": "保存經驗、決策脈絡與組織資產。",
+            "cue": "010"
+          },
+          {
+            "icon": "界",
+            "color": "w",
+            "title": "ESG ── 邊界",
+            "desc": "設定環境、社會治理與倫理界線。",
+            "cue": "011"
+          },
+          {
+            "icon": "向",
+            "color": "a",
+            "title": "Human ── 方向",
+            "desc": "提供核心價值、意義與最終責任。",
+            "cue": "012"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "type": "generic",
+      "label": "是乘法，不是加法",
+      "cue": "013",
+      "props": {
+        "eyebrow": "為什麼是乘號",
+        "title": "是乘法，不是加法",
+        "body_html": "<div class=\"formula-stack\"><div class=\"formula-row\" data-cue=\"014\"><span class=\"formula-term\">AI</span><span class=\"formula-op\">＋</span><span class=\"formula-term\">Data</span><span class=\"formula-op\">＋</span><span class=\"formula-term\">ESG</span><span class=\"formula-op\">＋</span><span class=\"formula-term\">Human</span><span class=\"formula-note\">強的可以補弱的</span></div><div class=\"formula-row\" data-cue=\"015\"><span class=\"formula-term\">AI</span><span class=\"formula-op\">×</span><span class=\"formula-term\">Data</span><span class=\"formula-op\">×</span><span class=\"formula-term\">ESG</span><span class=\"formula-op\">×</span><span class=\"formula-term zero\">0</span><span class=\"formula-op\">＝</span><span class=\"formula-term zero\">0</span><span class=\"formula-note\">一項歸零，全部歸零</span></div></div>",
+        "image": {
+          "prompt": "近未來風格的四根發光支柱並排立在乾淨的展示平台上，分別是深群青藍、青碧綠、琥珀黃與紅色，柱體間有能量弧光互相串連，形成一個運轉中的環路。最右邊那根紅色支柱已經熄滅變成灰暗，整條弧光因此斷開、整個環路失去光芒。構圖簡潔、置中、有戲劇性的漫畫式硬光影，背景是柔和的暖白色。",
+          "slot": "side",
+          "resolution": "1K"
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "type": "callout-stack",
+      "label": "AI 的四個階段",
+      "cue": "016",
+      "props": {
+        "eyebrow": "第一章 ‧ 第二章",
+        "title": "從工具，走到自主智慧",
+        "items": [
+          {
+            "icon": "1",
+            "color": "s",
+            "title": "工具",
+            "desc": "你按下按鈕，它才動作。",
+            "cue": "017"
+          },
+          {
+            "icon": "2",
+            "color": "blue",
+            "title": "助手",
+            "desc": "你開口說一句話，它幫你完成。",
+            "cue": "018"
+          },
+          {
+            "icon": "3",
+            "color": "w",
+            "title": "代理人",
+            "desc": "你給一個目標，它自己拆解、自己行動。",
+            "cue": "019"
+          },
+          {
+            "icon": "4",
+            "color": "a",
+            "title": "自主智慧",
+            "desc": "在你授權的範圍內，它持續地運作下去。",
+            "cue": "020"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "type": "storybook",
+      "label": "生成內容 vs 生成行動",
+      "cue": "021",
+      "props": {
+        "eyebrow": "第一章",
+        "caption": "生成內容 ── 生成行動",
+        "image": {
+          "prompt": "二零五零年的明亮辦公空間，一幅左右對照的漫畫畫面。左半：一位東亞女性坐在桌前，面前的懸浮抽象發光的幾何面板正產出抽象的紙張形狀、圖表與圖像，成品堆疊在她面前，她只是看著。右半：同一位女性站起身、雙手離開抽象發光的幾何面板、露出輕鬆的微笑，畫面外側有三個柔和發光的人形代理人光影，正走出辦公室、分頭前往城市各處執行任務，身後拉出流動的光軌。左半安靜、右半有速度感，中間以一道銳利的墨線分隔。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s07",
+      "type": "storybook",
+      "label": "精準達成錯誤目標",
+      "cue": "024",
+      "props": {
+        "eyebrow": "第三章",
+        "caption": "正中紅心，靶卻放錯了地方",
+        "image": {
+          "prompt": "戲劇性的漫畫廣角構圖。畫面中央一支銳利的箭精準命中一個標靶的正紅心，箭羽還在震動，周圍有漫畫式的衝擊放射線與命中火花，看起來是完美的一擊。但鏡頭拉遠後可以看到：這個標靶被架設在懸崖邊緣一塊孤立的岩石上，方向完全背對著遠處那座真正需要被守護的、亮著燈的城市。射手是一具線條俐落、姿態優雅的白色人形機器人，動作標準得無可挑剔。色調明亮但構圖帶著不安，強調「執行完美、方向錯誤」的反差。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "type": "callout-stack",
+      "label": "真正的風險",
+      "cue": "027",
+      "props": {
+        "eyebrow": "第三章",
+        "title": "報表很漂亮，方向卻是錯的",
+        "items": [
+          {
+            "icon": "標",
+            "color": "a",
+            "title": "目標沒有人回頭檢查",
+            "desc": "系統沒有故障、指標全部達成，錯的是一開始那個目標。",
+            "cue": "028"
+          },
+          {
+            "icon": "序",
+            "color": "w",
+            "title": "排序就是權力",
+            "desc": "決定什麼先被看見，就決定了結果。演算法也是一種權力。",
+            "cue": "029"
+          },
+          {
+            "icon": "責",
+            "color": "p",
+            "title": "責任鏈留在人身上",
+            "desc": "重要決策必須留下人類的控制點，與說得清楚的責任歸屬。",
+            "cue": "030"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "type": "generic",
+      "label": "數據是組織記憶",
+      "cue": "031",
+      "props": {
+        "eyebrow": "第四章",
+        "title": "數據不是石油",
+        "body_html": "<div class=\"callout-stack\"><div class=\"callout\" data-cue=\"032\"><div class=\"callout-icon cl-a\">油</div><div><div class=\"callout-title\">石油用完就沒了</div><div class=\"callout-desc\">把數據當成可消耗的燃料，只會越用越少。</div></div></div><div class=\"callout\" data-cue=\"033\"><div class=\"callout-icon cl-s\">輪</div><div><div class=\"callout-title\">數據越用越多</div><div class=\"callout-desc\">用得越多、學得越準，轉成一個會自己加速的智慧飛輪。</div></div></div><div class=\"callout\" data-cue=\"034\"><div class=\"callout-icon cl-p\">憶</div><div><div class=\"callout-title\">真正值錢的是組織記憶</div><div class=\"callout-desc\">不是海量資料，而是保存了決策脈絡與經驗的那一份。</div></div></div></div>",
+        "image": {
+          "prompt": "一個巨大的發光飛輪懸浮在明亮通透的資料大廳中央，輪體由層層堆疊的半透明光片構成，每一片光片上都有細緻的抽象紋路。飛輪正在加速旋轉，甩出青碧綠與琥珀黃的光帶，光帶又回流進輪心，形成一個自我強化的循環。輪子下方站著一位仰頭觀看的東亞研究人員，身形小巧以襯托飛輪的巨大。漫畫式硬邊光影，背景潔淨明亮。",
+          "slot": "side",
+          "resolution": "1K"
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "type": "painpoint",
+      "label": "智慧資產與智慧負債",
+      "cue": "035",
+      "props": {
+        "eyebrow": "第五章",
+        "title": "企業的資產表要重寫",
+        "left_panel": {
+          "title": "智慧資產",
+          "bullets": [
+            "數據與組織記憶",
+            "模型與代理人",
+            "算力",
+            "信任"
+          ],
+          "stat": {
+            "label": "特性",
+            "value": "可複利"
+          },
+          "cue": "036"
+        },
+        "right_panel": {
+          "title": "智慧負債",
+          "bullets": [
+            "沒有人維護的模型",
+            "失去脈絡的資料",
+            "無人負責的自動流程"
+          ],
+          "stat": {
+            "label": "特性",
+            "value": "會累積"
+          },
+          "cue": "037"
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "type": "storybook",
+      "label": "算力也有重量",
+      "cue": "038",
+      "props": {
+        "eyebrow": "第十三章",
+        "caption": "效率不再是唯一的答案",
+        "image": {
+          "prompt": "一座巨大的古典天秤矗立在二零五零年的城市邊緣。天秤左盤上放著一座發光的資料中心模型，機櫃亮著密集的藍色指示燈，旁邊冒著冷卻用的白色蒸汽，明顯很沉重地把左盤壓了下去。右盤上是一小片翠綠的森林與幾架白色風力發電機，正被高高抬起。天秤的支柱旁站著一位穿著工作服的東亞工程師，正伸手調整右盤的配重，神情專注而溫和。天空是清朗的日間藍，畫面明亮不壓抑。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s12",
+      "type": "generic",
+      "label": "永續作為商業模式",
+      "cue": "041",
+      "props": {
+        "eyebrow": "第十五章",
+        "title": "永續不再是成本，而是商業模式",
+        "body_html": "<div class=\"cards-3\"><div class=\"card\" data-cue=\"042\"><div class=\"card-num c1\">1</div><div><div class=\"card-title\">產品即服務</div><div class=\"card-body\">賣的是使用，不是所有權。</div></div></div><div class=\"card\" data-cue=\"043\"><div class=\"card-num c2\">2</div><div><div class=\"card-title\">預測維修</div><div class=\"card-body\">在故障真的發生之前就先處理掉。</div></div></div><div class=\"card\" data-cue=\"044\"><div class=\"card-num c3\">3</div><div><div class=\"card-title\">再製造</div><div class=\"card-body\">讓用過的零件重新回到產線上。</div></div></div></div><div class=\"tagline-center\" data-cue=\"045\">成長越多，解決的問題也越多。</div>"
+      }
+    },
+    {
+      "id": "s13",
+      "type": "callout-stack",
+      "label": "工作會被搶走嗎",
+      "cue": "046",
+      "props": {
+        "eyebrow": "第七章 ‧ 第十章",
+        "title": "AI 真的會搶走工作嗎？",
+        "items": [
+          {
+            "icon": "務",
+            "color": "s",
+            "title": "取代的是任務，不是職業",
+            "desc": "被拆走的是一個個任務，不是一整個工作的意義。",
+            "cue": "047"
+          },
+          {
+            "icon": "問",
+            "color": "a",
+            "title": "會問問題的人變貴了",
+            "desc": "當技能與答案被商品化，提問能力與判斷力反而更昂貴。",
+            "cue": "048"
+          },
+          {
+            "icon": "模",
+            "color": "w",
+            "title": "規模與人數脫鉤",
+            "desc": "企業的規模，不再等於員工人數。",
+            "cue": "049"
+          },
+          {
+            "icon": "個",
+            "color": "p",
+            "title": "超級個體",
+            "desc": "一個人只要能調度人工智慧，就能做出一支團隊的產出。",
+            "cue": "050"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "type": "storybook",
+      "label": "主權是選擇權",
+      "cue": "051",
+      "props": {
+        "eyebrow": "第十八章",
+        "caption": "主權，是關鍵時刻還有得選",
+        "image": {
+          "prompt": "明亮的近未來控制中心。一位神情沉穩、面帶微笑的東亞女性主管站在半圓形的控制台前，手放在一支實體的切換操縱桿上。她面前展開三條同時亮著的路徑光帶，各自通往不同方向的城市節點；旁邊還有一整排備援插槽，每一格都亮著待命的綠燈。整個空間乾淨、開闊、有掌控感，不是緊張的危機室。漫畫式硬邊光影，主色為深群青藍與青碧綠。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s15",
+      "type": "storybook",
+      "label": "人還剩下什麼",
+      "cue": "055",
+      "props": {
+        "eyebrow": "第十九章",
+        "caption": "人生不是一道最佳化的數學題",
+        "image": {
+          "prompt": "黃昏時分，二零五零年城市高樓的家庭陽台。一位東亞父親蹲下身，替一個小女孩把散開的鞋帶重新綁好，兩人都在笑；旁邊一位年長的奶奶坐在藤椅上澆花。陽台的欄杆外是被夕陽染成暖橘色的城市天際線，遠處有安靜滑行的空中運輸艙與亮起的資訊帶。畫面溫暖、生活感濃厚，強調人與人之間的親近，科技退到很遠的背景。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s16",
+      "type": "generic",
+      "label": "問、選、創、責",
+      "cue": "059",
+      "props": {
+        "eyebrow": "第十一章 ‧ 全書的答案",
+        "title": "人類的四種核心能力",
+        "body_html": "<div class=\"cards-2\"><div class=\"card\" data-cue=\"060\"><div class=\"card-num c1\">問</div><div><div class=\"card-title\">找出真正的問題</div><div class=\"card-body\">答案已經很便宜了，值錢的是問對問題。</div></div></div><div class=\"card\" data-cue=\"061\"><div class=\"card-num c2\">選</div><div><div class=\"card-title\">排出價值的順序</div><div class=\"card-body\">在許多個都可行的方案之中，決定什麼比較重要。</div></div></div><div class=\"card\" data-cue=\"062\"><div class=\"card-num c3\">創</div><div><div class=\"card-title\">開創新的可能</div><div class=\"card-body\">做出還沒有人做過的組合。</div></div></div><div class=\"card\" data-cue=\"063\"><div class=\"card-num c4\">責</div><div><div class=\"card-title\">承擔選擇的後果</div><div class=\"card-body\">為自己的選擇，也為自己的授權負責。</div></div></div></div><div class=\"tagline-center\" data-cue=\"064\">問、選、創、責 ── 這就是全書的答案。</div>"
+      }
+    },
+    {
+      "id": "s17",
+      "type": "storybook",
+      "label": "成為更好的人",
+      "cue": "065",
+      "props": {
+        "eyebrow": "第二十章",
+        "caption": "把時間與選擇，還給人",
+        "image": {
+          "prompt": "二零五零年城市裡陽光充足的公園午後。前景一位東亞青年盤腿坐在草地上專心讀一本紙本書，旁邊兩位朋友在笑著聊天，一位母親推著嬰兒車經過。中景與遠景有幾具低調的白色服務型機器人安靜地修剪草坪、收拾回收物、澆灌花圃，姿態不搶戲。陽光穿過樹葉灑下光斑，氣氛悠閒、明亮、充滿餘裕，強調人被還回來的時間。",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s18",
+      "type": "generic",
+      "label": "關於這本書",
+      "cue": "068",
+      "props": {
+        "eyebrow": "關於這本書",
+        "title": "《2050自主智慧時代》",
+        "body_html": "<div class=\"callout-stack\"><div class=\"callout\" data-cue=\"069\"><div class=\"callout-icon cl-p\">章</div><div><div class=\"callout-title\">二十一章 ＋ 序章 ‧ 後記 ‧ 附錄</div><div class=\"callout-desc\">從生成式 AI 談到文明的方向，一條完整的線。</div></div></div><div class=\"callout\" data-cue=\"070\"><div class=\"callout-icon cl-s\">構</div><div><div class=\"callout-title\">四個構面貫穿全書</div><div class=\"callout-desc\">AI、Data、ESG、Human ── 從企業、教育到國家競爭。</div></div></div><div class=\"callout\" data-cue=\"071\"><div class=\"callout-icon cl-w\">錄</div><div><div class=\"callout-title\">附錄：自主智慧框架</div><div class=\"callout-desc\">盤點這四個構面的實踐步驟。</div></div></div><div class=\"callout\" data-cue=\"072\"><div class=\"callout-icon cl-a\">行</div><div><div class=\"callout-title\">把未來思考變成今天的行動</div><div class=\"callout-desc\">給企業與個人各自可以動手的起點。</div></div></div></div>",
+        "image": {
+          "prompt": "溫暖的室內書桌俯視特寫。桌上攤開一本厚實的精裝書，書頁潔白沒有任何文字或圖案，旁邊放著一支筆、一本合起來的皮革筆記本、一杯還冒著熱氣的咖啡，以及一副摺起的閱讀眼鏡。桌角有一盞暖黃的檯燈。窗外可以看見二零五零年城市的白天天際線，垂直綠化高樓在陽光下發亮。畫面安靜、專注、令人想坐下來讀書。",
+          "slot": "side",
+          "resolution": "1K"
+        }
+      }
+    },
+    {
+      "id": "s19",
+      "type": "outro",
+      "label": "立即入手",
+      "props": {
+        "display": "<span class=\"cue-mark\" data-cue=\"073\">不要成為<br>被演算法替換的<span class=\"accent\">執行者</span></span><div class=\"t-sub\"><span class=\"cue-mark\" data-cue=\"074\">掌握「問、選、創、責」的核心架構</span><br><span class=\"cue-mark\" data-cue=\"075\">現在就入手《2050自主智慧時代》</span><br><a class=\"cta-link\" href=\"https://q2050-book.vercel.app/\" target=\"_blank\" rel=\"noopener\">q2050-book.vercel.app</a></div>",
+        "next": "《2050自主智慧時代》 ‧ 李國憲 博士 著",
+        "image": {
+          "prompt": "二零五零年城市的清晨，晨光從畫面右上方灑落。畫面右側是李國憲博士的正面半身像，正面朝向觀眾、目光直視鏡頭，神情溫暖堅定、帶著淺笑，一手自然插在西裝褲口袋，站在被晨光照亮的空中步道上。畫面左側到中央是開闊的城市全景：被朝陽照亮的天際線、垂直綠化的高樓、遠處安靜滑行的空中運輸艙，步道向畫面深處延伸，遠方有幾位朝陽光方向走去的東亞行人背影。整體色調溫暖、開闊、充滿啟程感。",
+          "characters": ["李國憲"],
+          "resolution": "2K"
+        }
+      }
+    }
+  ]
+}
