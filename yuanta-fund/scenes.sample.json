@@ -1,0 +1,109 @@
+{
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "title",
+      "label": "封面",
+      "cue": "002",
+      "props": {
+        "eyebrow": "商品結構說明 ‧ 打樣版",
+        "display": "元大優質收益成長<br><span class='accent'>多重資產基金</span><br><span class='cue-mark' data-cue=\"003\" style='font-size:.42em;font-weight:600;letter-spacing:0'>（本基金之配息來源可能為本金）</span>",
+        "tagline": "重成長 ‧ 廣收益 ‧ 找優質",
+        "series": "風險報酬等級 RR3 ‧ 元大證券投資信託股份有限公司",
+        "image": {
+          "prompt": "深藍夜色中一顆由發光細線構成的地球儀網格，數道亮藍光帶自其中一點向外擴散並環繞全球，象徵投資機會由單一市場向全世界擴散",
+          "slot": "hero",
+          "aspect": "16:9",
+          "resolution": "2K"
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "type": "generic",
+      "label": "問題",
+      "cue": "004",
+      "props": {
+        "eyebrow": "問題",
+        "title": "高成長與高波動，變成同一個常態",
+        "body_html": "<div class='ytb-lines'><div class='ytb-line' data-cue=\"005\">人工智慧的投資機會，正從<b>美國擴散到全球</b>。</div><div class='ytb-line' data-cue=\"006\" style='border-left-color:#f46300'>但同一段時間裡，市場的<b style='color:#f46300'>波動度也同步墊高</b>。</div><div class='ytb-line' data-cue=\"007\">過去可以分開處理 —— 股票追成長、債券壓波動；現在<b>純股票太顛簸，純債券又跟不上</b>。</div></div>",
+        "image": {
+          "prompt": "一條持續向上攀升、但劇烈鋸齒震盪的發光光帶，橫越乾淨的淺色背景，同時傳達強勁成長與顛簸不安",
+          "slot": "side",
+          "aspect": "1:1",
+          "resolution": "1K"
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "type": "generic",
+      "label": "解方總覽",
+      "cue": "008",
+      "props": {
+        "eyebrow": "解方",
+        "title": "把三件事放進同一個組合",
+        "body_html": "<div class='cards-3' style='margin-top:10px'><div class='card' data-cue=\"009\"><div class='card-num c1'>成</div><div><div class='card-title'>重成長</div><div class='card-body'>用股票與 ETF 去追趨勢</div></div></div><div class='card' data-cue=\"010\"><div class='card-num c2'>收</div><div><div class='card-title'>廣收益</div><div class='card-body'>債券搭配掩護性買權，收權利金</div></div></div><div class='card' data-cue=\"011\"><div class='card-num c3'>質</div><div><div class='card-title'>找優質</div><div class='card-body'>刻意不碰高風險的收益來源</div></div></div></div><div class='ytb-note calm' style='margin-top:22px'>這三件事互相牽制，也互相補位。</div>"
+      }
+    },
+    {
+      "id": "s04",
+      "type": "generic",
+      "label": "掩護性買權",
+      "cue": "012",
+      "props": {
+        "eyebrow": "廣收益 ‧ 核心機制",
+        "title": "常態性掩護性買權",
+        "body_html": "<div class='ytb-lines' style='margin-bottom:14px'><div class='ytb-line mute' data-cue=\"013\">用生活化的說法 ——</div></div><div class='ytb-flow'><div class='ytb-step' data-cue=\"014\"><div class='n'>1</div><div class='t'>您持有一間房子，並跟對方簽約：未來他可以用<b>約定價格</b>跟您買。</div></div><div class='ytb-step' data-cue=\"015\"><div class='n'>2</div><div class='t'>為了這個權利，他<b>先付您一筆訂金</b> —— 這就是權利金收入的來源。</div></div><div class='ytb-step cost' data-cue=\"016\"><div class='n'>3</div><div class='t'>但房價若大漲超過約定價，上漲的那一段，您就參與不到了。</div></div></div><div class='ytb-note'>掩護性買權<b>並非不存在跌價風險</b>，且可能犧牲部分上漲機會，影響基金淨值表現。</div>",
+        "image": {
+          "prompt": "一棟簡潔的現代房屋造形，旁邊漂浮一份捲起的契約與一枚金幣，三者以柔和光線串連，象徵持有資產、簽下約定價格、先收一筆訂金",
+          "slot": "side",
+          "aspect": "1:1",
+          "resolution": "1K"
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "type": "generic",
+      "label": "為何長天期美債",
+      "cue": "017",
+      "props": {
+        "eyebrow": "廣收益 ‧ 標的選擇",
+        "title": "為什麼鎖定長天期美國公債？",
+        "body_html": "<div class='ytb-tbl'><div class='ytb-tr head'><div>標的</div><div>存續期間</div><div>波動度</div><div>權利金收益率</div><div>債券殖利率</div><div>合計收益率</div></div><div class='ytb-tr focus'><div>長天期美國公債<small>本基金關注</small></div><div>11.5 年</div><div>較高</div><div>16.00%</div><div>4.96%</div><div class='total'>20.96%</div></div><div class='ytb-tr'><div>投資等級公司債</div><div>6.8 年</div><div>中</div><div>7.39%</div><div>5.14%</div><div class='total'>12.53%</div></div><div class='ytb-tr'><div>非投資級公司債</div><div>3 年</div><div>較低</div><div>1.29%</div><div>6.98%</div><div class='total'>8.27%</div></div></div><div class='ytb-lines' style='margin-top:14px'><div class='ytb-line' data-cue=\"018\">權利金收益率最高，加上殖利率，<b>合計約百分之二十一</b>。</div><div class='ytb-line' data-cue=\"019\" style='border-left-color:#f46300'>但關鍵是 —— 權利金最高，正因為它的<b style='color:#f46300'>價格波動最大</b>。</div></div><div class='ytb-note'>以上為收益率試算，<b>非基金配息率，亦非報酬率</b>。</div>"
+      }
+    },
+    {
+      "id": "s06",
+      "type": "generic",
+      "label": "三件必須說清楚的事",
+      "cue": "020",
+      "props": {
+        "eyebrow": "風險與取捨",
+        "title": "三件必須說清楚的事",
+        "body_html": "<div class='callout-stack'><div class='callout' data-cue=\"021\"><div class='callout-icon cl-a'>1</div><div><div class='callout-title'>風險等級與實際結構有落差</div><div class='callout-desc'>風險報酬等級 RR3，但股票部位有<b>八成集中在資訊科技</b>，體感波動請以更保守的心理準備看待。</div></div></div><div class='callout' data-cue=\"022\"><div class='callout-icon cl-w'>2</div><div><div class='callout-title'>配息的來源與代價</div><div class='callout-desc'>配息<b>可能來自本金</b>；而賣出買權，等於在多頭行情裡系統性放棄一部分上檔。</div></div></div><div class='callout' data-cue=\"023\"><div class='callout-icon cl-p'>3</div><div><div class='callout-title'>成本不低</div><div class='callout-desc'>經理費 1.5% ＋ 保管費 0.25% ＝ 每年內扣 <b>1.75%</b>，是主動管理每年都必須跨過的門檻。</div></div></div></div>"
+      }
+    },
+    {
+      "id": "s07",
+      "type": "generic",
+      "label": "打樣結尾",
+      "cue": "024",
+      "props": {
+        "eyebrow": "打樣說明",
+        "title": "以上是打樣版",
+        "body_html": "<div class='ytb-dark'><div class='k' data-cue=\"025\">完整版會再展開 <em>選股邏輯</em> ‧ <em>預計配置</em> ‧ <em>費用結構</em> ‧ <em>適配對象</em>。</div><div class='s' data-cue=\"026\">方向如果沒問題，我們就接著把完整版做出來。</div></div><div class='ytb-note' style='margin-top:20px'><b>投資一定有風險，基金投資有賺有賠，申購前應詳閱公開說明書。</b><br>本基金之配息來源可能為本金；任何涉及由本金支出的部分，可能導致原始投資金額減損。本基金採用掩護性買權策略，收取權利金收入，但可能犧牲部分上漲機會，影響基金淨值表現。基金非存款或保險，無受存款保險或其他保障機制之保障。</div>",
+        "image": {
+          "prompt": "一座平衡中的抽象天平，一端是向上的成長箭頭，另一端是厚實穩定的基石，深藍色調，象徵在成長與風險之間取得平衡",
+          "slot": "side",
+          "aspect": "1:1",
+          "resolution": "1K"
+        }
+      }
+    }
+  ],
+  "meta": {
+    "style": "現代金融品牌插畫：抽象幾何造形與柔和光暈，以深藍 #004097 與亮藍 #009fe8 為主色，少量暖橘 #f46300 作為單一強調，大量乾淨留白，質感接近高階金融機構年報封面。不得出現任何文字、字母、數字、標誌或真實人物臉孔。"
+  }
+}

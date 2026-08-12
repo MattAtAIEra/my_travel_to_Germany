@@ -1,0 +1,220 @@
+{
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "title",
+      "label": "封面",
+      "cue": "002",
+      "props": {
+        "eyebrow": "商品結構說明 ‧ 跨國投資多重資產型",
+        "display": "元大優質收益成長<br><span class='accent'>多重資產基金</span><br><span class='cue-mark' data-cue=\"003\" style='font-size:.42em;font-weight:600;letter-spacing:0'>（本基金之配息來源可能為本金）</span>",
+        "tagline": "重成長 ‧ 廣收益 ‧ 找優質",
+        "series": "風險報酬等級 RR3 ‧ 元大證券投資信託股份有限公司"
+      }
+    },
+
+    {
+      "id": "s01b",
+      "type": "generic",
+      "label": "本篇範圍",
+      "cue": "004",
+      "props": {
+        "eyebrow": "本篇怎麼看",
+        "title": "不談行情，只談結構",
+        "body_html": "<div class='ytb-lines' style='margin-top:26px'><div class='ytb-line' data-cue=\"005\">這檔基金<b>為什麼這樣設計</b>，以及這樣設計的<b>代價</b>是什麼。</div></div><div class='ytb-note calm' style='margin-top:26px'>本簡報為公開資料整理，非投資推介。所有數字均引自基金公開說明書與公開行銷資料。</div>"
+      }
+    },
+
+    {
+      "id": "s02",
+      "type": "generic",
+      "label": "問題：成長與波動同源",
+      "cue": "006",
+      "props": {
+        "eyebrow": "問題",
+        "title": "高成長與高波動，變成同一個常態",
+        "body_html": "<div class='ytb-lines'><div class='ytb-line' data-cue=\"007\">人工智慧的投資機會，正從<b>美國擴散到全球</b>。</div><div class='ytb-line' data-cue=\"008\">算力 ‧ 雲端 ‧ 國防航太 ‧ 關鍵資源 —— 題材俯拾皆是。</div><div class='ytb-line' data-cue=\"009\" style='border-left-color:#f46300'>但同一段時間裡，市場的<b style='color:#f46300'>波動度也同步墊高</b>。</div></div><div class='painpoint' style='margin-top:18px'><div class='panel' data-cue=\"010\"><h3>過去：分開處理</h3><ul><li data-cue=\"011\">股票追成長，債券壓波動，兩邊各司其職</li></ul></div><div class='panel dark' data-cue=\"012\"><h3>現在：同源</h3><ul><li data-cue=\"013\">純股票太顛簸，純債券又跟不上</li></ul></div></div><div class='ytb-note' data-cue=\"014\">這檔基金的答案：把<b>三件事</b>放進同一個組合裡。</div>"
+      }
+    },
+
+    {
+      "id": "s03",
+      "type": "generic",
+      "label": "解方總覽",
+      "cue": "015",
+      "props": {
+        "eyebrow": "解方",
+        "title": "重成長 ‧ 廣收益 ‧ 找優質",
+        "body_html": "<div class='cards-3' style='margin-top:10px'><div class='card' data-cue=\"016\"><div class='card-num c1'>成</div><div><div class='card-title'>重成長</div><div class='card-body'>用股票與 ETF 去追趨勢</div></div></div><div class='card' data-cue=\"017\"><div class='card-num c2'>收</div><div><div class='card-title'>廣收益</div><div class='card-body'>債券搭配掩護性買權，收權利金</div></div></div><div class='card' data-cue=\"018\"><div class='card-num c3'>質</div><div><div class='card-title'>找優質</div><div class='card-body'>刻意不碰高風險的收益來源</div></div></div></div><div class='ytb-note calm' data-cue=\"019\" style='margin-top:22px'>這三件事<b>互相牽制，也互相補位</b>。</div><div class='ytb-note calm' data-cue=\"020\">接下來一支一支拆開來看。</div>"
+      }
+    },
+
+    {
+      "id": "s04",
+      "type": "generic",
+      "label": "重成長：TOP 選股",
+      "cue": "021",
+      "props": {
+        "eyebrow": "重成長 ‧ 股票部位",
+        "title": "不用市值當框架，用 TOP 三維度選股",
+        "body_html": "<div class='ytb-lines' style='margin-bottom:14px'><div class='ytb-line mute' data-cue=\"022\">先談股票部位的選股邏輯 —— 三個維度依序篩選。</div></div><div class='cards-3'><div class='card' data-cue=\"023\"><div class='card-num c1'>T</div><div><div class='card-title'>Trend ‧ 趨勢</div><div class='card-body' data-cue=\"024\">只選有結構性需求支撐的大題材；現階段聚焦 AI 與創新科技</div></div></div><div class='card' data-cue=\"025\"><div class='card-num c2'>O</div><div><div class='card-title'>Operation ‧ 營運</div><div class='card-body' data-cue=\"026\">看財報三率 —— 毛利率、營業利益率、淨利率是否穩定成長</div></div></div><div class='card' data-cue=\"027\"><div class='card-num c3'>P</div><div><div class='card-title'>Price ‧ 價格</div><div class='card-body' data-cue=\"028\">遵守評價紀律，等評價合理才布局</div></div></div></div><div class='ytb-note calm' data-cue=\"029\">因為打破市值框架，<b>大型、中型、小型股都在選股池裡</b>。</div>"
+      }
+    },
+
+    {
+      "id": "s05",
+      "type": "generic",
+      "label": "三大關注產業",
+      "cue": "030",
+      "props": {
+        "eyebrow": "重成長 ‧ 題材",
+        "title": "現階段的三大關注產業",
+        "body_html": "<div class='callout-stack'><div class='callout' data-cue=\"031\"><div class='callout-icon cl-p'>1</div><div><div class='callout-title'>AI 應用及基礎建設</div><div class='callout-desc' data-cue=\"032\">已成為各國戰略資源，正進入大量部署階段</div></div></div><div class='callout' data-cue=\"033\"><div class='callout-icon cl-s'>2</div><div><div class='callout-title'>國防航太科技</div><div class='callout-desc' data-cue=\"034\">創新驅動加上地緣風險不斷，正轉為高成長領域</div></div></div><div class='callout' data-cue=\"035\"><div class='callout-icon cl-a'>3</div><div><div class='callout-title'>關鍵資源</div><div class='callout-desc' data-cue=\"036\">關鍵零組件與能源的爭奪，本身變成一門生意</div></div></div></div><div class='ytb-note calm'>關注產業僅為舉例；實際布局綜合評估廣泛指標，並視市況調整。</div>"
+      }
+    },
+
+    {
+      "id": "s06",
+      "type": "generic",
+      "label": "衛星部位 ETF",
+      "cue": "037",
+      "props": {
+        "eyebrow": "重成長 ‧ 衛星部位",
+        "title": "核心追成長，衛星交給 ETF",
+        "body_html": "<div class='ytb-lines'><div class='ytb-line mute' data-cue=\"038\">原因很實際。</div><div class='ytb-line' data-cue=\"039\">當某個題材突然發動 —— <b>地緣風險推升金礦</b>、<b>能源類股走強</b>。</div><div class='ytb-line' data-cue=\"040\">用 ETF 可以<b>立刻建立部位</b>，不必先花時間研究整個產業。</div><div class='ytb-line' data-cue=\"041\">流動性足夠，進出也快。</div></div><div class='ytb-note calm' data-cue=\"042\">這是把研究資源<b>留給核心持股</b>的做法。</div>"
+      }
+    },
+
+    {
+      "id": "s07",
+      "type": "generic",
+      "label": "掩護性買權是什麼",
+      "cue": "043",
+      "props": {
+        "eyebrow": "廣收益 ‧ 核心機制",
+        "title": "常態性掩護性買權",
+        "body_html": "<div class='ytb-lines' style='margin-bottom:14px'><div class='ytb-line' data-cue=\"044\"><b>持有一批資產，同時賣出對應的買權，先收一筆權利金。</b></div><div class='ytb-line mute' data-cue=\"045\">本基金常態性透過持有美國公債或全球股票組合，架構此策略。</div><div class='ytb-line mute' data-cue=\"046\">用生活化的說法 ——</div></div><div class='ytb-flow'><div class='ytb-step' data-cue=\"047\"><div class='n'>1</div><div class='t'>您持有一間房子，並跟對方簽約：未來一年內，他可以用<b>約定價格</b>跟您買。</div></div><div class='ytb-step' data-cue=\"048\"><div class='n'>2</div><div class='t'>為了這個權利，他<b>先付您一筆訂金</b>。</div></div><div class='ytb-step' data-cue=\"049\"><div class='n'>3</div><div class='t'>訂金一定入袋 —— 這就是<b>權利金收入</b>的來源。</div></div><div class='ytb-step cost' data-cue=\"050\"><div class='n'>4</div><div class='t'>但房價若大漲超過約定價，房子仍得依約賣給他。</div></div><div class='ytb-step cost' data-cue=\"051\"><div class='n'>5</div><div class='t'>上漲的那一段，您就參與不到了。</div></div></div>"
+      }
+    },
+
+    {
+      "id": "s08",
+      "type": "generic",
+      "label": "三種市況",
+      "cue": "052",
+      "props": {
+        "eyebrow": "廣收益 ‧ 情境",
+        "title": "同一個策略，三種市況三種結果",
+        "body_html": "<div class='callout-stack'><div class='callout' data-cue=\"053\"><div class='callout-icon cl-a'>跌</div><div><div class='callout-title'>債券大跌時 —— 減少跌幅，但仍然會跌</div><div class='callout-desc'>權利金收入抵掉一部分跌幅。<b style='color:#f46300'>這不是保本，掩護性買權仍有跌價風險。</b></div></div></div><div class='callout' data-cue=\"054\"><div class='callout-icon cl-s'>震</div><div><div class='callout-title'>債券震盪時 —— 策略真正的甜蜜點</div><div class='callout-desc'>價格區間整理，權利金純粹是額外收益。</div></div></div><div class='callout' data-cue=\"055\"><div class='callout-icon cl-w'>漲</div><div><div class='callout-title'>債券大漲時 —— 上檔被限制</div><div class='callout-desc'>賣出的買權會削掉一段漲幅，影響基金淨值表現。</div></div></div></div><div class='ytb-note' data-cue=\"056\">請務必記得：<b>權利金不是憑空生出來的，它是用上漲的機會換來的。</b></div>"
+      }
+    },
+
+    {
+      "id": "s09",
+      "type": "generic",
+      "label": "為何長天期美債",
+      "cue": "057",
+      "props": {
+        "eyebrow": "廣收益 ‧ 標的選擇",
+        "title": "為什麼鎖定長天期美國公債？",
+        "body_html": "<div class='ytb-lines' style='margin-bottom:14px'><div class='ytb-line mute' data-cue=\"058\">公開資料的比較是這樣的。</div></div><div class='ytb-tbl'><div class='ytb-tr head'><div>標的</div><div>存續期間</div><div>波動度</div><div>權利金收益率</div><div>債券殖利率</div><div>合計收益率</div></div><div class='ytb-tr focus' data-cue=\"059\"><div>長天期美國公債<small>本基金關注</small></div><div>11.5 年</div><div>較高</div><div>16.00%</div><div>4.96%</div><div class='total cue-mark' data-cue=\"060\">20.96%</div></div><div class='ytb-tr' data-cue=\"061\"><div>投資等級公司債</div><div>6.8 年</div><div>中</div><div>7.39%</div><div>5.14%</div><div class='total'>12.53%</div></div><div class='ytb-tr' data-cue=\"062\"><div>中天期美國公債</div><div>5.8 年</div><div>中</div><div>7.72%</div><div>4.19%</div><div class='total'>11.91%</div></div><div class='ytb-tr' data-cue=\"063\"><div>非投資級公司債</div><div>3 年</div><div>較低</div><div>1.29%</div><div>6.98%</div><div class='total'>8.27%</div></div></div><div class='ytb-note calm' style='margin-top:14px'>權利金收益率、債券殖利率、合計收益率<b>非指基金配息率或報酬率</b>。</div>"
+      }
+    },
+
+    {
+      "id": "s09b",
+      "type": "generic",
+      "label": "表格沒說的事",
+      "cue": "064",
+      "props": {
+        "eyebrow": "廣收益 ‧ 讀懂這張表",
+        "title": "數字本身不會告訴您的事",
+        "body_html": "<div class='ytb-big' data-cue=\"065\">權利金最高，正因為它的<span class='neg'>價格波動最大</span>。</div><div class='ytb-lines'><div class='ytb-line mute' data-cue=\"066\">選擇權的權利金，本來就是<b>波動度的定價</b>。</div><div class='ytb-line' data-cue=\"067\">所以這不是撿到便宜 —— 而是<b>用長債的波動風險，去換現金流</b>。</div></div><div class='ytb-note' data-cue=\"068\">以上為收益率試算，<b>非基金配息率，亦非報酬率</b>。</div>"
+      }
+    },
+
+    {
+      "id": "s10",
+      "type": "generic",
+      "label": "找優質",
+      "cue": "069",
+      "props": {
+        "eyebrow": "找優質 ‧ 風險控管",
+        "title": "刻意不碰的那一塊",
+        "body_html": "<div class='ytb-big' data-cue=\"070\">明確<span class='neg'>不投資非投資等級債</span> —— 也就是俗稱的垃圾債。</div><div class='ytb-lines'><div class='ytb-line' data-cue=\"071\">在同類型的收益型商品裡，這是<b>少見的取捨</b>。</div><div class='ytb-line' data-cue=\"072\">放棄高票息，換到的是<b>危機時候的抗震能力</b>。</div><div class='ytb-line' data-cue=\"073\">重大經濟風險發生時，債券部位可拉高至上限，並<b>集中在美國公債</b>。</div></div><div class='ytb-note calm' data-cue=\"074\">過去幾次系統性風險事件裡，美國公債表現確實比可轉債與非投資等級債來得穩。</div>"
+      }
+    },
+
+    {
+      "id": "s11",
+      "type": "generic",
+      "label": "預計配置",
+      "cue": "075",
+      "props": {
+        "eyebrow": "配置輪廓",
+        "title": "三支腳合起來，長這樣",
+        "body_html": "<div class='ytb-bars'><div class='ytb-bar' data-cue=\"076\"><div class='lab'><span>股票 ＋ ETF</span><span>75 – 85%</span></div><div class='track'><div class='fill' style='width:80%'></div></div><div class='sub'>積極追求成長，聚焦 AI 與新科技等高成長潛力標的</div></div><div class='ytb-bar' data-cue=\"077\"><div class='lab'><span>債券</span><span>15 – 25%</span></div><div class='track'><div class='fill' style='width:20%'></div></div><div class='sub'>主要鎖定美國公債，結合常態性掩護性買權增加權利金收入</div></div></div><div class='ytb-2col' style='margin-top:16px'><div class='ytb-bar' data-cue=\"078\"><div class='lab'><span>股票部位 ‧ 產業</span><span>資訊科技 80%</span></div><div class='track'><div class='fill' style='width:80%'></div></div><div class='sub'>工業 9% ‧ 原材料 3% ‧ 通訊服務 3% ‧ 非核心消費 2% ‧ 金融 2% ‧ 能源 1%</div></div><div class='ytb-bar' data-cue=\"079\"><div class='lab'><span>整體部位 ‧ 國家</span><span>美國 70%</span></div><div class='track'><div class='fill' style='width:70%'></div></div><div class='sub'>台灣 11% ‧ 日本 10% ‧ 南韓 6% ‧ 歐洲 3%</div></div></div><div class='ytb-note' data-cue=\"080\">這<b>兩個數字</b>請放在心上 —— 等一下談風險時會再回來。</div>"
+      }
+    },
+
+    {
+      "id": "s12",
+      "type": "generic",
+      "label": "商品規格",
+      "cue": "081",
+      "props": {
+        "eyebrow": "規格",
+        "title": "商品規格",
+        "body_html": "<div class='ytb-spec'><div class='ytb-specrow' data-cue=\"082\"><dt>基金類型 ‧ 風險等級</dt><dd>跨國投資多重資產型 ‧ 風險報酬等級 <b>RR3</b></dd></div><div class='ytb-specrow' data-cue=\"083\"><dt>資金配置區間</dt><dd>股票 3–70% ‧ 債券 3–70% ‧ 基金受益憑證（含 ETF）3–70%</dd></div><div class='ytb-specrow' data-cue=\"084\"><dt>不動產投資信託</dt><dd>0–30%</dd></div></div><div class='ytb-note calm' data-cue=\"085\">區間很寬 —— 代表<b>經理團隊有很大的調整空間</b>。</div><div class='ytb-spec' style='margin-top:12px'><div class='ytb-specrow' data-cue=\"086\"><dt>計價幣別 ‧ 收益分配</dt><dd>新台幣 ‧ 美元 ‧ 日圓　｜　累積型／月配息</dd></div><div class='ytb-specrow' data-cue=\"087\"><dt>閉鎖期</dt><dd>成立日起 <b>90 日</b>內不受理買回申請</dd></div><div class='ytb-specrow' data-cue=\"088\"><dt>買回付款日</dt><dd>T＋8 日（實際付款日為 T＋6 日）</dd></div></div>"
+      }
+    },
+
+    {
+      "id": "s13",
+      "type": "generic",
+      "label": "費用結構",
+      "cue": "089",
+      "props": {
+        "eyebrow": "成本",
+        "title": "費用要單獨看",
+        "body_html": "<div class='ytb-spec'><div class='ytb-specrow' data-cue=\"090\"><dt>每年內扣</dt><dd>經理費 1.5% ＋ 保管費 0.25% ＝ <b>合計 1.75%／年</b></dd></div><div class='ytb-specrow' data-cue=\"091\"><dt>申購手續費（前收）</dt><dd>最高 4%</dd></div><div class='ytb-specrow' data-cue=\"092\"><dt>遞延手續費（後收）</dt><dd>1 年內 2%　｜　1–2 年 1.5%　｜　2–3 年 1%　｜　逾 3 年 <b>0%</b></dd></div></div><div class='ytb-note calm' data-cue=\"093\">意思很清楚：後收級別是<b>設計給持有三年以上的人</b>。</div><div class='ytb-note' data-cue=\"094\">每年 1.75% 的內扣成本，是<b>主動管理每年都必須跨過的門檻</b>。</div>"
+      }
+    },
+
+    {
+      "id": "s14",
+      "type": "generic",
+      "label": "三個必須看清楚的地方",
+      "cue": "095",
+      "props": {
+        "eyebrow": "風險與取捨",
+        "title": "三件必須說清楚的事",
+        "body_html": "<div class='callout-stack'><div class='callout' data-cue=\"096\"><div class='callout-icon cl-a'>1</div><div><div class='callout-title'>風險等級與實際結構有落差</div><div class='callout-desc'><span data-cue=\"097\" style='display:block'>RR3 是依整體股債配置比重計算出來的。</span><span data-cue=\"098\" style='display:block'>但股票＋ETF 佔七成五以上，其中資訊科技又佔八成。</span><span data-cue=\"099\" style='display:block'>這是高度集中的科技成長部位，外面包了一層債券與選擇權。</span><span data-cue=\"100\" style='display:block'><b style='color:#f46300'>體感波動請以更保守的心理準備看待。</b></span></div></div></div><div class='callout' data-cue=\"101\"><div class='callout-icon cl-w'>2</div><div><div class='callout-title'>配息的來源與代價</div><div class='callout-desc'><span data-cue=\"102\" style='display:block'>配息可能來自本金；由本金支付的部分會減損原始投資金額。</span><span data-cue=\"103\" style='display:block'>收益來源之一是賣出買權 —— 多頭時會系統性放棄一部分上檔。</span><span data-cue=\"104\" style='display:block'>目的若是資本增值，這結構是負向的；目的若是現金流，才合理。</span></div></div></div><div class='callout' data-cue=\"105\"><div class='callout-icon cl-p'>3</div><div><div class='callout-title'>成本不低</div><div class='callout-desc'><span data-cue=\"106\" style='display:block'>每年 1.75% 內扣加上手續費，需要主動管理創造超額報酬才划算。</span></div></div></div></div>"
+      }
+    },
+
+    {
+      "id": "s15",
+      "type": "generic",
+      "label": "適配",
+      "cue": "107",
+      "props": {
+        "eyebrow": "適配",
+        "title": "這檔基金適合誰？",
+        "body_html": "<div class='painpoint'><div class='panel' data-cue=\"108\"><h3>比較適合</h3><ul><li data-cue=\"109\">認同 AI 長期趨勢、能承受科技股波動；希望有月現金流平滑持有體感；投資期間三年以上</li></ul></div><div class='panel dark' data-cue=\"110\"><h3>比較不適合</h3><ul><li data-cue=\"111\">把「多重資產」直接等同於穩健的保守型投資人</li><li data-cue=\"112\">期待完整參與科技股上漲的成長型投資人 —— 掩護性買權會削掉上檔</li><li data-cue=\"113\">短期內可能需要動用這筆資金的人 —— 有 90 日閉鎖期</li></ul></div></div>"
+      }
+    },
+
+    {
+      "id": "s16",
+      "type": "generic",
+      "label": "總結與警語",
+      "cue": "114",
+      "props": {
+        "eyebrow": "總結",
+        "title": "一句話總結它的性格",
+        "body_html": "<div class='ytb-dark'><div class='k' data-cue=\"115\">以<em>科技成長</em>為核心，用<em>選擇權權利金</em>換取現金流的組合。</div><div class='s' data-cue=\"116\">它讓波動變得比較好受，但<b>沒有讓波動消失</b>。</div></div><div class='ytb-note' data-cue=\"117\" style='margin-top:20px'><b>投資一定有風險，基金投資有賺有賠，申購前應詳閱公開說明書。</b><br>本基金之配息來源可能為本金；任何涉及由本金支出的部分，可能導致原始投資金額減損。本基金採用掩護性買權策略，收取權利金收入，但可能犧牲部分上漲機會，影響基金淨值表現。基金非存款或保險，無受存款保險或其他保障機制之保障。</div>"
+      }
+    }
+  ]
+}

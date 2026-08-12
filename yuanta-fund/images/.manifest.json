@@ -1,0 +1,26 @@
+{
+  "s01-hero.jpg": {
+    "prompt_hash": "be235f2f1f696d2b",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "2K",
+    "aspect": "16:9"
+  },
+  "s02-side.jpg": {
+    "prompt_hash": "84e93db98acc5501",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s04-side.jpg": {
+    "prompt_hash": "7428ea4e7bca4698",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  },
+  "s07-side.jpg": {
+    "prompt_hash": "54a586bf28413aa5",
+    "model": "gemini-3.1-flash-image",
+    "resolution": "1K",
+    "aspect": "1:1"
+  }
+}
