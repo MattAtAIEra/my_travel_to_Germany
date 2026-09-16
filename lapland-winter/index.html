@@ -828,7 +828,7 @@ const playBtn = document.getElementById('playBtn');
 
 // ── BGM: starts on user Play only (autoplay policy); pauses with the deck; fades out at the end (筆記 §5.3) ──
 const bgm = document.getElementById('bgm');
-const BGM_VOLUME = 0.15;
+const BGM_VOLUME = 0.105;   // 0.15 × 0.7：接電視（HDMI）時 BGM 太大聲，降 30%
 let bgmFadeTimer = null;
 function bgmStart() {
   if (!bgm) return;
