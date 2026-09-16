@@ -77,7 +77,7 @@ python3 ../../plugins/dynamic-deck/skills/dynamic-deck/scripts/sync_durations.py
 python3 ../../plugins/dynamic-deck/skills/dynamic-deck/scripts/build_html.py \
   --subs Q2050.subs.json --scenes scenes.json --theme manga-color --lang zh-Hant \
   --out index.html --require-cues --scene-gap 2 \
-  --bgm BGM/BGM.mp3 --bgm-fade 3.5
+  --bgm BGM/BGM.mp3 --bgm-volume 0.105 --bgm-fade 3.5
 ```
 
 金鑰在專案根目錄 `.env`，腳本自己會讀，指令不必帶前綴。

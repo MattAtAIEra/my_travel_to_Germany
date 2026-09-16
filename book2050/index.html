@@ -1465,7 +1465,7 @@ const playBtn = document.getElementById('playBtn');
 // 收尾：片尾預留 BGM_FADE 秒淡出，且淡出「結束」正好落在最後一幀播完的瞬間 ——
 // 播完才開始淡，音樂會比畫面多拖一段，收不乾淨。
 const bgmEls = Array.from(document.querySelectorAll('.bgm'));
-const BGM_VOLUME = 0.15;
+const BGM_VOLUME = 0.105;   // 0.15 × 0.7：接電視（HDMI）時 BGM 太大聲，降 30%
 const BGM_FADE = 3.5;   // 片尾淡出長度（秒）
 const BGM_XFADE = 1.6;           // 循環接縫的交叉淡接長度（秒）
 let bgmIdx = 0, bgmTimer = null, bgmXfade = null, bgmFadeAt = null;
