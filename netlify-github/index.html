@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>操作手冊：從零開始，把網頁放到網路上（GitHub ＋ Netlify）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #EDF0F3; --paper-2: #E3E8EE; --grid: rgba(20,36,58,0.06); --grid-bold: rgba(20,36,58,0.11);
+  --ink: #14243A; --ink-70: rgba(20,36,58,0.72); --ink-15: rgba(20,36,58,0.15); --ink-08: rgba(20,36,58,0.08);
+  --pencil: #7A8798; --seal: #C8321F; --seal-soft: rgba(200,50,31,0.10); --live: #1F9D6A; --live-soft: rgba(31,157,106,0.12); --marker: #FFD66B; --white: #fff;
+  --serif: "Noto Serif TC", "Songti TC", serif; --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; --mono: "JetBrains Mono", Menlo, Consolas, monospace;
+  --shadow: 0 10px 30px rgba(20,36,58,0.08), 0 2px 6px rgba(20,36,58,0.05);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--ink); background: var(--paper);
+  background-image: linear-gradient(var(--grid-bold) 1px, transparent 1px), linear-gradient(90deg, var(--grid-bold) 1px, transparent 1px), linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 160px 160px, 160px 160px, 32px 32px, 32px 32px; line-height: 1.75; font-size: 17px; -webkit-font-smoothing: antialiased; }
+a { color: var(--seal); }
+code, kbd { font-family: var(--mono); font-size: 0.92em; background: var(--white); border: 1px solid var(--ink-15); border-radius: 6px; padding: 1px 6px; }
+kbd { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.en { font-family: var(--mono); font-size: 0.95em; }
+
+/* 版面：左側目錄、右側內容 */
+.wrap { max-width: 1240px; margin: 0 auto; padding: 32px 24px 120px; display: grid; grid-template-columns: 240px 1fr; gap: 40px; }
+@media (max-width: 960px) { .wrap { grid-template-columns: 1fr; } nav.toc { position: static !important; } }
+nav.toc { position: sticky; top: 24px; align-self: start; background: var(--white); border: 1px solid var(--ink-15); border-radius: 14px; padding: 18px 18px 14px; box-shadow: var(--shadow); font-size: 14px; }
+nav.toc .label { font: 700 11px/1 var(--mono); letter-spacing: 3px; color: var(--seal); margin-bottom: 10px; }
+nav.toc a { display: block; color: var(--ink-70); text-decoration: none; padding: 5px 0; border-bottom: 1px solid var(--ink-08); }
+nav.toc a:last-child { border-bottom: 0; }
+nav.toc a b { color: var(--ink); }
+nav.toc .progress { height: 6px; background: var(--ink-08); border-radius: 3px; margin: 12px 0 6px; overflow: hidden; }
+nav.toc .progress i { display: block; height: 100%; width: 0; background: var(--live); transition: width .3s; }
+nav.toc .pct { font: 700 12px/1 var(--mono); color: var(--live); }
+
+/* 標題區 */
+header.hero { margin-bottom: 36px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 700 12px/1 var(--mono); letter-spacing: 3px; color: var(--seal); text-transform: uppercase; }
+.eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--seal); }
+h1 { font: 900 40px/1.25 var(--serif); margin: 12px 0 14px; letter-spacing: .5px; text-wrap: balance; }
+.lead { font-size: 19px; color: var(--ink-70); max-width: 760px; }
+.stamp { display: inline-block; padding: 4px 14px 6px; border: 3px solid var(--seal); border-radius: 8px; color: var(--seal); font: 900 18px/1.2 var(--serif); letter-spacing: 4px; text-indent: 4px; transform: rotate(-4deg); mix-blend-mode: multiply; white-space: nowrap; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--white); border: 1px solid var(--ink-15); font-size: 14px; }
+.chip.live { background: var(--live-soft); border-color: transparent; color: var(--live); font-weight: 700; }
+
+/* 區段與步驟 */
+section.part { margin-top: 56px; }
+section.part > h2 { font: 900 30px/1.3 var(--serif); margin-bottom: 6px; display: flex; align-items: center; gap: 14px; }
+section.part > h2 .n { width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--white); display: inline-grid; place-items: center; font: 900 20px/1 var(--serif); flex-shrink: 0; }
+section.part > .intro { color: var(--ink-70); margin-bottom: 20px; max-width: 760px; }
+.time { font: 700 12px/1 var(--mono); letter-spacing: 2px; color: var(--pencil); margin-left: auto; white-space: nowrap; }
+.step { background: var(--white); border: 1px solid var(--ink-15); border-radius: 16px; box-shadow: var(--shadow); padding: 26px 28px 22px; margin-bottom: 22px; position: relative; scroll-margin-top: 24px; }
+.step.done { border-color: var(--live); }
+/* 小步驟（例如 10-1）：往右縮一點，左上角用虛線勾回上一步，表示是同一步拆出來的 */
+.step.substep { margin-left: 36px; }
+.step.substep::before { content: ""; position: absolute; left: -24px; top: -23px; width: 18px; height: 56px; border-left: 2px dashed var(--pencil); border-bottom: 2px dashed var(--pencil); border-bottom-left-radius: 10px; }
+@media (max-width: 760px) { .step.substep { margin-left: 16px; } .step.substep::before { left: -12px; width: 8px; } }
+.step .head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.step .opt { margin-left: auto; font: 700 11px/1 var(--mono); letter-spacing: 1px; color: var(--live); border: 1.5px solid var(--live); border-radius: 999px; padding: 5px 9px; white-space: nowrap; }
+.step .num { font: 900 13px/1 var(--mono); letter-spacing: 2px; color: var(--seal); padding-top: 8px; white-space: nowrap; }
+.step h3 { font: 900 23px/1.35 var(--serif); }
+.step .do { font-size: 17px; margin-bottom: 14px; }
+.step .do b { background: linear-gradient(transparent 60%, var(--marker) 60%, var(--marker) 92%, transparent 92%); padding: 0 2px; }
+ol.sub { padding-left: 22px; margin: 0 0 14px; }
+ol.sub li { margin: 4px 0; }
+.see { display: grid; grid-template-columns: 110px 1fr; gap: 12px; background: var(--paper); border-radius: 12px; padding: 12px 16px; margin-top: 14px; font-size: 15.5px; }
+.see .k { font: 700 12px/1.8 var(--mono); letter-spacing: 2px; color: var(--pencil); }
+.see.stuck { background: var(--seal-soft); } .see.stuck .k { color: var(--seal); }
+.see.why { background: var(--live-soft); } .see.why .k { color: var(--live); }
+.see ul { padding-left: 18px; } .see li { margin: 2px 0; }
+.check { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 14px; color: var(--pencil); user-select: none; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--live); }
+.step.done .check { color: var(--live); font-weight: 700; }
+
+/* 截圖框 */
+figure.shot { margin: 16px 0 4px; border: 1px solid var(--ink-15); border-radius: 12px; overflow: hidden; background: var(--paper-2); position: relative; }
+figure.shot .frame { position: relative; aspect-ratio: 16 / 10; background: var(--white); overflow: hidden; }
+figure.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+/* 真實截圖：照截圖自己的長寬比顯示，不裁切；直式截圖限制高度、置中。紅框放在 .pic 裡，座標是「佔圖片的百分比」 */
+figure.shot .frame.real { aspect-ratio: auto; display: flex; justify-content: center; background: var(--paper-2); }
+figure.shot .pic { position: relative; width: min(100%, calc(var(--r) * 560px)); aspect-ratio: var(--r); background: var(--white); }
+figure.shot .mark { position: absolute; border: 3px solid var(--seal); border-radius: 10px; box-shadow: 0 0 0 4px rgba(200,50,31,0.18), 0 0 0 999px rgba(20,36,58,0.10); pointer-events: none; }
+figure.shot .mark::after { content: attr(data-label); position: absolute; left: 0; top: calc(100% + 8px); background: var(--seal); color: var(--white); font: 700 12px/1 var(--sans); padding: 5px 9px; border-radius: 6px; white-space: nowrap; }
+figure.shot .mark.up::after { top: auto; bottom: calc(100% + 8px); }
+figure.shot .mark.left::after { left: auto; right: 0; }
+figure.shot figcaption { padding: 9px 14px; font-size: 13px; color: var(--pencil); display: flex; justify-content: space-between; gap: 12px; background: var(--paper-2); }
+figure.shot figcaption .tag { font: 700 11px/1 var(--mono); letter-spacing: 2px; color: var(--pencil); white-space: nowrap; padding-top: 4px; }
+figure.shot .sketch { position: absolute; inset: 0; width: 100%; height: 100%; }
+figure.shot .missing { position: absolute; right: 10px; top: 10px; font: 700 11px/1 var(--mono); background: var(--marker); color: var(--ink); padding: 6px 9px; border-radius: 6px; display: none; }
+body.teacher figure.shot.no-img .missing { display: block; }
+
+/* 程式碼框 */
+pre.code { background: var(--ink); color: #E8EEF5; border-radius: 12px; padding: 16px 18px; font: 400 14px/1.6 var(--mono); white-space: pre-wrap; position: relative; margin: 12px 0; }
+pre.code .copy { position: absolute; right: 10px; top: 10px; font: 700 12px/1 var(--mono); color: rgba(255,255,255,.75); border: 1px solid rgba(255,255,255,.25); background: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+pre.code .copy:hover { background: rgba(255,255,255,.1); }
+.hint { font-size: 14px; color: var(--pencil); margin-top: 6px; }
+
+/* 流程圖、名詞表、表格 */
+.flow { background: var(--white); border: 1px solid var(--ink-15); border-radius: 16px; padding: 20px 24px; box-shadow: var(--shadow); margin: 18px 0; }
+.flow svg { width: 100%; height: auto; display: block; }
+.legend { font-size: 14px; color: var(--pencil); margin-top: 10px; }
+.legend b { color: var(--ink); }
+table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--white); border: 1px solid var(--ink-15); border-radius: 12px; overflow: hidden; font-size: 15px; margin: 14px 0; }
+table.tbl th { text-align: left; font: 700 12px/1 var(--mono); letter-spacing: 2px; color: var(--pencil); padding: 12px 14px; background: var(--paper-2); border-bottom: 1px solid var(--ink-15); }
+table.tbl td { padding: 11px 14px; border-bottom: 1px solid var(--ink-08); vertical-align: top; }
+table.tbl tr:last-child td { border-bottom: 0; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 760px) { .grid-3 { grid-template-columns: 1fr; } .see { grid-template-columns: 1fr; } }
+.card { background: var(--white); border: 1px solid var(--ink-15); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow); }
+.card h4 { font: 900 18px/1.3 var(--serif); margin-bottom: 6px; }
+.card p { font-size: 15px; color: var(--ink-70); }
+.final { background: var(--ink); color: var(--white); border-radius: 16px; padding: 28px 30px; margin-top: 30px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+.final h3 { font: 900 26px/1.3 var(--serif); margin-bottom: 8px; }
+.final p { color: rgba(255,255,255,.85); }
+.final .stamp { color: var(--marker); border-color: var(--marker); mix-blend-mode: normal; }
+
+@media print {
+  body { background: #fff; font-size: 12.5px; }
+  .wrap { grid-template-columns: 1fr; padding: 0; max-width: none; }
+  nav.toc, .check, .copy, .missing { display: none !important; }
+  .step { break-inside: avoid; box-shadow: none; }
+  figure.shot .frame { aspect-ratio: 16 / 9; }
+  figure.shot .pic { width: min(100%, calc(var(--r) * 360px)); }
+  .step.substep { margin-left: 0; } .step.substep::before { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="目錄">
+  <div class="label">目錄</div>
+  <a href="#p0"><b>開始之前</b>　要準備什麼</a>
+  <a href="#p1"><b>第一部分</b>　GitHub 帳號與兩階段驗證</a>
+  <a href="#p2"><b>第二部分</b>　第一個 repo 與第一頁網頁</a>
+  <a href="#p3"><b>第三部分</b>　Netlify 帳號與團隊</a>
+  <a href="#p4"><b>第四部分</b>　連動 GitHub、建立專案</a>
+  <a href="#p5"><b>第五部分</b>　之後怎麼更新</a>
+  <a href="#p6"><b>附錄</b>　卡住了怎麼辦、名詞對照</a>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="pct"><span id="pct">0</span>% 完成 ‧ <span id="cnt">0</span>/<span id="total">27</span></div>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">文學院 AI 服務實作課 ‧ 操作手冊</div>
+  <h1>從零開始，把你的網頁放到網路上<br>GitHub ＋ Netlify 連動，照著做 23 步</h1>
+  <p class="lead">這份手冊給第一次做的人。每一步只做一件事，做完打勾再往下；有幾步畫面比較多，拆成了小步驟（例如 10-1、10-2）。全部做完大約一小時，做完你會有一個全世界都打得開的網址，而且之後改網頁只要在 GitHub 上存檔，網站就會自己更新。</p>
+  <div class="chips"><span class="chip">約 1 小時</span><span class="chip">需要：一個 email、一支手機、一台電腦</span><span class="chip live">完成後：https://你取的名字.netlify.app</span></div>
+</header>
+
+<!-- ───────── 開始之前 ───────── -->
+<section class="part" id="p0">
+  <h2><span class="n">0</span>開始之前：三樣東西、四個名詞、一張圖</h2>
+  <div class="grid-3">
+    <div class="card"><h4>一個 email</h4><p>學校信箱或 Gmail 都可以。待會兩個網站都會寄驗證信給你，請用你現在就能打開的信箱。</p></div>
+    <div class="card"><h4>一支手機</h4><p>兩階段驗證要用。建議先裝好 Google Authenticator（iPhone、Android 都有，免費）；iPhone 也可以用內建的「密碼」app。</p></div>
+    <div class="card"><h4>一台電腦</h4><p>用 Chrome、Edge 或 Safari。手機也能做，但畫面小、容易按錯，建議用電腦。</p></div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th style="width:150px">名詞</th><th>用一句話說</th><th style="width:34%">你可以把它想成</th></tr></thead>
+    <tbody>
+      <tr><td><b>GitHub</b></td><td>放程式的網站。你的網頁檔案會存在這裡，而且每一次修改都有紀錄。</td><td>程式的雲端硬碟，但多記了每一次改了什麼。</td></tr>
+      <tr><td><b>repo</b>（repository）</td><td>GitHub 上的一個「專案資料夾」。一個作品一個 repo。</td><td>雲端硬碟裡的一個資料夾。</td></tr>
+      <tr><td><b>Netlify</b></td><td>把 GitHub 上的網頁檔案變成一個網址的服務。免費、不用信用卡。</td><td>幫你把資料夾「掛到網路上」的人。</td></tr>
+      <tr><td><b>部署</b>（deploy）</td><td>Netlify 從 GitHub 拿你最新的檔案，更新到網址上。</td><td>按下「發布」。</td></tr>
+      <tr><td><b>兩階段驗證</b>（2FA）</td><td>登入時除了密碼，還要輸入手機上的 6 位數。GitHub 規定一定要開。</td><td>家門除了鑰匙還有一道密碼鎖。</td></tr>
+    </tbody>
+  </table>
+  <div class="flow">
+    <svg viewBox="0 0 980 230" font-family="Noto Sans TC, sans-serif" font-size="15">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#14243A"/></marker></defs>
+      <g font-weight="700" text-anchor="middle">
+        <rect x="20" y="60" width="240" height="110" rx="14" fill="#fff" stroke="#14243A" stroke-width="2.5"/><text x="140" y="105" font-size="20">你的電腦</text><text x="140" y="135" font-size="13" fill="#7A8798" font-weight="400">在瀏覽器裡寫一頁 index.html</text>
+        <rect x="370" y="60" width="240" height="110" rx="14" fill="#14243A"/><text x="490" y="105" font-size="20" fill="#fff">GitHub</text><text x="490" y="135" font-size="13" fill="#C9D3DF" font-weight="400">存檔、記錄每一次修改</text>
+        <rect x="720" y="60" width="240" height="110" rx="14" fill="#fff" stroke="#1F9D6A" stroke-width="2.5"/><text x="840" y="105" font-size="20" fill="#1F9D6A">Netlify</text><text x="840" y="135" font-size="13" fill="#7A8798" font-weight="400">變成一個網址，自動更新</text>
+      </g>
+      <path d="M262 115 H366" stroke="#14243A" stroke-width="2.5" marker-end="url(#ar)"/><text x="314" y="100" text-anchor="middle" font-weight="700">存檔（commit）</text>
+      <path d="M612 115 H716" stroke="#14243A" stroke-width="2.5" marker-end="url(#ar)"/><text x="664" y="100" text-anchor="middle" font-weight="700">連動（第四部分）</text>
+      <path d="M840 172 V200 H140 V172" stroke="#7A8798" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ar)"/><text x="490" y="222" text-anchor="middle" fill="#7A8798" font-size="13">之後每次在 GitHub 改檔案 → Netlify 約一分鐘後自動更新網址</text>
+    </svg>
+    <p class="legend">怎麼讀這張圖：實線箭頭是今天要做的事，由左到右；虛線是做完之後每次更新會發生的事。<b>你只需要碰 GitHub</b>，Netlify 會自己動。</p>
+  </div>
+</section>
+
+<!-- ───────── 第一部分 GitHub ───────── -->
+<section class="part" id="p1">
+  <h2><span class="n">1</span>GitHub 帳號與兩階段驗證 <span class="time">約 15 分鐘</span></h2>
+  <p class="intro">GitHub 的註冊會問你 email、密碼、使用者名稱、國家，然後寄一封信確認。兩階段驗證是 GitHub 的規定，第一次設定會花五分鐘，之後每次登入只要多輸入手機上的 6 位數。</p>
+
+  <article class="step" id="s1">
+    <div class="head"><span class="num">步驟 1</span><h3>打開 GitHub，按右上角的 Sign up</h3></div>
+    <p class="do">在瀏覽器網址列輸入 <code>github.com</code>，按 Enter。右上角有兩個按鈕，按右邊白底的 <b>Sign up</b>。</p>
+    <figure class="shot" data-img="images/01-github-home.png" data-sketch="gh-home"><div class="frame"><div class="mark left" data-label="按這裡 Sign up" style="left:92%;top:1.6%;width:6%;height:4.8%"></div></div><figcaption><span>GitHub 首頁。畫面中間的大字會常常換，右上角的 Sign up 一直都在。</span><span class="tag">實際畫面</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>一個只有一個欄位的頁面，問你的 Email。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>看到「Sign in」而不是「Sign up」：那是登入。往右邊找白底的 Sign up。如果整頁變成英文以外的語言，不影響，按鈕位置一樣。</div></div>
+    <label class="check"><input type="checkbox" data-step="1"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s2">
+    <div class="head"><span class="num">步驟 2</span><h3>填 email、密碼、使用者名稱</h3></div>
+    <p class="do">右半邊標題 <span class="en">Sign up for GitHub</span>，所有欄位都在<b>同一頁</b>，由上往下填完，最後按綠色的 <b>Create account</b>。</p>
+    <ol class="sub">
+      <li><b>Email</b>：你現在能打開的信箱。（最上面的 <span class="en">Continue with Google／Apple</span> 也能註冊，但後面驗證信的流程會不一樣，跟著手冊做的話請填 Email。）</li>
+      <li><b>Password</b>：欄位下方的灰字寫著規則：至少 15 個字元；或至少 8 個字元並且含數字與小寫字母。建議用一句你記得住的話，例如 <code>wo-ai-tang-shi-2026</code>。</li>
+      <li><b>Username</b>：英文字母、數字，中間可以用一個連字號 <code>-</code> 隔開，開頭和結尾不能是連字號，不能有空格。<b>這個名字會出現在你的作品網址裡</b>，所以取一個你願意公開的，例如 <code>ling-reads</code>、<code>poem-lab</code>。不必是真名。</li>
+      <li><b>Your Country/Region</b>：選 <span class="en">Taiwan</span>（通常已經自動選好）。</li>
+      <li><b>Email preferences</b>：要不要收產品消息，不勾也可以。</li>
+    </ol>
+    <figure class="shot" data-img="images/02-github-signup.png" data-sketch="gh-signup"><div class="frame"></div><figcaption><span>註冊表單。左半邊黑底是 GitHub 的介紹，不用看；右半邊由上往下填，最下面是 Create account。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>按下 <span class="en">Create account</span> 之後，會出現一個「證明你不是機器人」的小遊戲（旋轉圖片或拼圖），照指示做完，就會進到下一步輸入驗證碼的畫面。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>Username 出現紅字：通常是名字被別人用走了，加上年份或喜歡的數字，例如 <code>ling-reads-26</code>。</li><li>密碼一直紅字：直接用一句話加連字號，長度夠就會過。</li><li>小遊戲一直失敗：重新整理頁面再來一次，或換 Chrome。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="2"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s3">
+    <div class="head"><span class="num">步驟 3</span><h3>到信箱找 8 位數的驗證碼</h3></div>
+    <p class="do">畫面標題變成 <span class="en">Confirm your email address</span>。GitHub 會寄一封信到你的 email，標題類似 <span class="en">Your GitHub launch code</span>。打開信，裡面有一組 <b>8 位數字</b>，回到 GitHub 的頁面輸入，按 <span class="en">Continue</span>。</p>
+    <figure class="shot" data-img="images/03-github-code.png" data-sketch="gh-code"><div class="frame"></div><figcaption><span>輸入 launch code 的畫面。八個小格子，直接把數字打進去，它會自動跳格。上面那行會寫出 GitHub 把信寄到哪個信箱。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>等兩分鐘還沒收到：到「垃圾郵件」或「促銷內容」找。</li><li>學校信箱有時擋信：按頁面下方的 <span class="en">Resend the code</span> 重寄一次。</li><li>發現 email 打錯了：按旁邊的 <span class="en">update your email address</span> 改成正確的信箱。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="3"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s4">
+    <div class="head"><span class="num">步驟 4</span><h3>跳過問卷，選免費方案</h3></div>
+    <p class="do">GitHub 會問你是學生還是老師、想做什麼。這些都可以按 <span class="en">Skip</span>（通常在頁面下方很小的字）。如果出現方案選擇，選 <b>Free</b>，按 <span class="en">Continue for free</span>。</p>
+    <figure class="shot" data-img="images/04-github-plan.png" data-sketch="gh-plan"><div class="frame"></div><figcaption><span>方案頁。左邊是 Free（免費），右邊是付費方案。我們一直都用免費的。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>GitHub 的首頁變成登入後的樣子：左邊有一欄「Top repositories」，右上角是你的頭像。恭喜，帳號有了。</div></div>
+    <label class="check"><input type="checkbox" data-step="4"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s5">
+    <div class="head"><span class="num">步驟 5</span><h3>找到兩階段驗證的設定頁</h3></div>
+    <p class="do">按<b>右上角你的頭像</b> → 選單裡的 <span class="en">Settings</span> → 左邊欄位找 <span class="en">Password and authentication</span>（密碼與驗證）→ 頁面中間有一塊 <span class="en">Two-factor authentication</span>，按綠色的 <b>Enable two-factor authentication</b>。</p>
+    <figure class="shot" data-img="images/05-github-2fa-settings.png" data-sketch="gh-2fa"><div class="frame"></div><figcaption><span>Password and authentication 頁。左欄選中 Password and authentication（黃框），往下捲到 Two-factor authentication 這一塊，按中間綠色的 Enable two-factor authentication。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>GitHub 從 2023 年起要求所有會上傳程式的帳號開啟兩階段驗證。現在不開，過幾天登入時它會強制你開，到時候手邊沒手機會更麻煩。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>找不到 Settings：點頭像後選單很長，Settings 在 Sponsors 底下、Copilot settings 上面。找不到 Password and authentication：它在左欄「Access」那一組底下。</div></div>
+    <label class="check"><input type="checkbox" data-step="5"> 我做完這一步了</label>
+  </article>
+
+  <article class="step substep" id="s5-1">
+    <div class="head"><span class="num">步驟 5-1</span><h3>同一頁的 Passkeys：之後可以不用打密碼登入</h3><span class="opt">選做</span></div>
+    <p class="do">下面這張圖把整條路徑標出來：<b>① 頭像選單的 Settings → ② 左欄的 Password and authentication → ③ Sign in methods 裡的 Passkeys</b>。步驟 5 走的就是 ①、②；③ 是同一頁上方的另一種登入方式。</p>
+    <ol class="sub">
+      <li><b>Passkey</b> 是用手機或電腦本身的解鎖方式（指紋、Face ID、裝置密碼）登入 GitHub，不用打密碼，也不怕被假網站騙走密碼。</li>
+      <li>今天<b>先不用設定</b>。等步驟 6～8 把兩階段驗證開好，之後想要更方便登入，再回到這一格新增 passkey。</li>
+    </ol>
+    <figure class="shot" data-img="images/05-github-passkey-settings.png" data-sketch="gh-passkey"><div class="frame"></div><figcaption><span>黃框 1、2、3 是走到 Passkeys 的順序。右邊打開的是頭像選單，Settings 在 Sponsors 底下。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>兩階段驗證是「密碼＋手機上的 6 位數」，每次要打兩樣東西；passkey 是一個動作（例如按指紋）同時完成兩件事。課堂上先把兩階段驗證開好，是因為那是 GitHub 規定一定要有的；passkey 是之後加上去的方便選項。</div></div>
+    <label class="check"><input type="checkbox" data-step="5-1"> 我看過了，知道 Passkeys 在哪裡</label>
+  </article>
+
+  <article class="step" id="s6">
+    <div class="head"><span class="num">步驟 6</span><h3>用手機掃 QR code，輸入 6 位數</h3></div>
+    <p class="do">GitHub 可能先要你再輸入一次密碼，然後進到 <span class="en">Enable two-factor authentication (2FA)</span> 頁，中間一塊 <span class="en">Setup authenticator app</span>，有一個 <b>QR code</b>。頁面上方的 1、2、3 是設定進度，現在在第 1 格。拿出手機：</p>
+    <ol class="sub">
+      <li><b>建議用 Google Authenticator</b>（iPhone、Android 都有）：打開 app → 右下角「＋」→ 掃描 QR code。GitHub 頁面上舉例的是 1Password、Authy、Microsoft Authenticator，這些也都能用，只是 Google Authenticator 最簡單。</li>
+      <li><b>iPhone 不想另外裝 app</b>：打開相機對準 QR code，上面會出現「在密碼中設定驗證碼」，點它，存起來。之後到「密碼」app 就能看到每 30 秒變一次的 6 位數。</li>
+      <li>把手機上現在顯示的 <b>6 位數</b> 輸入到電腦上 <span class="en">Verify the code from the app</span> 那一格，按 <span class="en">Continue</span>。</li>
+    </ol>
+    <figure class="shot" data-img="images/06-github-2fa-qr.png" data-sketch="gh-qr"><div class="frame"></div><figcaption><span>Setup authenticator app 畫面（藍色方塊是打碼過的 QR code）。黃字是老師的建議：畫面上列的 app 之外，Google Authenticator 更好用。最下面一格輸入手機上的 6 位數。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>6 位數一直說錯：手機時間要是「自動設定」。到手機的日期與時間設定開啟自動，再試一次新的數字。</li><li>手機掃不到 QR code：按 QR code 下面那行的 <span class="en">setup key</span>，會出現一串英文數字，在 app 裡選「輸入設定金鑰」手動打進去。</li><li>真的不想用 app：如果畫面上有 <span class="en">SMS</span> 選項，可以改用簡訊，國碼選 Taiwan +886。app 比較穩，簡訊偶爾會慢。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="6"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s7">
+    <div class="head"><span class="num">步驟 7</span><h3>下載救命用的 Recovery codes，存兩個地方</h3></div>
+    <p class="do">GitHub 會給你一張 <b>Recovery codes</b>（16 組像 <code>abcde-12345</code> 的字）。按 <span class="en">Download</span> 存成檔案，<b>再截圖一張到手機相簿</b>。然後勾選 <span class="en">I have saved my recovery codes</span>，按 <span class="en">Done</span>。</p>
+    <figure class="shot" data-img="images/07-github-recovery.png" data-sketch="gh-recovery"><div class="frame"></div><figcaption><span>Recovery codes 畫面。這一頁離開之後還能在設定裡再看一次，但現在就存最保險。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>手機掉了、換了、重置了，驗證 app 裡的數字就沒了。這時候唯一能進帳號的方法就是這些 recovery codes，每一組只能用一次。存在雲端硬碟（Google Drive、iCloud）加手機相簿，兩個地方。</div></div>
+    <label class="check"><input type="checkbox" data-step="7"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s8">
+    <div class="head"><span class="num">步驟 8</span><h3>登出再登入一次，確認兩階段驗證有用</h3></div>
+    <p class="do">右上角頭像 → 最下面 <span class="en">Sign out</span>。再按 <span class="en">Sign in</span>，輸入帳號密碼，<b>它會多問你一個 6 位數</b>，打開手機的驗證 app 看，輸入。</p>
+    <figure class="shot" data-img="images/08-github-login-2fa.png" data-sketch="gh-login2fa"><div class="frame"></div><figcaption><span>登入時多出來的 6 位數畫面。看到這一頁，表示兩階段驗證已經生效。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>順利回到 GitHub 首頁。到這裡第一部分完成。</div></div>
+    <label class="check"><input type="checkbox" data-step="8"> 我做完這一步了</label>
+  </article>
+</section>
+
+<!-- ───────── 第二部分 repo ───────── -->
+<section class="part" id="p2">
+  <h2><span class="n">2</span>第一個 repo 與第一頁網頁 <span class="time">約 10 分鐘</span></h2>
+  <p class="intro">Netlify 要有東西可以掛，所以先在 GitHub 上建一個資料夾（repo），放進一個最小的網頁檔 <code>index.html</code>。這一段全部在瀏覽器裡做，不用安裝任何東西。</p>
+
+  <article class="step" id="s9">
+    <div class="head"><span class="num">步驟 9</span><h3>建立一個新的 repo</h3></div>
+    <p class="do">右上角頭像左邊幾個圖示裡有一個 <b>「＋」</b>，按下去選 <span class="en">New repository</span>。表單分兩段：<span class="en">1 General</span>（名字）和 <span class="en">2 Configuration</span>（設定）。</p>
+    <ol class="sub">
+      <li><b>Owner</b>：你的使用者名稱（預設就是，不用改）。</li>
+      <li><b>Repository name</b>：英文小寫、不要空格，例如 <code>my-first-site</code>。打完下面出現綠字 <span class="en">is available</span> 就是可以用。</li>
+      <li><b>Choose visibility</b>：右邊選單保持 <span class="en">Public</span>（公開，預設就是）。Netlify 免費方案要公開的 repo 才能連，網頁本來就是要給人看的。</li>
+      <li><b>Add README</b>：右邊的開關預設是 <span class="en">Off</span>，<b>按一下切到 On</b>。</li>
+      <li>其他（<span class="en">Description、Add .gitignore、Add license</span>）都不用動，按最下面綠色的 <span class="en">Create repository</span>。</li>
+    </ol>
+    <figure class="shot" data-img="images/09-github-new-repo.png" data-sketch="gh-newrepo"><div class="frame"><div class="mark" data-label="切到 On" style="left:69.6%;top:70.7%;width:6.5%;height:4.5%"></div></div><figcaption><span>New repository 表單，右上角還開著「＋」選單。這張截圖的 Add README 還是 Off，你做的時候記得切到 On。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>一個新頁面，網址變成 <code>github.com/你的名字/my-first-site</code>，裡面只有一個 README.md 檔案。這就是你的 repo。</div></div>
+    <label class="check"><input type="checkbox" data-step="9"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s10">
+    <div class="head"><span class="num">步驟 10</span><h3>Add file → Create new file，開一個新檔案</h3></div>
+    <p class="do">在 repo 頁面，找到 <b>Add file</b> 按鈕（綠色 <span class="en">Code</span> 按鈕的左邊），按下去，選單裡選 <b>Create new file</b>（另一個 <span class="en">Upload files</span> 是上傳電腦裡的檔案，今天不用）。</p>
+    <figure class="shot" data-img="images/10-github-new-file.png" data-sketch="gh-addfile"><div class="frame"><div class="mark left" data-label="Add file → Create new file" style="left:75.4%;top:34.8%;width:19%;height:7.7%"></div></div><figcaption><span>repo 首頁。現在只有一個 README.md，按 Add file 打開選單，選 Create new file。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div>找不到 Add file：視窗太窄時它會縮成一個「＋」圖示，在 Code 按鈕旁邊。</div></div>
+    <label class="check"><input type="checkbox" data-step="10"> 我做完這一步了</label>
+  </article>
+
+  <article class="step substep" id="s10-1">
+    <div class="head"><span class="num">步驟 10-1</span><h3>取檔名 index.html，貼上一頁最小的網頁</h3></div>
+    <p class="do">畫面變成一個編輯器，照圖上黃框的 1、2 順序做：</p>
+    <ol class="sub">
+      <li>最上面 repo 名字後面的檔名欄位，輸入 <code>index.html</code>（<b>一個字都不能錯</b>，全部小寫）。</li>
+      <li>把下面這段整個複製（按右上角「複製」），貼進中間的大編輯框。「你的名字」那幾個字可以先改成自己的。</li>
+      <li>按右上角綠色的 <b>Commit changes…</b>（黃框 2）。</li>
+    </ol>
+    <pre class="code"><button class="copy" type="button">複製</button>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-Hant"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;我的第一個網頁&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; max-width: 640px; margin: 80px auto; padding: 0 24px; line-height: 1.8; color: #14243A; }
+    h1 { font-size: 40px; }
+    .seal { display: inline-block; border: 3px solid #C8321F; color: #C8321F; padding: 4px 12px; border-radius: 8px; transform: rotate(-4deg); font-weight: 700; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;文學院 AI 服務實作課&lt;/p&gt;
+  &lt;h1&gt;你的名字 的第一個網頁&lt;/h1&gt;
+  &lt;p&gt;床前明月光，疑是地上霜。&lt;/p&gt;
+  &lt;p&gt;這一頁是我自己放上網路的。&lt;/p&gt;
+  &lt;p class="seal"&gt;上線&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <figure class="shot" data-img="images/10-1-github-paste-content.png" data-sketch="gh-newfile"><div class="frame"></div><figcaption><span>貼好內容的樣子。黃框 1 是檔名，黃框 2 是存檔按鈕；左邊行號會一路到 20。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div>貼上之後縮排亂掉、或第 8、10 行很長被切到畫面外：不影響，網頁一樣能用。只要第一行是 <code>&lt;!DOCTYPE html&gt;</code>、最後一行是 <code>&lt;/html&gt;</code> 就對了。</div></div>
+    <label class="check"><input type="checkbox" data-step="10-1"> 我做完這一步了</label>
+  </article>
+
+  <article class="step substep" id="s10-2">
+    <div class="head"><span class="num">步驟 10-2</span><h3>跳出 Commit changes 視窗，再按一次 Commit changes</h3></div>
+    <p class="do">畫面中間跳出一個小視窗，標題 <span class="en">Commit changes</span>（存檔）。</p>
+    <ol class="sub">
+      <li><b>Commit message</b>：這一次存檔的說明。GitHub 的 AI 助手 Copilot 會先幫你填一句英文（例如 <span class="en">Add initial HTML structure for a webpage</span>），可以直接用，也可以改成中文，例如「新增第一頁網頁」。</li>
+      <li><span class="en">Extended description</span>（較長的補充說明）留空。</li>
+      <li>下面兩個選項保持第一個 <span class="en">Commit directly to the main branch</span>（直接存到主線）。</li>
+      <li>按綠色的 <b>Commit changes</b>。</li>
+    </ol>
+    <figure class="shot" data-img="images/10-1-github-commit.png" data-sketch="gh-commit"><div class="frame"><div class="mark" data-label="再按一次 Commit changes" style="left:55.75%;top:76%;width:11.5%;height:6.1%"></div></div><figcaption><span>Commit changes 視窗。最上面那格是存檔說明，灰字寫著它是 Copilot 建議的。</span><span class="tag">示意圖</span></figcaption></figure>
+    <p class="hint">「commit」就是存檔。GitHub 每一次存檔都會留下紀錄，所以叫它 commit 而不是 save；Commit message 就是那一筆紀錄的標題。</p>
+    <div class="see why"><span class="k">為什麼</span><div>第二個選項 <span class="en">Create a new branch</span> 是多人一起改同一個專案時用的：先存在另一條分支，別人看過再合併回主線。今天只有你一個人，直接存到 main，Netlify 才會拿到這個檔案。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>按 Commit changes 沒反應：小視窗可能被擋在下面，往下捲找綠色按鈕。</div></div>
+    <label class="check"><input type="checkbox" data-step="10-2"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s11">
+    <div class="head"><span class="num">步驟 11</span><h3>確認 repo 裡有兩個檔案</h3></div>
+    <p class="do">回到 repo 首頁（點上面的 repo 名字），檔案列表應該有 <code>README.md</code> 和 <code>index.html</code> 兩個。點 <code>index.html</code> 可以看到你剛貼的內容。</p>
+    <figure class="shot" data-img="images/11-github-repo-files.png" data-sketch="gh-files"><div class="frame"><div class="mark" data-label="兩個檔案都在" style="left:2%;top:38.4%;width:95%;height:17.6%"></div></div><figcaption><span>repo 首頁的檔案列表。中間那一欄是每個檔案最近一次的 commit 說明，右上角的 2 Commits 表示這個 repo 已經存了兩次檔。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>兩個檔案：<code>README.md</code> 旁邊寫著 <span class="en">Initial commit</span>，<code>index.html</code> 旁邊是你在步驟 10-2 留的那句說明。第二部分完成。</div></div>
+    <label class="check"><input type="checkbox" data-step="11"> 我做完這一步了</label>
+  </article>
+</section>
+
+<!-- ───────── 第三部分 Netlify ───────── -->
+<section class="part" id="p3">
+  <h2><span class="n">3</span>Netlify 帳號與團隊 <span class="time">約 10 分鐘</span></h2>
+  <p class="intro">Netlify 可以直接用剛才的 GitHub 帳號登入，少記一組密碼，之後連動也更順。註冊完它會請你取一個「團隊」（team）名稱，一個人也是一個團隊，隨便取就好。</p>
+
+  <article class="step" id="s12">
+    <div class="head"><span class="num">步驟 12</span><h3>打開 Netlify 的註冊頁，選「Sign up with GitHub」</h3></div>
+    <p class="do">在網址列輸入 <code>app.netlify.com/signup</code>（或到 <code>netlify.com</code> 按右上角 Sign up）。在幾個按鈕裡，按 <b>Sign up with GitHub</b>。</p>
+    <figure class="shot" data-img="images/13-netlify-signup.png" data-sketch="nf-signup"><div class="frame"><div class="mark" data-label="按這個 Sign up with GitHub" style="left:13.2%;top:40%;width:25.3%;height:5.4%"></div></div><figcaption><span>Netlify 註冊頁。四個按鈕分別對應四個程式託管網站，我們用的是 GitHub。</span><span class="tag">實際畫面</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>用 GitHub 登入 Netlify，等一下「連動」那一步 Netlify 就已經認得你的 GitHub，少一次授權。用 email 註冊也可以，只是多一組密碼要記。</div></div>
+    <label class="check"><input type="checkbox" data-step="12"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s13">
+    <div class="head"><span class="num">步驟 13</span><h3>GitHub 跳出授權視窗，按 Authorize</h3></div>
+    <p class="do">畫面會跳到 GitHub，標題寫著 <span class="en">Authorize Netlify Auth</span>，中間 <span class="en">Personal user data</span> 列出 Netlify 想讀取的資料：只有你的 email，而且是唯讀。按下面綠色的 <b>Authorize netlify</b>。如果這時 GitHub 要你輸入密碼或 6 位數，照做。</p>
+    <figure class="shot" data-img="images/14-github-authorize.png" data-sketch="gh-authorize"><div class="frame"><div class="mark left" data-label="按 Authorize netlify" style="left:49.6%;top:53.8%;width:21.5%;height:5.5%"></div></div><figcaption><span>GitHub 的授權頁。Netlify Auth 只要讀你的 email（read-only，唯讀）。這一步是「允許 Netlify 知道你是誰」，還不是連動 repo。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div>視窗被瀏覽器擋下來（網址列右邊出現「已封鎖彈出式視窗」）：點那個圖示選「一律允許」，再按一次 Sign up with GitHub。</div></div>
+    <label class="check"><input type="checkbox" data-step="13"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s14">
+    <div class="head"><span class="num">步驟 14</span><h3>取團隊名稱，問卷可以跳過</h3></div>
+    <p class="do">回到 Netlify，它會問幾個問題（你是誰、要做什麼），都可以選最接近的或按 <span class="en">Skip</span>。重要的只有一題：<span class="en">What is the name of your team?</span>。在 <b>Name your team</b> 那一格填自己的名字或班級加年份，例如 <code>ling-2026</code>，按 <b>Continue to deploy</b>。</p>
+    <figure class="shot" data-img="images/15-netlify-team.png" data-sketch="nf-team"><div class="frame"><div class="mark" data-label="填團隊名稱" style="left:2.05%;top:19%;width:34.9%;height:10.25%"></div><div class="mark" data-label="再按 Continue to deploy" style="left:2.05%;top:59.2%;width:22.6%;height:10.4%"></div></div><figcaption><span>Netlify 新手引導的團隊名稱題。下面的灰字提示：用 Netlify 上課的人常用學校、班級或專案名稱。之後可以改，不用想太久。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>Netlify 把所有專案放在「團隊」底下，就算只有你一個人也要有一個團隊。這堂課每個人一個團隊；之後如果要和同學一起做，再邀請對方進同一個團隊。</div></div>
+    <label class="check"><input type="checkbox" data-step="14"> 我做完這一步了</label>
+  </article>
+
+  <article class="step substep" id="s14-1">
+    <div class="head"><span class="num">步驟 14-1</span><h3>看到 Page not found 不用慌，按 Back to home</h3></div>
+    <p class="do">按完 Continue to deploy，畫面可能先跳出一個機器人圖案和大字 <span class="en">Page not found</span>。<b>這不是你做錯</b>，是 Netlify 新手引導換頁時的暫時錯誤，你的帳號和團隊都已經建好了。直接按下面的 <b>Back to home</b> 回首頁。</p>
+    <figure class="shot" data-img="images/15-1-netlify-ignore-notfound.png" data-sketch="nf-notfound"><div class="frame"></div><figcaption><span>過渡用的 Page not found 頁。黃字：Ignore it（不用理它），Just click this（按 Back to home 就好）。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div>不要按上面的 <span class="en">Log in with a different user</span>，那是換一個帳號登入，會把你登出。如果你沒有看到這一頁、直接進到首頁，這一步打勾跳過就好。</div></div>
+    <label class="check"><input type="checkbox" data-step="14-1"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s15">
+    <div class="head"><span class="num">步驟 15</span><h3>認識 Netlify 的首頁，找到 Import a Git repository</h3></div>
+    <p class="do">現在你在 <span class="en">Projects</span> 頁（舊版叫 Sites，就是「專案」）。左上角是你的團隊名稱，左邊一欄有 <span class="en">Projects、Builds、Usage &amp; billing、Team settings</span>。中間標題 <span class="en">Add your project to Netlify</span>，由上到下分三塊：</p>
+    <ol class="sub">
+      <li><span class="en">Start building with an AI agent</span>：打一段描述，讓 AI 幫你寫網站。<b>今天不用</b>，我們的網頁已經放在 GitHub 上了。</li>
+      <li><span class="en">Import a Git repository</span>：從 Git 匯入，一排按鈕是 GitHub、GitLab 等程式託管網站。<b>今天用這一塊</b>，黃框圈起來的 GitHub 就是下一步要按的。</li>
+      <li><span class="en">Upload your project files</span>：把資料夾拖進來上傳。這樣做也能上線，但之後每次修改都要重新拖一次，不會自動更新，所以今天不用。</li>
+    </ol>
+    <p class="do">先看一下就好，下一部分從按 GitHub 開始。</p>
+    <figure class="shot" data-img="images/16-netlify-overview.png" data-sketch="nf-overview"><div class="frame"></div><figcaption><span>Netlify 首頁。還沒有任何專案，所以直接顯示「把專案加進來」的三種方法；黃框是我們要用的 GitHub。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>左上角有你的團隊名稱。如果上方出現要你確認 email 的提示條，去信箱點一下 Netlify 寄的確認信。第三部分完成。</div></div>
+    <label class="check"><input type="checkbox" data-step="15"> 我做完這一步了</label>
+  </article>
+</section>
+
+<!-- ───────── 第四部分 連動 ───────── -->
+<section class="part" id="p4">
+  <h2><span class="n">4</span>連動 GitHub、建立專案 <span class="time">約 15 分鐘 ‧ 最重要的一段</span></h2>
+  <p class="intro">這一段做的事情是：告訴 Netlify「我的網頁檔案在 GitHub 的那個 repo 裡，請你拿去變成網址，而且以後我每次改，你都自動更新」。中間 GitHub 會跳出兩次視窗要你同意，這是正常的。</p>
+
+  <article class="step" id="s16">
+    <div class="head"><span class="num">步驟 16</span><h3>按 GitHub，在跳出的視窗按 Authorize</h3></div>
+    <p class="do">在步驟 15 那一頁的 <span class="en">Import a Git repository</span>，按 <b>GitHub</b>。GitHub 會跳出一個視窗，標題 <span class="en">Netlify by Netlify wants access to your GitHub account</span>，下面列出 Netlify 要做的三件事：</p>
+    <ol class="sub">
+      <li><span class="en">Verify your GitHub identity</span>：確認你的 GitHub 身分。</li>
+      <li><span class="en">Know which resources you can access</span>：知道你能存取哪些 repo。</li>
+      <li><span class="en">Act on your behalf</span>：代替你去讀 repo、標示部署結果。</li>
+    </ol>
+    <p class="do">按最下面綠色的 <b>Authorize</b>。</p>
+    <figure class="shot" data-img="images/17-import-from-github.png" data-sketch="gh-app-auth"><div class="frame"><div class="mark up" data-label="按 Authorize" style="left:3.35%;top:85.2%;width:92.8%;height:5.2%"></div></div><figcaption><span>GitHub 跳出的授權視窗。Resources on your account 那一塊寫著它只讀你的 email。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>步驟 13 已經授權過一次，那次的對象是 <span class="en">Netlify Auth</span>，只是讓 Netlify 用 GitHub 認出你是誰。這一次的對象是 <span class="en">Netlify</span> 這個 GitHub App，讓它可以代替你去讀 repo。至於它能讀<b>哪些</b> repo，下一步（步驟 17）由你決定。</div></div>
+    <label class="check"><input type="checkbox" data-step="16"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s17">
+    <div class="head"><span class="num">步驟 17</span><h3>在 GitHub 安裝 Netlify，只開放你剛建的 repo</h3></div>
+    <p class="do">GitHub 會跳出視窗 <span class="en">Install Netlify</span>。這一步是在 GitHub 這邊「允許 Netlify 讀你的 repo」。</p>
+    <ol class="sub">
+      <li>最上面寫著 <span class="en">Install on your personal account</span> 加上你的使用者名稱，確認是你自己。如果問要裝在哪個帳號，選<b>你自己的使用者名稱</b>。</li>
+      <li><span class="en">for these repositories</span>（可以讀哪些 repo）：<b>預設選的是 All repositories（全部），改選 Only select repositories</b>（只開放我選的）。</li>
+      <li>選了之後下面會出現 <span class="en">Select repositories</span> 下拉選單，選 <code>my-first-site</code>。</li>
+      <li><span class="en">with these permissions</span> 列出 Netlify 會拿到的權限：讀程式碼，以及在 GitHub 上標示每次部署成功或失敗。不用改。</li>
+      <li>按最下面綠色的 <b>Install</b>。可能會再要你輸入一次密碼或 6 位數。</li>
+    </ol>
+    <figure class="shot" data-img="images/19-github-install-netlify.png" data-sketch="gh-install"><div class="frame"><div class="mark" data-label="改選這個（預設是 All repositories）" style="left:10.4%;top:65.05%;width:77.8%;height:7.1%"></div></div><figcaption><span>Install Netlify 視窗的上半部。這張截圖還停在預設的 All repositories，你做的時候要改選 Only select repositories，再往下選 repo、按 Install。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>選「只開放我選的」而不是「全部」，是資訊安全的習慣：一個服務只拿到它需要的東西。之後有新作品要上線，再回來把新的 repo 加進清單就好。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>視窗關掉之後 Netlify 沒反應：重新整理 Netlify 頁面，再按一次 GitHub，這次應該直接列出你的 repo。</div></div>
+    <label class="check"><input type="checkbox" data-step="17"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s18">
+    <div class="head"><span class="num">步驟 18</span><h3>回到 Netlify，點你的 repo</h3></div>
+    <p class="do">視窗關閉後回到 Netlify，標題 <span class="en">Let's deploy your project with…</span>，上方進度條走到第 2 格 <span class="en">Select repository</span>。頁面列出 Netlify 可以讀到的 repo，應該只有一個 <code>my-first-site</code>。<b>點那一列</b>。</p>
+    <figure class="shot" data-img="images/20-netlify-pick-repo.png" data-sketch="nf-repos"><div class="frame"><div class="mark" data-label="點 my-first-site" style="left:7.6%;top:53.2%;width:59.8%;height:8.45%"></div></div><figcaption><span>repo 清單。上方三格進度：1 連上 GitHub、2 選 repo、3 設定並部署。以後 repo 多了，可以用右邊的搜尋框找。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see stuck"><span class="k">卡住了？</span><div>清單是空的、或沒有你的 repo：按清單下方的 <span class="en">Configure the Netlify app on GitHub</span>，回到步驟 17 的畫面把 repo 加進去。</div></div>
+    <label class="check"><input type="checkbox" data-step="18"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s19">
+    <div class="head"><span class="num">步驟 19</span><h3>取專案名稱（也就是你的網址），其他不用填，按 Deploy</h3></div>
+    <p class="do">進度條走到第 3 格 <span class="en">Configure project and deploy</span>，標題 <span class="en">Review configuration for my-first-site</span>。欄位很多，但<b>純 HTML 的作品只需要動一格：Project name</b>。</p>
+    <ol class="sub">
+      <li>標題下面那行寫著 <span class="en">Deploy as 你的帳號 on 你的團隊 team from main branch</span>，確認最後是 <code>main</code>。<span class="en">Team</span> 選單就是步驟 14 取的團隊，不用改。</li>
+      <li><b>Project name</b>：Netlify 會先放一個名字，<b>改成你自己喜歡的英文，單字之間用連字號 <code>-</code> 隔開</b>，例如截圖裡的 <code>my-2026-class</code>。打字時下面會即時顯示 <code>https://my-2026-class.netlify.app</code>，出現綠字 <span class="en">Project name is available</span> 就是可以用。<b>這個名字就是你的網址</b>，取一個願意給別人看的。</li>
+    </ol>
+    <figure class="shot" data-img="images/21-change-project-name.png" data-sketch="nf-config"><div class="frame"></div><figcaption><span>Review configuration 頁的上半部。黃框是 Project name；右邊的小卡片會跟著顯示專案名稱、來源 repo（my-first-site）、部署的分支（main）。</span><span class="tag">示意圖</span></figcaption></figure>
+    <p class="do">往下捲，經過 <span class="en">Build settings</span>（建置設定）一路到最下面：</p>
+    <ol class="sub" start="3">
+      <li><b>Build command</b>、<b>Publish directory</b>：留空。</li>
+      <li><b>Functions directory</b>：預設是 <code>netlify/functions</code>，不用動（我們沒有那個資料夾，Netlify 會直接略過）。</li>
+      <li><span class="en">Environment variables</span>（環境變數）：不用加。</li>
+      <li>按最下面的 <b>Deploy 你取的名字</b>（截圖裡是 <span class="en">Deploy my-2026-class</span>）。</li>
+    </ol>
+    <figure class="shot" data-img="images/21-1-netlify-deploy.png" data-sketch="nf-deploy"><div class="frame"></div><figcaption><span>Review configuration 頁的最下面。黃框的 Deploy 按鈕按下去，Netlify 就開始部署。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>Build command 是給「要先編譯才能變成網頁」的專案用的。我們的 index.html 本身就是網頁，不用編譯，所以留空。以後用 React 這類工具時才會填。Project name 在這裡先取好，網址一上線就是你要的；如果上線後才改名，舊網址會失效，已經傳出去的連結就打不開了。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>Project name 出現紅字（名字被用走了）：加上年份或系所，例如 <code>ling-poem-2026</code>。只能用英文小寫、數字、連字號。</div></div>
+    <label class="check"><input type="checkbox" data-step="19"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s20">
+    <div class="head"><span class="num">步驟 20</span><h3>等一分鐘，拿到網址，點開</h3></div>
+    <p class="do">頁面會顯示 <span class="en">Deploying</span>（部署中）→ <span class="en">Published</span>（已發布）。綠色的 Published 出現後，頁面上方有一行 <code>https://你在步驟 19 取的名字.netlify.app</code>，<b>點它</b>。</p>
+    <figure class="shot" data-img="images/22-netlify-published.png" data-sketch="nf-published"><div class="frame"></div><figcaption><span>專案首頁。上方是網址，下面是這一次部署的紀錄。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>新分頁打開你在步驟 10-1 貼的那一頁：「你的名字 的第一個網頁」和一枚「上線」印章。<b>它現在在全世界的網路上了。</b>用手機打開同一個網址試試。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>打開是 <span class="en">Page not found</span>：檔名不是 <code>index.html</code>（大小寫、多了空格），回 GitHub 改檔名，Netlify 會自動重新部署。</li><li>一直停在 Deploying 超過三分鐘：重新整理頁面；還是不行就到左邊 <span class="en">Deploys</span> 點那一筆看紅字。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="20"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s21">
+    <div class="head"><span class="num">步驟 21</span><h3>之後想換網址：找到改專案名稱的地方</h3></div>
+    <p class="do">步驟 19 已經取好名字的話，這一步<b>看一下位置就好</b>，之後想換網址再回來改。在專案頁面，左邊欄按 <span class="en">Project configuration</span>（舊版叫 Site configuration）→ <span class="en">General</span> → <span class="en">Project details</span> 區塊 → 按 <b>Change project name</b>，輸入新的名字（英文小寫、數字、連字號），按 <span class="en">Save</span>。</p>
+    <figure class="shot" data-img="images/23-netlify-rename.png" data-sketch="nf-rename"><div class="frame"></div><figcaption><span>Project details 區塊。改完名字，網址立刻變成 https://新的名字.netlify.app。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>網址變成 <code>https://新的名字.netlify.app</code>。<b>舊的網址會失效</b>，所以已經把網址給別人的話，要再通知一次。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>名字被用走了（紅字 already taken）：加上年份或系所，例如 <code>ling-poem-2026</code>。</div></div>
+    <label class="check"><input type="checkbox" data-step="21"> 我知道在哪裡改了</label>
+  </article>
+</section>
+
+<!-- ───────── 第五部分 更新 ───────── -->
+<section class="part" id="p5">
+  <h2><span class="n">5</span>之後怎麼更新 <span class="time">約 5 分鐘</span></h2>
+  <p class="intro">連動完成之後，你再也不用碰 Netlify。只要在 GitHub 上改檔案、存檔，Netlify 大約一分鐘後就把網址更新成新版。試一次你就會相信。</p>
+
+  <article class="step" id="s22">
+    <div class="head"><span class="num">步驟 22</span><h3>在 GitHub 上改一行字，存檔</h3></div>
+    <p class="do">回到 GitHub 的 repo，點 <code>index.html</code>，右上角有一支<b>鉛筆圖示</b>（Edit this file），按它。把「床前明月光」那一行改成你喜歡的任何一句話，然後右上角 <span class="en">Commit changes…</span> → 在跳出視窗的 <span class="en">Commit message</span> 寫一句改了什麼（例如「換一句詩」，跟步驟 10-2 是同一個視窗）→ <span class="en">Commit changes</span>。</p>
+    <figure class="shot" data-img="images/24-github-edit.png" data-sketch="gh-edit"><div class="frame"></div><figcaption><span>GitHub 的線上編輯器。右上角鉛筆進入編輯，右上角綠色按鈕存檔。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see why"><span class="k">為什麼</span><div>存檔時寫的那一句話，就是 Git 的「紀錄」。三個月後回來看，你會知道每一版改了什麼。寫「改了什麼」，不要寫「update」。</div></div>
+    <label class="check"><input type="checkbox" data-step="22"> 我做完這一步了</label>
+  </article>
+
+  <article class="step" id="s23">
+    <div class="head"><span class="num">步驟 23</span><h3>回 Netlify 看它自己更新</h3></div>
+    <p class="do">回到 Netlify 專案頁，左邊 <span class="en">Deploys</span>。最上面會多一筆新的部署，從 <span class="en">Building</span> 變成 <span class="en">Published</span>，大約一分鐘。然後重新整理你的網址，新的那句話已經在上面了。</p>
+    <figure class="shot" data-img="images/25-netlify-deploys.png" data-sketch="nf-deploys"><div class="frame"></div><figcaption><span>Deploys 頁。每一筆都對應 GitHub 上的一次存檔，旁邊顯示你寫的那句說明。</span><span class="tag">示意圖</span></figcaption></figure>
+    <div class="see"><span class="k">你會看到</span><div>部署紀錄裡寫著你剛才的說明「換一句詩」。從現在起，<b>改網頁 ＝ 在 GitHub 存檔</b>，其他都是自動的。</div></div>
+    <label class="check"><input type="checkbox" data-step="23"> 我做完這一步了</label>
+  </article>
+
+  <div class="final">
+    <div><h3>你完成了：一個會自己更新的網址</h3><p>把 <code style="background:rgba(255,255,255,.12);border-color:transparent;color:#fff">https://你取的名字.netlify.app</code> 貼到課堂平臺、傳給三個朋友，看他們打開之後第一眼看到什麼、卡在哪裡。這就是下一堂課的開始。</p></div>
+    <span class="stamp">上線</span>
+  </div>
+</section>
+
+<!-- ───────── 附錄 ───────── -->
+<section class="part" id="p6">
+  <h2><span class="n">附</span>卡住了怎麼辦、名詞對照</h2>
+  <table class="tbl">
+    <thead><tr><th style="width:30%">狀況</th><th>通常是因為</th><th style="width:36%">怎麼辦</th></tr></thead>
+    <tbody>
+      <tr><td>網址打開是 <span class="en">Page not found</span></td><td>檔名不是 <code>index.html</code>，或檔案不在 repo 最上層。</td><td>回 GitHub 檢查檔名大小寫、有沒有多一層資料夾。改好存檔，Netlify 會自動重新部署。</td></tr>
+      <tr><td>Netlify 取完團隊名稱後出現 <span class="en">Page not found</span></td><td>Netlify 新手引導換頁時的暫時錯誤，帳號和團隊其實已經建好。</td><td>按 <span class="en">Back to home</span> 回首頁（步驟 14-1），不要按 Log in with a different user。</td></tr>
+      <tr><td>Netlify 的 repo 清單看不到我的 repo</td><td>步驟 17 沒有把這個 repo 加進 Netlify 的存取清單。</td><td>按清單下方 <span class="en">Configure the Netlify app on GitHub</span>，在 Repository access 把它加進去。</td></tr>
+      <tr><td>6 位數驗證碼一直錯</td><td>手機時間不準，或你看的是 30 秒前那一組。</td><td>手機日期與時間改成自動；等數字換一組再輸入。</td></tr>
+      <tr><td>手機掉了、換手機，登不進 GitHub</td><td>驗證 app 裡的設定跟著舊手機走了。</td><td>登入頁選 <span class="en">Use a recovery code</span>，用步驟 7 存的任何一組。進去後到設定重新設定 2FA。</td></tr>
+      <tr><td>收不到驗證信</td><td>被歸到垃圾郵件，或學校信箱擋掉。</td><td>先翻垃圾郵件與促銷分類；還是沒有就按重寄；最後改用 Gmail。</td></tr>
+      <tr><td>Deploy 失敗，有紅字</td><td>純 HTML 幾乎不會失敗；通常是 Build command 或 Publish directory 被填了東西。</td><td>Project configuration → Build &amp; deploy → Build settings，把 Build command 清空、Publish directory 清空，重新部署。</td></tr>
+      <tr><td>改了 GitHub，網址沒變</td><td>瀏覽器用舊的快取。</td><td>等一分鐘後按 <kbd>Shift</kbd>＋重新整理；或到 Deploys 確認最新一筆是 Published。</td></tr>
+    </tbody>
+  </table>
+  <table class="tbl">
+    <thead><tr><th style="width:26%">畫面上的英文</th><th>意思</th></tr></thead>
+    <tbody>
+      <tr><td><span class="en">Sign up / Sign in / Sign out</span></td><td>註冊／登入／登出</td></tr>
+      <tr><td><span class="en">Repository（repo）</span></td><td>專案資料夾</td></tr>
+      <tr><td><span class="en">Commit changes</span></td><td>存檔，並留一句紀錄</td></tr>
+      <tr><td><span class="en">Branch / main</span></td><td>分支／主線。今天只用 main。</td></tr>
+      <tr><td><span class="en">Two-factor authentication（2FA）</span></td><td>兩階段驗證</td></tr>
+      <tr><td><span class="en">Recovery codes</span></td><td>救命碼，手機不見時用</td></tr>
+      <tr><td><span class="en">Passkey</span></td><td>用指紋、Face ID 或裝置密碼登入，不用打密碼（步驟 5-1，選做）</td></tr>
+      <tr><td><span class="en">Authorize / Install</span></td><td>授權／安裝（讓 Netlify 認識你、讀你的 repo）</td></tr>
+      <tr><td><span class="en">Team</span></td><td>Netlify 裡放專案的單位，一個人也算一個團隊</td></tr>
+      <tr><td><span class="en">Project（舊版 Site）</span></td><td>一個網址對應一個專案</td></tr>
+      <tr><td><span class="en">Deploy / Deploys / Published</span></td><td>部署／部署紀錄／已發布</td></tr>
+      <tr><td><span class="en">Build command / Publish directory</span></td><td>編譯指令／要發布的資料夾。純 HTML 都留空。</td></tr>
+      <tr><td><span class="en">Functions directory</span></td><td>放「在伺服器上執行的小程式」的資料夾。純 HTML 用不到，預設值不用動。</td></tr>
+      <tr><td><span class="en">Project name</span></td><td>專案名稱，也就是網址 https://名稱.netlify.app 的那一段</td></tr>
+    </tbody>
+  </table>
+  <p class="legend">網站的介面會改版，按鈕的位置與文字可能跟手冊有一點不同。認「功能」不要認「位置」：找有 Sign up、Add new project、Import、Deploy 這些字的按鈕，通常就是它。</p>
+</section>
+</main>
+</div>
+
+<script>
+(() => {
+  // ── 示意圖：用同一套畫法畫出每一步的畫面草圖，真截圖放進 images/ 後會自動替換 ──
+  const SK = {
+    "gh-home":   { url: "github.com", dark: true, el: [["btn", 870, 14, 70, 28, "Sign up", "primary"], ["text", 180, 140, "The future of building", 30, "#fff"], ["ring", 862, 6, 86, 44, "按這裡"]] },
+    "gh-signup": { url: "github.com/signup", el: [["h", 340, 60, "Create your free account"], ["label", 300, 120, "Email"], ["input", 300, 140, 360, "ling@example.com"], ["label", 300, 200, "Password"], ["input", 300, 220, 360, "••••••••••••••••"], ["label", 300, 280, "Username"], ["input", 300, 300, 360, "ling-reads"], ["ok", 670, 306, "✓ 可以用"], ["btn", 300, 370, 360, 36, "Continue", "primary"], ["ring", 290, 278, 390, 74, "會出現在網址裡", "up"]] },
+    "gh-code":   { url: "github.com/account_verifications", el: [["h", 300, 80, "You're almost done!"], ["text", 300, 120, "We sent a launch code to ling@example.com", 14], ["boxes", 300, 170, 8], ["btn", 300, 250, 160, 34, "Continue", "primary"], ["text", 300, 310, "Didn't get your email? Resend the code", 13, "#0969da"], ["ring", 290, 160, 420, 60, "8 位數字"]] },
+    "gh-plan":   { url: "github.com/join/plan", el: [["h", 300, 60, "Choose your plan"], ["card", 300, 110, 180, 200, "Free", "$0 forever"], ["card", 520, 110, 180, 200, "Pro", "$4 / month"], ["btn", 300, 330, 180, 34, "Continue for free", "primary"], ["ring", 290, 100, 200, 220, "選免費"]] },
+    "gh-2fa":    { url: "github.com/settings/security", el: [["side", 0, 50, ["Public profile", "Account", "Appearance", "Password and authentication", "Sessions", "SSH and GPG keys"], 3], ["h", 300, 70, "Password and authentication"], ["label", 300, 130, "Two-factor authentication"], ["text", 300, 155, "Two-factor authentication is not enabled yet.", 13], ["btn", 300, 190, 260, 34, "Enable two-factor authentication", "primary"], ["ring", 290, 180, 290, 54, "按這裡"]] },
+    "gh-passkey": { url: "github.com/settings/security", el: [["side", 0, 50, ["Public profile", "Account", "Emails", "Password and authentication", "Sessions", "SSH and GPG keys"], 3], ["h", 300, 50, "Sign in methods"], ["filerow", 300, 100, "Email", "1 verified email configured"], ["filerow", 300, 140, "Password", "Configured"], ["filerow", 300, 180, "Passkeys", "Passwordless sign-in with biometrics or security keys"], ["ring", 290, 170, 640, 54, "Passkeys（選做）"]] },
+    "gh-qr":     { url: "github.com/settings/two_factor_authentication/setup", el: [["h", 300, 50, "Setup authenticator app"], ["text", 300, 85, "Use a phone app to scan this QR code.", 13], ["qr", 300, 110, 130], ["label", 460, 120, "Verify the code from the app"], ["input", 460, 145, 200, "XXXXXX"], ["btn", 460, 195, 120, 34, "Continue", "primary"], ["ring", 290, 100, 150, 150, "用手機掃"], ["ring", 450, 135, 230, 50, "輸入 6 位數", "right"]] },
+    "gh-recovery": { url: "github.com/settings/two_factor_authentication/recovery", el: [["h", 300, 50, "Save your recovery codes"], ["text", 300, 85, "Keep them somewhere safe. Each code can only be used once.", 13], ["codes", 300, 115, 4, 4], ["btn", 300, 290, 110, 32, "Download", "default"], ["btn", 420, 290, 90, 32, "Print", "default"], ["btn", 520, 290, 90, 32, "Copy", "default"], ["chk", 300, 340, "I have saved my recovery codes"], ["btn", 300, 375, 120, 34, "Done", "primary"], ["ring", 290, 280, 240, 52, "先下載", "up"]] },
+    "gh-login2fa": { url: "github.com/sessions/two-factor/app", el: [["h", 340, 90, "Two-factor authentication"], ["text", 340, 125, "Authentication code", 13], ["input", 340, 150, 280, "XXXXXX"], ["btn", 340, 200, 280, 34, "Verify", "primary"], ["text", 340, 260, "Having problems? Use a recovery code", 13, "#0969da"], ["ring", 330, 140, 300, 55, "看手機上的 6 位數"]] },
+    "gh-newrepo": { url: "github.com/new", el: [["h", 300, 40, "Create a new repository"], ["label", 300, 95, "Repository name *"], ["input", 300, 115, 300, "my-first-site"], ["ok", 610, 121, "✓ my-first-site is available."], ["radio", 300, 180, "Public", true], ["radio", 300, 210, "Private", false], ["chk", 300, 260, "Add a README file", true], ["btn", 300, 320, 180, 34, "Create repository", "primary"], ["ring", 290, 105, 320, 46, "英文、不要空格"], ["ring", 290, 250, 220, 36, "勾起來", "up"]] },
+    "gh-addfile": { url: "github.com/ling-reads/my-first-site", el: [["h", 40, 40, "my-first-site", 22], ["pill", 200, 42, "Public"], ["filerow", 40, 100, "README.md", "Initial commit"], ["btn", 640, 40, 110, 30, "Add file ▾", "default"], ["btn", 800, 40, 110, 30, "<> Code ▾", "primary"], ["menu", 640, 76, ["+ Create new file", "Upload files"], 0], ["ring", 630, 70, 220, 46, "選 Create new file", "left"]] },
+    "gh-newfile": { url: "github.com/ling-reads/my-first-site/new/main", el: [["crumb", 40, 50, "my-first-site /"], ["input", 150, 42, 220, "index.html"], ["editor", 40, 90, 880, 300, ["<!DOCTYPE html>", "<html lang=\"zh-Hant\">", "<head>", "  <meta charset=\"utf-8\">", "  <title>我的第一個網頁</title>", "</head>", "<body>", "  <h1>你的名字 的第一個網頁</h1>", "</body>", "</html>"]], ["btn", 800, 40, 130, 32, "Commit changes...", "primary"], ["ring", 140, 32, 240, 50, "檔名一個字都不能錯"], ["ring", 790, 30, 150, 50, "存檔", "left"]] },
+    "gh-commit": { url: "github.com/ling-reads/my-first-site/new/main", el: [["crumb", 40, 50, "my-first-site / index.html"], ["card", 240, 70, 480, 340, "Commit changes", ""], ["label", 260, 120, "Commit message"], ["input", 260, 140, 440, "Add initial HTML structure for a webpage"], ["label", 260, 190, "Extended description"], ["input", 260, 210, 440, ""], ["radio", 260, 265, "Commit directly to the main branch", true], ["radio", 260, 295, "Create a new branch for this commit", false], ["btn", 570, 350, 130, 32, "Commit changes", "primary"], ["ring", 560, 340, 150, 52, "再按一次", "left"]] },
+    "gh-files":  { url: "github.com/ling-reads/my-first-site", el: [["h", 40, 40, "my-first-site", 22], ["pill", 200, 42, "Public"], ["btn", 700, 40, 90, 30, "Add file ▾", "default"], ["btn", 800, 40, 90, 30, "<> Code ▾", "primary"], ["filerow", 40, 100, "README.md", "Initial commit"], ["filerow", 40, 140, "index.html", "Create index.html"], ["ring", 30, 90, 900, 90, "兩個檔案都在"]] },
+    "nf-signup": { url: "app.netlify.com/signup", el: [["h", 300, 60, "Start for free"], ["btn", 300, 110, 320, 38, "Sign up with Google", "default"], ["btn", 300, 160, 320, 38, "Sign up with GitHub", "default"], ["btn", 300, 210, 320, 38, "Sign up with GitLab", "default"], ["btn", 300, 260, 320, 38, "Sign up with Bitbucket", "default"], ["text", 300, 320, "Sign up with email", 14, "#0b8a7a"], ["ring", 290, 150, 340, 58, "按這個"]] },
+    "gh-authorize": { url: "github.com/login/oauth/authorize", el: [["h", 300, 50, "Authorize Netlify Auth"], ["text", 300, 90, "Netlify Auth by Netlify wants to access your ling-reads account", 13], ["list", 300, 130, ["Personal user data — Email addresses (read-only)"]], ["btn", 300, 220, 120, 34, "Cancel", "default"], ["btn", 430, 220, 170, 34, "Authorize netlify", "primary"], ["ring", 420, 210, 190, 54, "按這裡"]] },
+    "nf-team":   { url: "app.netlify.com/teams/new", el: [["h", 300, 60, "What is the name of your team?"], ["label", 300, 120, "Name your team"], ["input", 300, 140, 320, "ling-2026"], ["text", 300, 190, "People who use Netlify for school often use a school, cohort or project name.", 12], ["btn", 300, 250, 170, 36, "Continue to deploy", "primary"], ["ring", 290, 112, 340, 70, "只有這格重要"]] },
+    "nf-notfound": { url: "app.netlify.com", el: [["h", 370, 150, "Page not found", 26], ["text", 430, 200, "Not Found", 14], ["text", 380, 250, "Log in with a different user →", 14, "#0b8a7a"], ["btn", 400, 290, 160, 38, "Back to home", "primary"], ["ring", 390, 280, 180, 58, "按這裡回首頁"]] },
+    "nf-overview": { url: "app.netlify.com/teams/ling-2026/projects", el: [["side", 0, 50, ["Projects", "Builds", "Usage & billing", "Team settings"], 0], ["h", 300, 40, "Add your project to Netlify", 22], ["label", 300, 90, "Start building with an AI agent"], ["input", 300, 112, 620, "Describe your idea.（今天不用）"], ["label", 300, 180, "Import a Git repository"], ["btn", 300, 204, 110, 36, "GitHub", "default"], ["btn", 420, 204, 110, 36, "GitLab", "default"], ["btn", 540, 204, 130, 36, "Cursor Origin", "default"], ["btn", 680, 204, 110, 36, "Bitbucket", "default"], ["btn", 800, 204, 120, 36, "Azure DevOps", "default"], ["label", 300, 280, "Upload your project files"], ["input", 300, 302, 620, "Drop a project folder, zip file, or HTML file…（今天不用）"], ["ring", 290, 194, 130, 56, "下一步按這個"]] },
+    "gh-app-auth": { url: "github.com/login/oauth/authorize", el: [["h", 300, 40, "Netlify by Netlify"], ["text", 300, 75, "wants access to your GitHub account", 14], ["label", 300, 115, "Authorizing allows this app to"], ["list", 300, 140, ["Verify your GitHub identity (ling-reads)", "Know which resources you can access", "Act on your behalf"]], ["btn", 300, 250, 360, 34, "Authorize", "primary"], ["btn", 300, 294, 360, 34, "Cancel", "default"], ["ring", 290, 240, 380, 54, "按 Authorize", "up"]] },
+    "gh-install": { url: "github.com/apps/netlify/installations/new", el: [["h", 300, 40, "Install Netlify"], ["text", 300, 75, "Install on your personal account ling-reads", 13], ["label", 300, 115, "Repository access"], ["radio", 300, 140, "All repositories", false], ["radio", 300, 170, "Only select repositories", true], ["input", 320, 200, 300, "Select repositories ▾"], ["pill", 320, 240, "my-first-site ✕"], ["btn", 300, 300, 120, 34, "Install", "primary"], ["ring", 290, 160, 340, 100, "只開放你選的 repo"]] },
+    "nf-repos":  { url: "app.netlify.com/start/repos", el: [["h", 300, 50, "Pick a repository from GitHub"], ["input", 300, 90, 400, "🔍 Search repos"], ["filerow", 300, 140, "ling-reads / my-first-site", "Updated just now"], ["text", 300, 230, "Can't see your repo here? Configure the Netlify app on GitHub.", 13, "#0b8a7a"], ["ring", 290, 130, 430, 40, "點它"]] },
+    "nf-config": { url: "app.netlify.com/start/configure", el: [["h", 300, 30, "Review configuration for my-first-site"], ["text", 300, 62, "Deploy as ling-reads on ling-2026 team from main branch", 13], ["label", 300, 100, "Project name"], ["input", 300, 120, 320, "my-2026-class"], ["ok", 300, 160, "✓ Project name is available"], ["label", 300, 200, "Build command"], ["input", 300, 220, 320, ""], ["label", 300, 270, "Publish directory"], ["input", 300, 290, 320, ""], ["btn", 300, 360, 220, 36, "Deploy my-2026-class", "primary"], ["ring", 290, 92, 340, 88, "取你自己的名字", "right"], ["ring", 290, 192, 340, 136, "兩格都留空", "right"], ["ring", 290, 350, 240, 56, "最後按這個", "right"]] },
+    "nf-deploy": { url: "app.netlify.com/start/configure", el: [["label", 300, 40, "Publish directory"], ["input", 300, 60, 400, ""], ["label", 300, 110, "Functions directory"], ["input", 300, 130, 400, "netlify/functions"], ["h", 300, 190, "Environment variables", 18], ["btn", 300, 240, 230, 34, "Add environment variables ▾", "default"], ["btn", 300, 300, 230, 38, "Deploy my-2026-class", "primary"], ["ring", 290, 290, 250, 58, "按它開始部署", "right"]] },
+    "nf-published": { url: "app.netlify.com/projects/my-2026-class", el: [["side", 0, 50, ["Project overview", "Project configuration", "Deploys", "Logs", "Metrics"], 0], ["h", 300, 50, "my-2026-class", 22], ["text", 300, 90, "https://my-2026-class.netlify.app", 15, "#0b8a7a"], ["pill", 300, 125, "Published", "#1F9D6A"], ["text", 300, 170, "Production deploys", 13], ["filerow", 300, 195, "Published — main@a1b2c3", "Create index.html · 1m ago"], ["ring", 290, 80, 380, 36, "點網址"]] },
+    "nf-rename": { url: "app.netlify.com/projects/my-2026-class/configuration/general", el: [["side", 0, 50, ["Project overview", "Project configuration", "Deploys", "Logs", "Metrics"], 1], ["h", 300, 50, "Project details", 20], ["text", 300, 90, "Project name: my-2026-class", 14], ["text", 300, 115, "Project URL: https://my-2026-class.netlify.app", 14], ["btn", 300, 160, 180, 34, "Change project name", "default"], ["ring", 290, 150, 200, 54, "按這裡改名"]] },
+    "gh-edit":   { url: "github.com/ling-reads/my-first-site/edit/main/index.html", el: [["crumb", 40, 50, "my-first-site / index.html"], ["editor", 40, 90, 880, 300, ["<body>", "  <p>文學院 AI 服務實作課</p>", "  <h1>你的名字 的第一個網頁</h1>", "  <p>欲窮千里目，更上一層樓。</p>", "  <p class=\"seal\">上線</p>", "</body>"]], ["btn", 800, 40, 130, 32, "Commit changes...", "primary"], ["ring", 30, 160, 500, 40, "改這一行"], ["ring", 790, 30, 150, 50, "存檔", "left"]] },
+    "nf-deploys": { url: "app.netlify.com/projects/my-2026-class/deploys", el: [["side", 0, 50, ["Project overview", "Project configuration", "Deploys", "Logs", "Metrics"], 2], ["h", 300, 50, "Deploys", 22], ["filerow", 300, 100, "Published — main@d4e5f6", "換一句詩 · just now"], ["filerow", 300, 140, "Published — main@a1b2c3", "Create index.html · 5m ago"], ["ring", 290, 90, 640, 40, "新的一筆，說明是你剛寫的"]] },
+  };
+
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  function sketch(spec) {
+    const W = 960, H = 600, out = [];
+    const dark = spec.dark;
+    out.push(`<rect width="${W}" height="${H}" fill="${dark ? "#0D1117" : "#F6F8FA"}"/>`);
+    // 瀏覽器列
+    out.push(`<rect width="${W}" height="36" fill="#E3E8EE"/><circle cx="18" cy="18" r="5" fill="#C9D3DF"/><circle cx="34" cy="18" r="5" fill="#C9D3DF"/><circle cx="50" cy="18" r="5" fill="#C9D3DF"/><rect x="70" y="8" width="${W - 140}" height="20" rx="6" fill="#fff"/><text x="80" y="22" font-size="12" fill="#7A8798" font-family="JetBrains Mono, monospace">${esc(spec.url)}</text>`);
+    const g = (y) => y + 36;
+    const txt = (x, y, s, size = 14, color = dark ? "#fff" : "#14243A", weight = 400) => `<text x="${x}" y="${g(y)}" font-size="${size}" fill="${color}" font-weight="${weight}">${esc(s)}</text>`;
+    for (const e of spec.el) {
+      const [t, x, y, a, b, c, d] = e;
+      if (t === "h") out.push(txt(x, y + 18, a, b || 20, dark ? "#fff" : "#14243A", 700));
+      else if (t === "text") out.push(txt(x, y + 12, a, b || 14, c || (dark ? "#C9D3DF" : "#57606A")));
+      else if (t === "label") out.push(txt(x, y + 12, a, 13, "#14243A", 700));
+      else if (t === "input") out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="32" rx="6" fill="#fff" stroke="#C9D3DF"/>` + txt(x + 10, y + 21, b, 13, b && b.startsWith("•") ? "#14243A" : "#57606A"));
+      else if (t === "btn") { const primary = d === "primary"; out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="${b}" rx="6" fill="${primary ? "#1F883D" : "#F6F8FA"}" stroke="${primary ? "#1F883D" : "#C9D3DF"}"/><text x="${x + a / 2}" y="${g(y) + b / 2 + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="${primary ? "#fff" : "#14243A"}">${esc(c)}</text>`); }
+      else if (t === "ok") out.push(txt(x, y + 12, a, 12, "#1F9D6A", 700));
+      else if (t === "ring") { out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="${b}" rx="10" fill="none" stroke="#C8321F" stroke-width="3"/>`); if (c) { const up = d === "up", left = d === "left", right = d === "right"; const lx = right ? x + a + 12 : left ? x + a - 8 : x; const ly = right ? g(y) + 24 : up ? g(y) - 10 : g(y) + b + 18; out.push(`<rect x="${left ? lx - c.length * 13 : lx}" y="${ly - 14}" width="${c.length * 13 + 16}" height="20" rx="4" fill="#C8321F"/><text x="${(left ? lx - c.length * 13 : lx) + 8}" y="${ly}" font-size="12" font-weight="700" fill="#fff">${esc(c)}</text>`); } }
+      else if (t === "boxes") { for (let i = 0; i < a; i++) out.push(`<rect x="${x + i * 48}" y="${g(y)}" width="40" height="48" rx="6" fill="#fff" stroke="#C9D3DF"/>`); }
+      else if (t === "card") out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="${b}" rx="10" fill="#fff" stroke="#C9D3DF"/>` + txt(x + 16, y + 34, c, 18, "#14243A", 700) + txt(x + 16, y + 60, d, 13, "#57606A"));
+      else if (t === "side") { out.push(`<rect x="0" y="36" width="260" height="${H}" fill="${dark ? "#161B22" : "#fff"}" stroke="#E3E8EE"/>`); a.forEach((s, i) => { const on = i === b; out.push(`<rect x="12" y="${g(y + i * 34)}" width="236" height="28" rx="6" fill="${on ? "#E3E8EE" : "none"}"/>` + txt(24, y + i * 34 + 19, s, 13, "#14243A", on ? 700 : 400)); }); }
+      else if (t === "qr") { out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="${a}" fill="#fff" stroke="#C9D3DF"/>`); for (let i = 0; i < 64; i++) { const cx = x + 10 + (i % 8) * (a - 20) / 8, cy = g(y) + 10 + Math.floor(i / 8) * (a - 20) / 8; if ((i * 7 + 3) % 5 < 2) out.push(`<rect x="${cx}" y="${cy}" width="${(a - 20) / 8 - 2}" height="${(a - 20) / 8 - 2}" fill="#14243A"/>`); } }
+      else if (t === "codes") { for (let r = 0; r < a; r++) for (let c2 = 0; c2 < b; c2++) out.push(txt(x + c2 * 150, y + r * 32 + 16, `${(r * 4 + c2 + 10).toString(36)}k2${r}d-${(c2 + 3) * 1317}${r}`, 14, "#14243A")); }
+      else if (t === "chk") out.push(`<rect x="${x}" y="${g(y)}" width="18" height="18" rx="4" fill="${b ? "#1F883D" : "#fff"}" stroke="#C9D3DF"/>` + (b ? `<path d="M${x + 4} ${g(y) + 9} l4 4 7-8" stroke="#fff" stroke-width="2.5" fill="none"/>` : "") + txt(x + 28, y + 14, a, 13));
+      else if (t === "radio") out.push(`<circle cx="${x + 9}" cy="${g(y) + 9}" r="9" fill="#fff" stroke="#C9D3DF"/>` + (b ? `<circle cx="${x + 9}" cy="${g(y) + 9}" r="5" fill="#0969DA"/>` : "") + txt(x + 28, y + 14, a, 13, "#14243A", b ? 700 : 400));
+      else if (t === "crumb") out.push(txt(x, y + 12, a, 14, "#0969DA", 700));
+      else if (t === "editor") { out.push(`<rect x="${x}" y="${g(y)}" width="${a}" height="${b}" rx="8" fill="#fff" stroke="#C9D3DF"/>`); c.forEach((l, i) => out.push(`<text x="${x + 16}" y="${g(y) + 26 + i * 24}" font-size="13" font-family="JetBrains Mono, monospace" fill="#14243A">${esc(l)}</text>`)); }
+      else if (t === "pill") out.push(`<rect x="${x}" y="${g(y)}" width="${a.length * 8 + 20}" height="22" rx="11" fill="${b || "#E3E8EE"}"/><text x="${x + 10}" y="${g(y) + 15}" font-size="12" fill="${b ? "#fff" : "#57606A"}" font-weight="700">${esc(a)}</text>`);
+      else if (t === "filerow") out.push(`<rect x="${x}" y="${g(y)}" width="${W - x - 40}" height="34" fill="#fff" stroke="#E3E8EE"/>` + txt(x + 14, y + 22, a, 14, "#0969DA", 700) + `<text x="${W - 54}" y="${g(y) + 22}" text-anchor="end" font-size="12" fill="#57606A">${esc(b)}</text>`);
+      else if (t === "list") a.forEach((s, i) => out.push(txt(x, y + 12 + i * 22, "• " + s, 13)));
+      else if (t === "menu") { out.push(`<rect x="${x}" y="${g(y)}" width="200" height="${a.length * 32 + 8}" rx="8" fill="#fff" stroke="#C9D3DF"/>`); a.forEach((s, i) => out.push(txt(x + 14, y + 24 + i * 32, s, 13, "#14243A", i === b ? 700 : 400))); }
+    }
+    return `<svg class="sketch" viewBox="0 0 ${W} ${H}" font-family="Noto Sans TC, sans-serif" preserveAspectRatio="xMidYMin slice">${out.join("")}</svg>`;
+  }
+
+  const teacher = new URLSearchParams(location.search).get("teacher") === "1";
+  if (teacher) document.body.classList.add("teacher");
+  document.querySelectorAll("figure.shot").forEach(fig => {
+    const frame = fig.querySelector(".frame"); const src = fig.dataset.img; const key = fig.dataset.sketch;
+    const tag = fig.querySelector(".tag"); const marks = [...frame.querySelectorAll(".mark")];
+    const missing = document.createElement("div"); missing.className = "missing"; missing.textContent = "待補截圖：" + src; fig.appendChild(missing);
+    const showSketch = () => { fig.classList.add("no-img"); frame.querySelectorAll("img").forEach(i => i.remove()); marks.forEach(m => m.style.display = "none"); if (SK[key]) frame.insertAdjacentHTML("afterbegin", sketch(SK[key])); if (tag) tag.textContent = "示意圖"; };
+    const img = new Image(); img.alt = fig.querySelector("figcaption span")?.textContent || "";
+    // 真截圖照原本長寬比顯示；紅框搬進同一個 .pic 外框，座標才會對齊圖片而不是整個 frame
+    img.onload = () => {
+      const pic = document.createElement("div"); pic.className = "pic";
+      pic.style.setProperty("--r", img.naturalWidth / img.naturalHeight);
+      pic.append(img, ...marks);
+      frame.classList.add("real"); frame.prepend(pic);
+      if (tag) tag.textContent = "實際畫面";
+    };
+    img.onerror = showSketch; img.src = src;
+  });
+
+  // ── 打勾進度（存在這台電腦的瀏覽器裡）──
+  const KEY = "netlify-github-manual-v2"; let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch {}
+  const boxes = [...document.querySelectorAll("input[data-step]")];
+  document.getElementById("total").textContent = boxes.length;
+  const render = () => { let n = 0; boxes.forEach(b => { const on = !!done[b.dataset.step]; b.checked = on; b.closest(".step").classList.toggle("done", on); if (on) n++; }); document.getElementById("cnt").textContent = n; document.getElementById("pct").textContent = Math.round(n / boxes.length * 100); document.getElementById("bar").style.width = (n / boxes.length * 100) + "%"; };
+  boxes.forEach(b => b.addEventListener("change", () => { done[b.dataset.step] = b.checked; try { localStorage.setItem(KEY, JSON.stringify(done)); } catch {} render(); }));
+  render();
+
+  // ── 複製按鈕 ──
+  document.querySelectorAll("pre.code .copy").forEach(btn => btn.addEventListener("click", async () => {
+    const pre = btn.parentElement; const text = [...pre.childNodes].filter(n => n !== btn).map(n => n.textContent).join("");
+    try { await navigator.clipboard.writeText(text.trim()); btn.textContent = "已複製"; } catch { btn.textContent = "請手動選取"; }
+    setTimeout(() => btn.textContent = "複製", 1500);
+  }));
+})();
+</script>
+</body>
+</html>
