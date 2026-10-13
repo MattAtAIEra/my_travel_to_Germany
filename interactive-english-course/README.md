@@ -21,7 +21,7 @@
 | `starter-kit.zip` | 學生 | 手冊上「下載 starter kit」的那一包，由 `make-zip.py` 產生 |
 | `course.css` | — | 手冊與作業頁共用的外觀（沿用 `../netlify-github/` 操作手冊的版型） |
 | `make-zip.py` | 老師 | 重新打包 `starter-kit.zip` |
-| `tests/verify.mjs` | 老師 | 自動驗收，共 90 項 |
+| `tests/verify.mjs` | 老師 | 自動驗收，共 95 項 |
 
 ### starter kit 的結構
 
@@ -75,12 +75,14 @@ Netlify 在 2026 年 4 月調整計價後，新計價方案的表單送出是免
 ```bash
 cd interactive-english-course/starter-kit
 export GEMINI_API_KEY="..."
+node tools/generate.mjs content/kk01-two-apples.js --test  # 只念一句：確認金鑰可用，並印出 API 接受的是哪一種寫法
 node tools/generate.mjs content/kk01-two-apples.js --dry   # 先看清單：61 句、3 張角色設定圖＋13 張圖
 node tools/generate.mjs content/kk01-two-apples.js
 node tools/generate.mjs content/me01-elevator.js
 ```
 
-背景音樂用工作台「⑥ 背景音樂」的提示詞到 Suno 做，存成 `assets/bgm/kk01.mp3`、`assets/bgm/me01.mp3`。
+背景音樂的 Suno 提示詞已經存在 `starter-kit/assets/bgm/kk01-suno.txt` 和 `me01-suno.txt`（用 `node tools/generate.mjs <題庫> --suno` 或工作台「⑥ 背景音樂」的存檔按鈕產生）。
+照檔案裡的步驟到 Suno 做好，存成 `assets/bgm/kk01.mp3`、`assets/bgm/me01.mp3`。
 `starter-kit.zip` 不會打包 `assets/` 裡的圖與聲音（學生要自己產生，也避開 GitHub 網頁一次只能上傳 100 個檔案的限制）。
 
 原本用 ElevenLabs 配音的完整版仍在 `../kk-kidsEnglishLearning/` 和 `../morning-english/`，可以當成「專業版」展示。
@@ -150,7 +152,7 @@ node tools/generate.mjs content/me01-elevator.js
 ```bash
 # 改了 starter-kit 裡的任何檔案之後
 python3 make-zip.py            # 重新打包 starter-kit.zip（內容沒變時 zip 也不會變）
-node tests/verify.mjs          # 90 項自動驗收（需要 playwright；或設定 PLAYWRIGHT_MODULE 指到已安裝的位置）
+node tests/verify.mjs          # 95 項自動驗收（需要 playwright；或設定 PLAYWRIGHT_MODULE 指到已安裝的位置）
 ```
 
 驗收的範圍：題庫檢查員抓不抓得到常見錯誤、播放器在 `file://` 與網站上都能玩完、缺素材與有素材的行為、

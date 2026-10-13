@@ -666,6 +666,7 @@ rex: Shhh! Don't let her hear!</pre>
 <pre class="code"><span class="c"># Mac／Linux：在專案資料夾裡執行</span>
 export GEMINI_API_KEY=<span class="s">"你的金鑰"</span>
 node tools/generate.mjs content/kk02-colors.js --dry     <span class="c"># 先看要做哪些，不花錢</span>
+node tools/generate.mjs content/kk02-colors.js --test    <span class="c"># 只念一句，確認金鑰可以用</span>
 node tools/generate.mjs content/kk02-colors.js           <span class="c"># 補齊語音和圖片</span>
 
 <span class="c"># Windows PowerShell</span>
@@ -683,7 +684,7 @@ node tools/generate.mjs content/kk02-colors.js</pre>
 
   <article class="step" id="s8-1">
     <div class="head"><span class="num">8-1</span><h3>在工作台產生 Suno 提示詞</h3></div>
-    <p class="do">到 <b>⑥ 背景音樂</b>。「音樂風格」會先放入題庫 <code>bgm.suno.style</code> 的內容，你可以直接改，或點下面的小按鈕加入關鍵字（樂器、情緒、速度）。工作台會自動補上 <code>instrumental, no vocals</code>。</p>
+    <p class="do">到 <b>⑥ 背景音樂</b>。「音樂風格」會先放入題庫 <code>bgm.suno.style</code> 的內容，你可以直接改，或點下面的小按鈕加入關鍵字（樂器、情緒、速度）。工作台會自動補上 <code>instrumental, no vocals</code>。調好之後按 <b>💾 把提示詞存進 assets/bgm/</b>，會存成 <code>assets/bgm/集代號-suno.txt</code>：負責做音樂的組員打開這個檔案照著做，做完再把 mp3 放回同一個資料夾。</p>
     <div class="grid-2">
       <div class="card"><span class="tag">兒童教材</span><p><code>cheerful marimba and ukulele, light hand claps, bouncy children's cartoon, 100 bpm, simple happy melody, instrumental, no vocals</code></p></div>
       <div class="card"><span class="tag">晨間職場</span><p><code>soft lo-fi morning jazz, mellow electric piano, brushed drums, calm office morning, 80 bpm, instrumental, no vocals</code></p></div>

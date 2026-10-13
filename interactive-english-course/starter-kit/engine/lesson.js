@@ -184,9 +184,50 @@
     return seen;
   }
 
+  /* ── Suno 背景音樂提示詞 ──────────────────────────────────────────
+     工作台和指令工具都用這一個函式，兩邊產生的提示詞才會一模一樣。 */
+  const SUNO_DEFAULT = "gentle playful background music for a language-learning cartoon, light percussion, simple melody";
+  function sunoPrompt(ep, style, title) {
+    const b = ep.bgm || {}, sn = b.suno || {};
+    let st = String(style || sn.style || SUNO_DEFAULT).trim().replace(/,\s*$/, "");
+    if (!/instrumental/i.test(st)) st += ", instrumental";
+    if (!/no vocals/i.test(st)) st += ", no vocals";
+    const t = String(title || sn.title || ep.title + " Theme").trim();
+    // Suno 看得懂英文就好，所以學習者如果是用中文寫的，就改成通稱
+    const who = !ep.learner || /[\u3400-\u9fff]/.test(ep.learner) ? "language learners" : ep.learner;
+    const description = `A loopable instrumental background track for "${ep.title}", ${ep.lang === "zh-TW" ? "a Mandarin" : "an English"} learning episode for ${who}. Style: ${st}. Keep it steady and soft so spoken voices stay clear.`;
+    const file = b.file || "assets/bgm/" + ep.id + ".mp3";
+    return { style: st, title: t, description, file, textFile: "assets/bgm/" + ep.id + "-suno.txt" };
+  }
+
+  /* 存進 assets/bgm/ 的提示詞檔：做音樂的人照著貼到 Suno，做完再把 mp3 放回同一個資料夾 */
+  function sunoText(ep, p) {
+    const name = p.file.split("/").pop();
+    return [
+      `Suno 背景音樂提示詞：${ep.id}　${ep.title}`,
+      "",
+      "【Style of Music】",
+      p.style,
+      "",
+      "【Title】",
+      p.title,
+      "",
+      "【Song Description（簡單模式才用）】",
+      p.description,
+      "",
+      "做法：",
+      "1. 登入 suno.com，按 Create，切到 Custom，打開 Instrumental。",
+      "2. 把上面的 Style of Music 和 Title 貼進去，按 Create（一次會有兩首）。",
+      "3. 挑最不搶戲的那一首：旋律簡單、沒有突然的大鼓或高音。",
+      "4. 按 ⋯ → Download → MP3 Audio，改名成 " + name + "，放回這個資料夾（" + p.file + "）。",
+      "5. 打開 studio.html →「⑥ 背景音樂」測音量，把數字寫進題庫的 bgm.volume。",
+      "",
+    ].join("\n");
+  }
+
   const PALETTE = ["#2060b0", "#d04830", "#2f8f5b", "#8a4fbf", "#c98a12", "#1b8a9a"];
 
-  const LESSON = { add, load, build, parseLine, allLines, allImages, whoIn, namedIn, registered, problems };
+  const LESSON = { add, load, build, parseLine, allLines, allImages, whoIn, namedIn, sunoPrompt, sunoText, registered, problems };
   if (typeof module !== "undefined" && module.exports) module.exports = LESSON;
   root.LESSON = LESSON;
 })(typeof window !== "undefined" ? window : globalThis);

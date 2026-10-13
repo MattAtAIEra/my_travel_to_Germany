@@ -12,6 +12,8 @@
      node tools/generate.mjs content/kk01-two-apples.js --images   # 只做圖片（會先做角色設定圖）
      node tools/generate.mjs content/kk01-two-apples.js --only s01,q1-a-1 --force   # 指定幾個重做
      node tools/generate.mjs content/kk01-two-apples.js --dry      # 只列出要做什麼，不花錢
+     node tools/generate.mjs content/kk01-two-apples.js --test     # 只念一句，確認金鑰和 API 格式都沒問題
+     node tools/generate.mjs content/kk01-two-apples.js --suno     # 把 Suno 提示詞存進 assets/bgm/（不需要金鑰）
 
    金鑰只從環境變數讀，不要寫進任何檔案。
    ========================================================================== */
@@ -34,7 +36,7 @@ const value = (n) => { const i = args.indexOf("--" + n); return i >= 0 ? args[i 
 if (!file) { console.log("用法：node tools/generate.mjs content/某一集.js [--audio|--images] [--only id1,id2] [--force] [--dry]"); process.exit(1); }
 
 const key = process.env.GEMINI_API_KEY;
-if (!key && !flag("dry")) { console.error("找不到環境變數 GEMINI_API_KEY。請先 export GEMINI_API_KEY=\"你的金鑰\"。"); process.exit(1); }
+if (!key && !flag("dry") && !flag("suno")) { console.error("找不到環境變數 GEMINI_API_KEY。請先 export GEMINI_API_KEY=\"你的金鑰\"。"); process.exit(1); }
 
 // 讀題庫：題庫檔會呼叫 LESSON.add(...)
 global.LESSON = LESSON;
@@ -45,6 +47,33 @@ vm.runInThisContext(text, { filename: file });
 const ep = LESSON.build(LESSON.registered.at(-1).raw, path.basename(file));
 const errors = Checker.check(ep).filter((p) => p.level === "error");
 if (errors.length) { console.error("題庫有錯誤，先修好再產生：\n" + errors.map((p) => "  ‧ " + p.where + "：" + p.message).join("\n")); process.exit(1); }
+
+// Suno 提示詞：不用金鑰，存成文字檔，做音樂的人照著做，再把 mp3 放回同一個資料夾
+if (flag("suno")) {
+  const p = LESSON.sunoPrompt(ep);
+  fs.mkdirSync(path.join(KIT, path.dirname(p.textFile)), { recursive: true });
+  fs.writeFileSync(path.join(KIT, p.textFile), LESSON.sunoText(ep, p));
+  console.log("🎵 已存 " + p.textFile + "（做好的音樂請存成 " + p.file + "）");
+  process.exit(0);
+}
+
+// 連線測試：只念第一句，告訴你哪一種寫法被 API 接受
+if (flag("test")) {
+  const x = LESSON.allLines(ep)[0];
+  const t0 = Date.now();
+  try {
+    const res = await Gemini.tts({ key, model: process.env.GEMINI_TTS_MODEL || Gemini.MODELS.tts, text: x.line.say, speaker: x.line.char.name, voice: x.line.char.voice, style: Gemini.speechStyle(ep, x.line) });
+    const out = path.join(KIT, "assets", ep.id, "audio", "_test." + res.ext);
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, res.bytes);
+    console.log(`✅ 成功：「${x.line.say}」→ ${path.relative(KIT, out)}（${res.bytes.length} bytes，${res.ext}，寫法：${res.variant}，${Date.now() - t0} ms）`);
+    console.log("   聽聽看這個檔案，沒問題就可以拿掉 --test 正式產生。");
+    process.exit(0);
+  } catch (e) {
+    console.error("❌ 失敗：" + e.message + (e.detail ? "\n   原始訊息：" + e.detail : ""));
+    process.exit(1);
+  }
+}
 
 const only = value("only") ? value("only").split(",").map((s) => s.trim()) : null;
 const force = flag("force");

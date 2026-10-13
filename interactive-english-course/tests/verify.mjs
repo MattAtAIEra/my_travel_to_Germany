@@ -356,7 +356,31 @@ section("工作台：Gemini 語音與圖片（模擬 API）");
   await p.click(".tabs button[data-tab=music]");
   const style = await p.textContent("#suno-out-style");
   check("Suno 提示詞一定是純音樂", /instrumental/.test(style) && /no vocals/.test(style), style);
+  const sdl = p.waitForEvent("download");
+  await p.click("#suno-save");
+  const sunoFile = path.join(os.tmpdir(), "suno.txt");
+  const sd = await sdl; await sd.saveAs(sunoFile);
+  const sunoTxt = fs.readFileSync(sunoFile, "utf8");
+  check("Suno 提示詞可以存成檔案（kk01-suno.txt）", sd.suggestedFilename() === "kk01-suno.txt" && sunoTxt.includes(style) && /kk01\.mp3/.test(sunoTxt), sd.suggestedFilename());
   check("沒有 JavaScript 錯誤", p.errors.length === 0, p.errors.join("; "));
+}
+
+/* ───────────────────────── 4b. 指令工具 ───────────────────────── */
+section("指令工具 tools/generate.mjs");
+{
+  const kit = tempKit();
+  fs.rmSync(path.join(kit, "assets/bgm/me01-suno.txt"), { force: true });
+  const env = { ...process.env, GEMINI_API_KEY: "" };
+  const out = execFileSync("node", [path.join(kit, "tools/generate.mjs"), path.join(kit, "content/me01-elevator.js"), "--suno"], { env }).toString();
+  const txt = fs.readFileSync(path.join(kit, "assets/bgm/me01-suno.txt"), "utf8");
+  check("--suno 不需要金鑰，存出提示詞檔", /me01-suno\.txt/.test(out) && /lo-fi morning jazz/.test(txt) && /me01\.mp3/.test(txt));
+  const sample = fs.readFileSync(path.join(KIT, "assets/bgm/me01-suno.txt"), "utf8");
+  check("範例的 Suno 提示詞檔是最新的", sample === txt);
+  const dry = execFileSync("node", [path.join(kit, "tools/generate.mjs"), path.join(kit, "content/kk01-two-apples.js"), "--dry"], { env }).toString();
+  check("--dry 列出 61 句、3 張角色設定圖、13 張圖", /要產生 61 句/.test(dry) && /角色設定圖 3 張、場次圖 13 張/.test(dry), dry.split("\n").filter((l) => /要產生|角色設定圖/.test(l)).join(" / "));
+  let failed = false;
+  try { execFileSync("node", [path.join(kit, "tools/generate.mjs"), path.join(kit, "content/kk01-two-apples.js"), "--test"], { env, stdio: "pipe" }); } catch (e) { failed = /GEMINI_API_KEY/.test(String(e.stderr)); }
+  check("沒有金鑰時 --test 會明確拒絕", failed);
 }
 
 /* ───────────────────────── 5. 課程頁面 ───────────────────────── */

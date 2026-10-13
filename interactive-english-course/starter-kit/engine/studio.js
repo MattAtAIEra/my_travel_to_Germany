@@ -507,20 +507,20 @@
     const ep = S.ep;
     if (!ep) { box.innerHTML = "<h2>⑥ 背景音樂</h2>"; return; }
     const b = ep.bgm || {};
-    const sn = b.suno || {};
-    const style = sn.style || "gentle playful background music for a language-learning cartoon, light percussion, simple melody, instrumental, no vocals";
-    const file = b.file || "assets/bgm/" + ep.id + ".mp3";
+    const first = LESSON.sunoPrompt(ep);
+    const file = first.file;
     box.innerHTML = `<h2>⑥ 背景音樂（Suno）</h2>
       <div class="card"><h3>1. 調整提示詞</h3>
-        <label><span>音樂風格（貼到 Suno 的 <b>Style of Music</b>）</span><textarea id="suno-style" rows="3">${esc(style)}</textarea></label>
+        <label><span>音樂風格（貼到 Suno 的 <b>Style of Music</b>）</span><textarea id="suno-style" rows="3">${esc(first.style)}</textarea></label>
         <div class="chips">${MOODS.map((m) => `<button class="chip-btn" data-m="${m}">+ ${m}</button>`).join("")}</div>
-        <label><span>歌名（貼到 <b>Title</b>）</span><input id="suno-title" value="${esc(sn.title || ep.title + " Theme")}"></label>
+        <label><span>歌名（貼到 <b>Title</b>）</span><input id="suno-title" value="${esc(first.title)}"></label>
         <p class="hint">背景音樂的原則：<b>不能蓋過人聲</b>。所以一定要純音樂（instrumental、no vocals），節奏穩定、旋律簡單，不要有突然的大鼓或高音。</p>
       </div>
       <div class="card"><h3>2. 複製到 Suno</h3>
         <div class="copy-box"><span>Style of Music</span><pre id="suno-out-style"></pre><button data-copy="suno-out-style">複製</button></div>
         <div class="copy-box"><span>Title</span><pre id="suno-out-title"></pre><button data-copy="suno-out-title">複製</button></div>
         <div class="copy-box"><span>如果用簡單模式（Song Description）</span><pre id="suno-out-desc"></pre><button data-copy="suno-out-desc">複製</button></div>
+        <div class="row"><button id="suno-save">💾 把提示詞存進 <code>${esc(first.textFile)}</code></button> <span id="suno-save-out" class="hint">存起來之後，負責做音樂的組員打開這個檔案照著做就好，做完把 mp3 放回同一個資料夾。</span></div>
         <ol class="steps">
           <li>登入 <a href="https://suno.com" target="_blank" rel="noopener">suno.com</a>，按左邊的 <b>Create</b>。</li>
           <li>切到 <b>Custom</b>（自訂模式），打開 <b>Instrumental</b>（純音樂，沒有人聲）。</li>
@@ -537,18 +537,29 @@
           <label class="inline">音量 <input type="range" id="bgm-vol" min="0" max="0.4" step="0.01" value="${Number(b.volume) || 0.12}"> <b id="bgm-vol-out"></b></label></div>
         <p class="hint">一邊放音樂一邊聽台詞：台詞要「完全聽得清楚」，音樂只是墊在下面。調好之後，把題庫檔 bgm 裡的 <code>volume</code> 改成上面顯示的數字。</p>
       </div>`;
+    let current = first;
     const update = () => {
-      let st = $("#suno-style", box).value.trim();
-      if (!/instrumental/i.test(st)) st += ", instrumental";
-      if (!/no vocals/i.test(st)) st += ", no vocals";
-      $("#suno-out-style", box).textContent = st;
-      $("#suno-out-title", box).textContent = $("#suno-title", box).value.trim();
-      // Suno 看得懂英文就好，所以學習者如果是用中文寫的，就改成通稱
-      const who = !ep.learner || /[\u3400-\u9fff]/.test(ep.learner) ? "language learners" : ep.learner;
-      $("#suno-out-desc", box).textContent = `A loopable instrumental background track for "${ep.title}", ${ep.lang === "zh-TW" ? "a Mandarin" : "an English"} learning episode for ${who}. Style: ${st}. Keep it steady and soft so spoken voices stay clear.`;
+      current = LESSON.sunoPrompt(ep, $("#suno-style", box).value, $("#suno-title", box).value);
+      $("#suno-out-style", box).textContent = current.style;
+      $("#suno-out-title", box).textContent = current.title;
+      $("#suno-out-desc", box).textContent = current.description;
     };
     $("#suno-style", box).oninput = update; $("#suno-title", box).oninput = update; update();
     $$(".chip-btn", box).forEach((c) => (c.onclick = () => { const t = $("#suno-style", box); t.value = t.value.trim().replace(/,?\s*$/, "") + ", " + c.dataset.m; update(); }));
+    $("#suno-save", box).onclick = async () => {
+      const bytes = new TextEncoder().encode(LESSON.sunoText(ep, current));
+      const out = $("#suno-save-out", box);
+      if (S.dir) {
+        await writeFile(current.textFile, bytes);
+        out.textContent = "已存進 " + current.textFile + " ✓";
+      } else {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([bytes], { type: "text/plain;charset=utf-8" }));
+        a.download = current.textFile.split("/").pop();
+        a.click();
+        out.textContent = "還沒連接資料夾，所以先下載。請把它放進 assets/bgm/。";
+      }
+    };
     $$("[data-copy]", box).forEach((btn) => (btn.onclick = () => { navigator.clipboard.writeText($("#" + btn.dataset.copy, box).textContent).then(() => { btn.textContent = "已複製 ✓"; setTimeout(() => (btn.textContent = "複製"), 1500); }); }));
 
     const base = file.replace(/\.[^.]+$/, ""), ext = file.split(".").pop();

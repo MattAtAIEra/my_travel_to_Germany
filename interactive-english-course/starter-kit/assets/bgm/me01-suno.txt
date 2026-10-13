@@ -1,0 +1,17 @@
+Suno 背景音樂提示詞：me01　The Elevator
+
+【Style of Music】
+soft lo-fi morning jazz, mellow electric piano, brushed drums, warm upright bass, calm office morning, 80 bpm, unobtrusive background, instrumental, no vocals
+
+【Title】
+Eleven Floors
+
+【Song Description（簡單模式才用）】
+A loopable instrumental background track for "The Elevator", an English learning episode for language learners. Style: soft lo-fi morning jazz, mellow electric piano, brushed drums, warm upright bass, calm office morning, 80 bpm, unobtrusive background, instrumental, no vocals. Keep it steady and soft so spoken voices stay clear.
+
+做法：
+1. 登入 suno.com，按 Create，切到 Custom，打開 Instrumental。
+2. 把上面的 Style of Music 和 Title 貼進去，按 Create（一次會有兩首）。
+3. 挑最不搶戲的那一首：旋律簡單、沒有突然的大鼓或高音。
+4. 按 ⋯ → Download → MP3 Audio，改名成 me01.mp3，放回這個資料夾（assets/bgm/me01.mp3）。
+5. 打開 studio.html →「⑥ 背景音樂」測音量，把數字寫進題庫的 bgm.volume。
