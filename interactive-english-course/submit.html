@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>繳交作業：互動語言教材</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="course.css">
+<style>
+  .form-wrap { max-width: 780px; margin: 0 auto; padding: 32px 16px 100px; }
+  form.hw { background: var(--white); border: 1px solid var(--ink-15); border-radius: 16px; box-shadow: var(--shadow); padding: 26px 28px; display: grid; gap: 18px; }
+  @media (max-width: 760px) { form.hw { padding: 20px 16px; } }
+  form.hw label, form.hw fieldset { display: grid; gap: 6px; font-weight: 700; }
+  form.hw fieldset { border: 0; }
+  form.hw legend { font-weight: 700; margin-bottom: 6px; }
+  form.hw small { font-weight: 400; color: var(--pencil); font-size: 14px; }
+  form.hw input[type=text], form.hw input[type=url], form.hw input[type=number], form.hw select, form.hw textarea { font: inherit; font-weight: 400; border: 1.5px solid var(--ink-15); border-radius: 10px; padding: 9px 12px; background: #fff; width: 100%; }
+  form.hw textarea { min-height: 110px; resize: vertical; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-weight: 400; }
+  .opts label, .confirm label { display: flex !important; align-items: center; gap: 8px; font-weight: 400; }
+  .confirm { background: var(--paper); border-radius: 12px; padding: 12px 16px; display: grid; gap: 8px; }
+  .hp { position: absolute; left: -9999px; }
+  .note-local { background: #fff6d6; border-radius: 12px; padding: 12px 16px; font-size: 15px; margin-bottom: 16px; }
+  button.send { font: inherit; font-weight: 700; font-size: 18px; padding: 13px 22px; border-radius: 12px; border: 0; background: var(--ink); color: var(--white); cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="form-wrap">
+  <span class="eyebrow">期末作業</span>
+  <h1>繳交作業</h1>
+  <p class="lead">每組交一份。交了之後還可以再交，老師以最後一次為準。繳交前請先對照 <a href="assignments.html#acceptance">驗收清單</a>。</p>
+  <p id="local-note" class="note-local" hidden>你現在是從自己的電腦打開這一頁，按送出不會真的交出去。請從老師給的課程網址（Netlify）打開這一頁再繳交。</p>
+
+  <!-- 這是一個「純 HTML」的 Netlify 表單：不需要任何 JavaScript 也能送出。
+       Netlify 部署時看到 data-netlify="true"，就會建立一個叫 homework-submissions 的表單。 -->
+  <form class="hw" name="homework-submissions" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="homework-submissions">
+    <p class="hp"><label>請不要填這一格 <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+    <label>組名 <small>單人一組就寫自己的名字</small>
+      <input type="text" name="team_name" required maxlength="60"></label>
+
+    <fieldset><legend>組隊方式</legend>
+      <div class="opts">
+        <label><input type="radio" name="team_type" value="單人一組" required> 單人一組</label>
+        <label><input type="radio" name="team_type" value="小組"> 小組（2–5 人）</label>
+        <label><input type="radio" name="team_type" value="全班共同建構"> 全班共同建構</label>
+      </div>
+    </fieldset>
+
+    <label>成員與分工 <small>一行一位：姓名、學號、負責的角色（例如：王小明、B12345678、編劇＋聲音導演）</small>
+      <textarea name="members" required></textarea></label>
+
+    <label>作品網址（Netlify） <small>例如 https://my-lesson.netlify.app</small>
+      <input type="url" name="site_url" required placeholder="https://"></label>
+
+    <label>GitHub repo 網址
+      <input type="url" name="repo_url" required placeholder="https://github.com/"></label>
+
+    <label>集代號 <small>你們做的每一集的 id，用逗號分開（例如 kk02, kk03）</small>
+      <input type="text" name="episode_ids" required maxlength="100"></label>
+
+    <label>題材類別
+      <select name="topic_category" required>
+        <option value="">請選擇</option>
+        <option>A 兒童英語</option><option>B 晨間英語</option><option>C 華語教材</option><option>D 旅行英語</option><option>E 自由提案</option>
+      </select></label>
+
+    <label>收到幾筆學習成果 <small>Netlify 後台 Forms → learning-results 的筆數</small>
+      <input type="number" name="results_count" min="0" required></label>
+
+    <label>第二版改了什麼？根據哪些資料？ <small>例如：測驗 q3 有 6 成的人選了 A，所以把回饋多說一次正解……</small>
+      <textarea name="revision" required></textarea></label>
+
+    <label>反思（300 字左右） <small>最難的是哪一步？如果重做一次，你會怎麼改？</small>
+      <textarea name="reflection" required></textarea></label>
+
+    <label>AI 使用聲明 <small>可以直接貼 README 裡的那一段</small>
+      <textarea name="ai_statement" required></textarea></label>
+
+    <div class="confirm">
+      <label><input type="checkbox" name="confirm_checklist" value="是" required> 驗收清單的十項都確認過了</label>
+      <label><input type="checkbox" name="confirm_nokey" value="是" required> 我在 GitHub 上搜尋過 AIza，repo 裡沒有任何 API 金鑰</label>
+    </div>
+
+    <button class="send" type="submit">📮 送出作業</button>
+  </form>
+</div>
+<script>
+  // 送出後跳到「謝謝」頁。Netlify 規定這個路徑要從網站根目錄寫起（以 / 開頭），
+  // 所以用目前網址算出 thanks.html 的完整路徑：課程放在網站根目錄或子資料夾都適用。
+  const form = document.querySelector("form.hw");
+  form.action = new URL("thanks.html", location.href).pathname;
+  if (location.protocol === "file:") {
+    document.getElementById("local-note").hidden = false;
+    form.addEventListener("submit", (e) => { e.preventDefault(); alert("這是從自己電腦打開的頁面，不會真的送出。"); });
+  }
+</script>
+</body>
+</html>

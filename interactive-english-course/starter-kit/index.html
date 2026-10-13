@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ① 改成你自己作品的名字 -->
+<title>我的互動語言教材</title>
+<link rel="stylesheet" href="engine/player.css">
+</head>
+<body>
+
+<!-- 目錄頁：列出每一集 -->
+<main id="home">
+  <header>
+    <h1 id="home-title">我的互動語言教材</h1>
+    <p id="home-sub">這一季的每一集</p>
+  </header>
+  <div id="problems" hidden></div>
+  <div id="episode-list"></div>
+</main>
+
+<!-- 播放畫面 -->
+<main id="stage" hidden>
+  <div class="topbar">
+    <h2 id="ep-title"></h2>
+    <div id="progress"><i></i></div>
+  </div>
+  <div id="screen">
+    <div id="picture"></div>
+    <div id="caption" hidden></div>
+    <div id="overlay" class="overlay" hidden></div>
+  </div>
+  <div id="subtitle" class="empty" aria-live="polite">
+    <span id="sub-who"></span>
+    <p id="sub-text"></p>
+    <p id="sub-hint"></p>
+  </div>
+  <div class="controls">
+    <button id="btn-replay" type="button" title="R"><span class="i">↺</span><span>重聽</span></button>
+    <button id="btn-pause" type="button" title="空白鍵"><span class="i">⏯</span><span>暫停</span></button>
+    <button id="btn-next" type="button" title="→"><span class="i">⏭</span><span>下一句</span></button>
+    <button id="btn-music" type="button"><span class="i">🎵</span><span>音樂</span></button>
+    <button id="btn-exit" type="button"><span class="i">✕</span><span>離開</span></button>
+  </div>
+</main>
+
+<!-- ② 學習成果表單（Netlify Forms）
+     Netlify 部署時會掃描 HTML，看到 data-netlify="true" 就會幫你建立一個叫 learning-results 的表單。
+     平常它藏起來，播完一集時播放器會把它搬到畫面上。
+     每一個 name 都要留著：Netlify 只會收「這裡有出現過的欄位」。 -->
+<div id="form-home">
+  <form id="result-form" name="learning-results" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="learning-results">
+    <p class="bot-field"><label>請不要填這一格 <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+    <input type="hidden" name="episode">
+    <input type="hidden" name="episode_title">
+    <input type="hidden" name="score">
+    <input type="hidden" name="quiz_detail">
+    <input type="hidden" name="choices">
+    <input type="hidden" name="duration_sec">
+    <input type="hidden" name="finished_at">
+    <input type="hidden" name="page">
+    <label><span id="lbl-nickname">你的暱稱</span>
+      <input type="text" name="nickname" maxlength="30" autocomplete="off" required>
+      <small id="hint-nickname">填暱稱就好，請不要寫全名。</small></label>
+    <label><span id="lbl-class">班級代號（選填）</span>
+      <input type="text" name="class_code" maxlength="30" autocomplete="off"></label>
+    <fieldset class="stars-box">
+      <legend id="lbl-stars">喜歡這一集嗎？</legend>
+      <div class="stars">
+        <label><input type="radio" name="stars" value="1"><span>⭐</span></label>
+        <label><input type="radio" name="stars" value="2"><span>⭐</span></label>
+        <label><input type="radio" name="stars" value="3"><span>⭐</span></label>
+        <label><input type="radio" name="stars" value="4"><span>⭐</span></label>
+        <label><input type="radio" name="stars" value="5" checked><span>⭐</span></label>
+      </div>
+    </fieldset>
+    <label><span id="lbl-comment">想說的話（選填）</span>
+      <textarea name="comment" maxlength="500"></textarea></label>
+    <button type="submit" class="big-btn" id="btn-send">送出學習成果 💌</button>
+    <p id="send-status" class="send-status" role="status"></p>
+  </form>
+</div>
+
+<aside id="dev" hidden></aside>
+
+<!-- ③ 載入順序：先載入引擎，再載入「有哪幾集」的清單，最後才開始播 -->
+<script src="engine/lesson.js"></script>
+<script src="engine/checker.js"></script>
+<script src="content/episodes.js"></script>
+<script src="engine/player.js"></script>
+</body>
+</html>

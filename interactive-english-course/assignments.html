@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作業說明：互動語言教材</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="目錄">
+  <div class="label">作業說明</div>
+  <a href="#goal"><b>1</b>　要交什麼</a>
+  <a href="#teams"><b>2</b>　三種組隊方式</a>
+  <a href="#roles"><b>3</b>　小組分工</a>
+  <a href="#topics"><b>4</b>　題材清單</a>
+  <a href="#season"><b>5</b>　全班共同建構一季</a>
+  <a href="#milestones"><b>6</b>　時程與里程碑</a>
+  <a href="#acceptance"><b>7</b>　驗收清單</a>
+  <a href="#rubric"><b>8</b>　評分規準</a>
+  <a href="#ai"><b>9</b>　AI 使用與誠信</a>
+  <a href="#submit"><b>10</b>　怎麼繳交</a>
+  <a href="index.html">← 回課程手冊</a>
+</nav>
+
+<main>
+<header class="hero">
+  <span class="eyebrow">期末作業</span>
+  <h1>做一集（或一季）會說話的互動語言教材</h1>
+  <p class="lead">用課程手冊學到的流程，為一群真實的學習者做一集互動教材：有角色、有分支劇情、有測驗、有 AI 插圖與配音、有 Suno 背景音樂，放上 Netlify，並且收回真的學習成果。可以一個人做，也可以幾個人一組，或全班一起做成一整季。</p>
+  <div class="btns"><a class="btn" href="submit.html">📮 繳交作業</a><a class="btn ghost" href="index.html">📘 課程手冊</a><a class="btn ghost" href="starter-kit/index.html" target="_blank">▶ 範例作品</a></div>
+</header>
+
+<section class="part" id="goal">
+  <h2><span class="n">1</span>要交什麼</h2>
+  <div class="grid-3">
+    <div class="card"><span class="tag">作品</span><h4>一個上線的網站</h4><p>Netlify 網址，手機也能玩。裡面至少有你們做的一集。</p></div>
+    <div class="card"><span class="tag">原始檔</span><h4>一個 GitHub repo</h4><p>題庫檔、素材、README（含 AI 使用聲明）。repo 裡不可以有 API 金鑰。</p></div>
+    <div class="card"><span class="tag">證據與反思</span><h4>學習成果＋改版</h4><p>Netlify Forms 收到的學習成果（至少 10 筆）、你們根據資料改了什麼、300 字反思。</p></div>
+  </div>
+</section>
+
+<section class="part" id="teams">
+  <h2><span class="n">2</span>三種組隊方式（自己選）</h2>
+  <p class="intro">三種方式的評分標準一樣，差別在「份量」與「協作」。不論哪一種，每個人都要親手操作過工作台（產生過語音或圖片）。</p>
+  <div class="grid-3">
+    <div class="card"><span class="tag">單人一組</span><h4>做一集精簡版</h4><ul>
+      <li>2–3 個角色（可以直接沿用範例角色）</li>
+      <li>2 個劇情選擇＋1 個測驗</li>
+      <li>長度 1.5–3 分鐘</li>
+      <li>回顧＋單字卡</li></ul>
+      <p style="margin-top:8px">適合想完整走一次流程、時間比較少的人。</p></div>
+    <div class="card"><span class="tag">小組（2–5 人）</span><h4>做一集完整版</h4><ul>
+      <li>自己設計的角色（不沿用範例）</li>
+      <li>3 個選擇點，其中至少 1 個測驗</li>
+      <li>3–5 人的組：再加第二集，或加一個「華語／英語」雙語版本</li>
+      <li>依下方「小組分工」分配角色</li></ul></div>
+    <div class="card"><span class="tag">全班共同建構</span><h4>一起做一整季</h4><ul>
+      <li>全班共用同一個世界觀、同一組角色、同一個網站</li>
+      <li>每組（或每人）負責一集</li>
+      <li>要遵守全班一起訂的「系列規格書」</li>
+      <li>學到真實團隊開發的協作與整合</li></ul>
+      <p style="margin-top:8px">做法見第 5 節。</p></div>
+  </div>
+</section>
+
+<section class="part" id="roles">
+  <h2><span class="n">3</span>小組分工</h2>
+  <p class="intro">一個人可以兼好幾個角色；人少的組，製作人通常也是題庫工程師。<b>每個角色都有一份「交出去的東西」</b>，這是互評的依據。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>角色</th><th>負責</th><th>交出去的東西</th><th>對應課程</th></tr>
+    <tr><td>製作人</td><td>時程、分工、對外溝通、最後決定</td><td>企劃單、每週進度表、發表</td><td>第 1、11 課</td></tr>
+    <tr><td>編劇</td><td>故事、角色個性、台詞</td><td>流程圖、完整台詞</td><td>第 2、3 課</td></tr>
+    <tr><td>互動設計師</td><td>選擇點、測驗、回饋台詞</td><td>題目與選項表，符合五條規則</td><td>第 4 課</td></tr>
+    <tr><td>題庫工程師</td><td>把腳本整理成題庫檔，維持零錯誤</td><td>content/ 裡的題庫檔、上線</td><td>第 5、10 課</td></tr>
+    <tr><td>美術導演</td><td>畫風句、角色外型、每一張圖的檢查</td><td>角色設定圖、所有插圖</td><td>第 6 課</td></tr>
+    <tr><td>聲音導演</td><td>選聲音、語氣說明、背景音樂</td><td>所有語音、BGM 與音量設定</td><td>第 7、8 課</td></tr>
+    <tr><td>測試員</td><td>三輪測試、找人試玩、回報問題</td><td>測試紀錄、問題清單（含修好了沒）</td><td>第 9 課</td></tr>
+  </table></div>
+  <div class="see idea"><span class="k">協作小技巧</span><div>題庫檔一次只讓一個人改（通常是題庫工程師），其他人把修改意見寫在共用文件或 GitHub 的 Issues 裡。兩個人同時改同一個檔案，最後一定有人的修改被蓋掉。</div></div>
+</section>
+
+<section class="part" id="topics">
+  <h2><span class="n">4</span>題材清單</h2>
+  <p class="intro">每個題材都已經幫你配好一個「一集只教一件事」的學習目標。可以照用，也可以改；自由提案請先給老師看企劃單。</p>
+
+  <h3 style="font:900 21px/1.4 var(--serif);margin:18px 0 10px">A. 兒童英語（6–10 歲；可以延續 Captain A 系列）</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>題材</th><th>這一集只教</th><th>測驗題可以怎麼出</th></tr>
+    <tr><td>Rex 的生日派對</td><td>How old are you? / I'm seven.</td><td>Rex 七歲，他該怎麼回答？</td></tr>
+    <tr><td>顏色水果攤</td><td>形容詞放在名詞前面：a red apple</td><td>Funky 要買紅色的蘋果，怎麼說？（apple red / a red apple / red a apple）</td></tr>
+    <tr><td>動物園</td><td>a 和 an：an elephant、a tiger</td><td>Funky 看到大象，該說 a 還是 an？</td></tr>
+    <tr><td>今天天氣</td><td>It's sunny / rainy / windy.</td><td>窗外在下雨，Rex 該怎麼說？</td></tr>
+    <tr><td>我的心情</td><td>I'm happy / sad / tired.</td><td>Funky 打了一個大哈欠，她覺得怎樣？</td></tr>
+    <tr><td>早餐吃什麼</td><td>I like… / I don't like…</td><td>Captain A 不喜歡牛奶，他怎麼說？</td></tr>
+    <tr><td>穿衣服出門</td><td>put on：Put on your coat.</td><td>外面很冷，Funky 要提醒 Rex 做什麼？</td></tr>
+    <tr><td>數到十</td><td>數字＋複數 s（延伸 KK01）</td><td>桌上有三顆球，怎麼說？</td></tr>
+  </table></div>
+
+  <h3 style="font:900 21px/1.4 var(--serif);margin:24px 0 10px">B. 晨間英語（上班族、大學生；延續 Morning English 系列）</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>題材</th><th>這一集只教</th><th>三個選擇點的走向</th></tr>
+    <tr><td>咖啡店點餐</td><td>Can I get…? 比 I want… 有禮貌</td><td>點餐 → 客製化 → 付款時的小聊天</td></tr>
+    <tr><td>視訊會議遲到</td><td>道歉要短，接著馬上回到正事</td><td>進會議的第一句 → 被問問題 → 會後補救</td></tr>
+    <tr><td>請同事幫忙</td><td>Would you mind…? / Could you…?</td><td>開口 → 說明原因 → 道謝與回報</td></tr>
+    <tr><td>婉拒加班</td><td>I'd love to, but…（先肯定再拒絕）</td><td>被問 → 拒絕 → 提出替代方案</td></tr>
+    <tr><td>三十秒自我介紹</td><td>名字 → 做什麼 → 一個讓人記得的細節</td><td>開場 → 重點 → 收尾</td></tr>
+    <tr><td>面試第一題</td><td>Tell me about yourself. 的三段式</td><td>現在 → 過去 → 為什麼是這裡</td></tr>
+    <tr><td>打電話請病假</td><td>說明、交代、約定回覆時間</td><td>開口 → 交代工作 → 結束通話</td></tr>
+  </table></div>
+
+  <h3 style="font:900 21px/1.4 var(--serif);margin:24px 0 10px">C. 華語教材（給外籍學習者；配音用台灣口音的國語）</h3>
+  <p style="font-size:15px">題庫的 <code>lang</code> 和角色的 <code>lang</code> 都寫 <code>"zh-TW"</code>，按鈕文字 <code>ui</code> 可以用 <code>"en"</code>（讓剛開始學中文的人看得懂）。字幕下的 <code>hint</code> 可以放漢語拼音或英文翻譯。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>題材</th><th>這一集只教</th><th>測驗題可以怎麼出</th></tr>
+    <tr><td>夜市點餐</td><td>量詞：一<b>份</b>雞排、一<b>杯</b>奶茶、一<b>碗</b>麵線</td><td>要一碗蚵仔麵線，怎麼說？</td></tr>
+    <tr><td>手搖飲客製化</td><td>甜度與冰塊：半糖、少冰、去冰</td><td>想要一半的甜度，該說什麼？</td></tr>
+    <tr><td>搭捷運</td><td>往……方向、在……站下車</td><td>要去台北 101，在哪一站下車？</td></tr>
+    <tr><td>便利商店</td><td>聽懂店員的問題：要袋子嗎？要加熱嗎？</td><td>店員問「需要袋子嗎？」，不需要怎麼回？</td></tr>
+    <tr><td>看醫生</td><td>描述哪裡不舒服：我頭痛、我喉嚨痛</td><td>喉嚨痛，該怎麼跟醫生說？</td></tr>
+    <tr><td>「了」的用法</td><td>動作完成：我吃了。／我吃飯了。</td><td>朋友問「你吃飯了嗎？」，吃過了怎麼回答？</td></tr>
+    <tr><td>中秋節烤肉</td><td>邀請：要不要一起……？</td><td>想約朋友一起烤肉，怎麼開口？</td></tr>
+  </table></div>
+  <div class="see stuck"><span class="k">華語配音注意</span><div>破音字（行、長、重、還、了）一定要逐句聽過。念錯時換一個說法，或在那一句的 <code>style</code> 裡註明讀音。</div></div>
+
+  <h3 style="font:900 21px/1.4 var(--serif);margin:24px 0 10px">D. 旅行英語（呼應這個網站的德國旅行主題）</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>題材</th><th>這一集只教</th></tr>
+    <tr><td>機場報到</td><td>Window or aisle? / Is my bag overweight?</td></tr>
+    <tr><td>火車誤點要改票</td><td>My train was cancelled. Can I take the next one?</td></tr>
+    <tr><td>飯店入住</td><td>I have a reservation under…</td></tr>
+    <tr><td>餐廳點餐與飲食需求</td><td>I'm vegetarian. / Does this have nuts?</td></tr>
+    <tr><td>東西掉了</td><td>I lost my… Where is the lost and found?</td></tr>
+  </table></div>
+
+  <h3 style="font:900 21px/1.4 var(--serif);margin:24px 0 10px">E. 自由提案</h3>
+  <p style="font-size:15px">台語、客語入門（語音品質請先試聽確認）、手語詞彙配圖、給長輩的手機英文、給新住民的華語……都歡迎。先交企劃單給老師確認。</p>
+</section>
+
+<section class="part" id="season">
+  <h2><span class="n">5</span>全班共同建構一季：怎麼做</h2>
+  <p class="intro">全班共用一個引擎、一個網站，每組各寫一集。這就是真實團隊開發的樣子：大家各自工作，最後要能「接得起來」。能不能接得起來，靠的是事先講好的規格。</p>
+  <article class="step">
+    <div class="head"><span class="num">步驟 1</span><h3>一起訂「系列規格書」（第一週，全班）</h3></div>
+    <ul class="sub">
+      <li><b>世界觀與角色</b>：全班共用的角色，整段 <code>cast</code>（名字、emoji、顏色、聲音、語氣、外型）定稿後<b>每一集都照抄，不准改</b>。</li>
+      <li><b>畫風句</b> <code>art.style</code>、<b>語音要求</b> <code>speech.note</code>、<b>主題色</b> <code>theme</code>：全季一樣。</li>
+      <li><b>集代號規則</b>：每組有自己的代號開頭，避免撞名，例如第 3 組用 <code>s1e03</code>。素材資料夾也就不會撞在一起。</li>
+      <li><b>骨架</b>：要不要固定「暖場 → 選擇 ×2 → 測驗 → 結局 → 回顧 → 單字卡」、長度多少。</li>
+    </ul>
+  </article>
+  <article class="step">
+    <div class="head"><span class="num">步驟 2</span><h3>各組在自己的 starter kit 裡開發</h3></div>
+    <p>每組照課程手冊做自己的那一集，<b>只動自己的題庫檔和自己的素材資料夾</b>。角色設定圖由「美術組」或老師統一產生一次，發給各組放進自己的素材資料夾，確保長相一致。</p>
+  </article>
+  <article class="step">
+    <div class="head"><span class="num">步驟 3</span><h3>交給整合人，放進全班的網站</h3></div>
+    <p>每組交出兩樣東西：<code>content/s1e03-xxx.js</code> 和 <code>assets/s1e03/</code> 整個資料夾。整合人（老師、助教或選出來的「總編輯」）把它們放進全班的 repo，在 <code>content/episodes.js</code> 加上一行，打開工作台確認零錯誤，再上傳。全班的網站目錄上就多了一集。</p>
+    <p class="hint">進階做法：整合人在 GitHub 把各組加為協作者（Settings → Collaborators），各組直接上傳自己的檔案。</p>
+  </article>
+  <div class="see why"><span class="k">工程師的說法</span><div>系列規格書就是團隊之間的<b>介面約定</b>：只要每一組交出來的東西符合約定，整合人不必看懂每一集的內容也接得起來。工作台的「檢查題庫」就是整合前的<b>驗收測試</b>。</div></div>
+</section>
+
+<section class="part" id="milestones">
+  <h2><span class="n">6</span>時程與里程碑（建議 9 週）</h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>週</th><th>上課內容</th><th>這一週結束要交</th></tr>
+    <tr><td>1</td><td>第 0、1 課：先讓它跑起來、企劃</td><td><b>M1 企劃單</b>（組隊方式、分工、題材）</td></tr>
+    <tr><td>2</td><td>第 2、3 課：角色、腳本</td><td><b>M2 角色卡＋流程圖</b></td></tr>
+    <tr><td>3</td><td>第 4 課：互動題目設計</td><td><b>M3 完整台詞與題目</b>（同學互看一次）</td></tr>
+    <tr><td>4</td><td>第 5 課：題庫檔</td><td><b>M4 可玩版</b>：題庫零錯誤，用電腦語音可以從頭玩到尾</td></tr>
+    <tr><td>5</td><td>第 6 課：圖像</td><td>角色設定圖＋第一張圖給老師看過畫風</td></tr>
+    <tr><td>6</td><td>第 7、8 課：聲音、背景音樂</td><td><b>M5 素材完成版</b>：所有語音、圖、BGM</td></tr>
+    <tr><td>7</td><td>第 9 課：整合與測試</td><td>測試紀錄（三輪）＋同學互測回報</td></tr>
+    <tr><td>8</td><td>第 10 課：上線、收集學習成果</td><td><b>M6 上線版</b>：網址、表單收到第一筆</td></tr>
+    <tr><td>9</td><td>第 11 課：發表與改版</td><td><b>期末繳交</b>：至少 10 筆學習成果、第二版、反思、發表</td></tr>
+  </table></div>
+  <p class="hint">課程只有 6 週時：第 2–3 週合併、第 5–6 週合併、第 7–8 週合併。兩天工作坊：第一天做到 M4 可玩版，第二天做素材、上線。</p>
+</section>
+
+<section class="part" id="acceptance">
+  <h2><span class="n">7</span>驗收清單（全部打勾才算完成）</h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>#</th><th>要確認的事</th><th>怎麼確認</th></tr>
+    <tr><td>1</td><td>題庫零錯誤</td><td>工作台 ② 沒有「❌ 一定要修」</td></tr>
+    <tr><td>2</td><td>至少 3 個選擇點，其中至少 1 個測驗（單人組：2 個劇情選擇＋1 個測驗）</td><td>工作台 ② 劇本總覽</td></tr>
+    <tr><td>3</td><td>測驗符合「題目不含答案」「答錯的分支也說出正解」</td><td>工作台 ② 沒有相關的 ⚠️</td></tr>
+    <tr><td>4</td><td>有回顧和單字卡</td><td>播放到最後</td></tr>
+    <tr><td>5</td><td>每一句都有 Gemini 語音，每一場都有圖</td><td>工作台 ② 完成度兩格都是滿的</td></tr>
+    <tr><td>6</td><td>有 Suno 背景音樂，台詞聽得清楚</td><td>找一個人戴耳機聽</td></tr>
+    <tr><td>7</td><td>網站上線，手機可以玩</td><td>用手機打開網址玩一次</td></tr>
+    <tr><td>8</td><td>Netlify Forms 收到至少 10 筆學習成果（同學、家人、真實的學習者都可以）</td><td>Forms 頁截圖或 CSV</td></tr>
+    <tr><td>9</td><td>README 寫了作品介紹和 AI 使用聲明</td><td>repo 首頁</td></tr>
+    <tr><td>10</td><td>repo 裡沒有任何 API 金鑰</td><td>在 GitHub 上搜尋 <code>AIza</code>，應該找不到</td></tr>
+  </table></div>
+</section>
+
+<section class="part" id="rubric">
+  <h2><span class="n">8</span>評分規準</h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>面向</th><th>比重</th><th>優秀的樣子</th><th>常見扣分</th></tr>
+    <tr><td>學習設計</td><td>25%</td><td>學習者具體；一集只教一件事；情境是學習者真的會遇到的；「怎樣算成功」有寫、有檢查</td><td>一集教太多；目標無法驗證</td></tr>
+    <tr><td>互動與題目</td><td>20%</td><td>選擇有意義、各有代價；錯誤選項來自真實的錯；符合五條規則；回饋溫和且說出正解</td><td>答案寫在題目上；答錯的人聽不到正解；選項一看就知道哪個對</td></tr>
+    <tr><td>角色與腳本</td><td>15%</td><td>角色各有任務與鮮明個性；台詞自然、一句一個念頭；分支都回得來</td><td>角色只是傳聲筒；主線接不上某條分支</td></tr>
+    <tr><td>圖像與聲音</td><td>15%</td><td>畫風與角色長相一致；沒有亂碼字；語氣到位、華語讀音正確；BGM 不搶戲</td><td>角色每張長得不一樣；破音字念錯；音樂蓋過人聲</td></tr>
+    <tr><td>技術完成度</td><td>15%</td><td>驗收清單全部通過；手機好用；有測試紀錄</td><td>上線後缺圖缺聲音；表單收不到</td></tr>
+    <tr><td>資料與改版</td><td>10%</td><td>從學習成果看出問題，做出有根據的第二版；發表說得清楚</td><td>只有一版；沒有看資料</td></tr>
+  </table></div>
+  <p style="font-size:15px">小組作品：小組分數 × 個人調整（0.8–1.2）。個人調整依據：同儕互評、每個角色「交出去的東西」，以及 GitHub 的修改紀錄。全班共同建構：個人分數看自己那一集，另有 10% 看「有沒有遵守系列規格書、整合時有沒有出問題」。</p>
+</section>
+
+<section class="part" id="ai">
+  <h2><span class="n">9</span>AI 使用與誠信</h2>
+  <ul class="sub">
+    <li><b>可以</b>：用 Gemini 產生插圖與語音、用 Suno 產生音樂，這是作業的一部分。</li>
+    <li><b>要說清楚</b>：腳本與題目如果有請 AI 協助（例如請 AI 給你十個題材點子、幫你檢查英文），在 README 寫出來，並說明你自己改了什麼。</li>
+    <li><b>不可以</b>：使用他人的角色（卡通、遊戲、品牌角色）、真人照片或聲音、在描述裡指定在世創作者的風格。</li>
+    <li><b>不可以</b>：把 API 金鑰放進作品或分享給別人；收集學習者的真實姓名、學號、聯絡方式。</li>
+  </ul>
+<pre class="code">## AI 使用聲明（範例，放在 README 最後）
+- 插圖：Google Gemini（gemini-3.1-flash-image），畫面描述由 ___ 撰寫
+- 語音：Google Gemini（gemini-3.8-flash-tts），角色聲音：Captain A＝Puck……
+- 背景音樂：Suno，提示詞見 content/ 題庫檔的 bgm.suno
+- 腳本：由 ___、___ 撰寫；使用 ___ 協助檢查英文文法，並由 ___ 修改定稿</pre>
+</section>
+
+<section class="part" id="submit">
+  <h2><span class="n">10</span>怎麼繳交</h2>
+  <p>期末前到 <a href="submit.html">繳交頁</a> 填表（每組一份）：作品網址、GitHub repo 網址、成員與分工、收到幾筆學習成果、第二版改了什麼、反思。繳交後可以再交一次，老師以最後一次為準。</p>
+  <div class="final"><h3>評分時老師會做的事</h3><p>打開你的網址，用手機玩三輪（每個選項至少選一次）、送出一筆學習成果；打開 GitHub 看題庫檔和 README；用工作台跑一次「檢查題庫」。所以，只要你的作品通過驗收清單，就不會有意外。</p></div>
+</section>
+</main>
+</div>
+</body>
+</html>

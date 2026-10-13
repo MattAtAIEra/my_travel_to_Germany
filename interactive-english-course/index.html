@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>從 0 到 1：做一套會說話的互動語言教材</title>
+<meta name="description" content="給沒有寫程式經驗的大學生：一步一步做出互動式英語（或華語）教材，用 Gemini 產生圖與語音、Suno 做背景音樂、Netlify 收集學習成果。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="目錄">
+  <div class="label">目錄</div>
+  <a href="#p0"><b>第 0 課</b>　先讓它跑起來</a>
+  <a href="#p1"><b>第 1 課</b>　企劃：一集只教一件事</a>
+  <a href="#p2"><b>第 2 課</b>　角色：一聽就知道是誰</a>
+  <a href="#p3"><b>第 3 課</b>　腳本：用流程圖想故事</a>
+  <a href="#p4"><b>第 4 課</b>　互動題目設計</a>
+  <a href="#p5"><b>第 5 課</b>　把腳本變成題庫檔</a>
+  <a href="#p6"><b>第 6 課</b>　圖像製作（Gemini）</a>
+  <a href="#p7"><b>第 7 課</b>　聲音製作（Gemini TTS）</a>
+  <a href="#p8"><b>第 8 課</b>　背景音樂（Suno）</a>
+  <a href="#p9"><b>第 9 課</b>　整合與測試</a>
+  <a href="#p10"><b>第 10 課</b>　上線，收集學習成果</a>
+  <a href="#p11"><b>第 11 課</b>　發表與改版</a>
+  <a href="#appendix"><b>附錄</b>　速查表與小辭典</a>
+  <a href="assignments.html"><b>作業</b>　題材、分組、評分 ↗</a>
+  <div class="progress"><i id="bar"></i></div>
+  <span class="pct" id="pct">0 / 0</span>
+</nav>
+
+<main>
+<header class="hero">
+  <span class="eyebrow">AI 服務實作課 ‧ 互動教材工作坊</span>
+  <h1>從 0 到 1：做一套會說話、會互動、會收成果的語言教材</h1>
+  <p class="lead">這份手冊帶你從一張白紙開始，做出像「Captain A 兒童英語」和「Morning English 晨間英語」那樣的互動教材：
+    有角色、有配音、有插圖、有背景音樂，學習者可以自己做選擇，玩完還會把學習成果送回給你。</p>
+  <p class="lead" style="margin-top:10px">不需要寫程式的經驗。你會用到的「程式」都已經寫好了，你要做的是<b class="hl">教學設計、說故事，和把內容整理成機器看得懂的格式</b>。
+    每一課最後都有一個看得到的成果。</p>
+  <div class="chips">
+    <span class="chip live">不用寫程式基礎</span><span class="chip">12 課，每課 45–90 分鐘</span>
+    <span class="chip">英語或華語教材都可以</span><span class="chip">單人或小組</span><span class="chip">作品會放上網路</span>
+  </div>
+  <div class="btns">
+    <a class="btn" href="starter-kit.zip" download>⬇ 下載 starter kit</a>
+    <a class="btn ghost" href="starter-kit/index.html" target="_blank">▶ 先玩範例</a>
+    <a class="btn ghost" href="assignments.html">📝 作業說明</a>
+  </div>
+</header>
+
+<section class="part" id="map">
+  <h2>整個流程長這樣</h2>
+  <p class="intro">十二課走完，就是一個軟體專案從「想清楚要做什麼」到「上線、收資料、改版」的完整流程。工程師每天做的事，你都會親手做一次。</p>
+  <div class="flow">
+    <svg viewBox="0 0 1000 230" role="img" aria-label="流程：企劃、角色、腳本、互動題目、題庫檔，接著圖像、聲音、音樂、整合測試、上線收成果、發表改版">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6F7D72"/></marker></defs>
+      <g font-family="Noto Sans TC, sans-serif" text-anchor="middle">
+        <g fill="#E8EFF8" stroke="#2060B0" stroke-width="2">
+          <rect x="10" y="16" width="170" height="70" rx="12"/><rect x="210" y="16" width="170" height="70" rx="12"/><rect x="410" y="16" width="170" height="70" rx="12"/><rect x="610" y="16" width="170" height="70" rx="12"/>
+        </g>
+        <rect x="810" y="16" width="180" height="70" rx="12" fill="#E5F2EB" stroke="#1F7A52" stroke-width="2"/>
+        <g fill="#FBEAE7" stroke="#C8321F" stroke-width="2">
+          <rect x="10" y="140" width="150" height="70" rx="12"/><rect x="176" y="140" width="150" height="70" rx="12"/><rect x="342" y="140" width="150" height="70" rx="12"/>
+        </g>
+        <g fill="#E3E6E3" stroke="#1C2A1F" stroke-width="2">
+          <rect x="508" y="140" width="150" height="70" rx="12"/><rect x="674" y="140" width="150" height="70" rx="12"/><rect x="840" y="140" width="150" height="70" rx="12"/>
+        </g>
+        <g font-size="12" fill="#6F7D72">
+          <text x="95" y="40">第 1 課</text><text x="295" y="40">第 2 課</text><text x="495" y="40">第 3 課</text><text x="695" y="40">第 4 課</text><text x="900" y="40">第 5 課</text>
+          <text x="85" y="164">第 6 課</text><text x="251" y="164">第 7 課</text><text x="417" y="164">第 8 課</text><text x="583" y="164">第 9 課</text><text x="749" y="164">第 10 課</text><text x="915" y="164">第 11 課</text>
+        </g>
+        <g font-size="18" font-weight="700" fill="#1C2A1F">
+          <text x="95" y="68">企劃</text><text x="295" y="68">角色</text><text x="495" y="68">腳本</text><text x="695" y="68">互動題目</text><text x="900" y="68">題庫檔</text>
+          <text x="85" y="192">圖像</text><text x="251" y="192">聲音</text><text x="417" y="192">背景音樂</text><text x="583" y="192">整合測試</text><text x="749" y="192">上線收成果</text><text x="915" y="192">發表改版</text>
+        </g>
+        <g stroke="#6F7D72" stroke-width="2" fill="none" marker-end="url(#arr)">
+          <path d="M180 51 H206"/><path d="M380 51 H406"/><path d="M580 51 H606"/><path d="M780 51 H806"/>
+          <path d="M900 86 V113 H85 V136"/>
+          <path d="M160 175 H172"/><path d="M326 175 H338"/><path d="M492 175 H504"/><path d="M658 175 H670"/><path d="M824 175 H836"/>
+        </g>
+      </g>
+    </svg>
+    <p class="legend">藍色是<b>設計</b>（想清楚），綠色是<b>資料</b>（寫成題庫），紅色是<b>素材</b>（交給 AI 產生），黑色是<b>交付</b>（上線、收集學習成果、改版）。</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><span class="tag">你會用到的工具</span><h4>全部免費開始</h4><ul><li>Chrome 或 Edge 瀏覽器</li><li>文字編輯器（推薦 VS Code）</li><li>GitHub、Netlify 帳號</li><li>Google AI Studio（Gemini 金鑰）</li><li>Suno 帳號</li></ul></div>
+    <div class="card"><span class="tag">你會做出來的</span><h4>一個真的網站</h4><ul><li>一集（或一季）互動教材</li><li>角色配音、插圖、背景音樂</li><li>劇情選擇與測驗題</li><li>學習者送回來的學習成果</li></ul></div>
+    <div class="card"><span class="tag">你會學到的</span><h4>工程師的思考方式</h4><ul><li>需求、規格、資料與程式分離</li><li>自動檢查、測試、除錯</li><li>API、建置流程、版本控制</li><li>上線、蒐集資料、改版</li></ul></div>
+  </div>
+</section>
+
+<!-- ───────────────────────────── 第 0 課 ───────────────────────────── -->
+<section class="part" id="p0">
+  <h2><span class="n">0</span>先讓它跑起來 <span class="time">約 30 分鐘</span></h2>
+  <p class="intro">第一堂課不寫任何東西，先把別人做好的作品在自己電腦上跑起來、玩一次、拆開來看。知道成品長什麼樣子，後面每一步才知道自己在做哪一塊。</p>
+  <div class="goal"><span>這一課的成果：<b>範例教材在你的電腦上跑起來</b></span></div>
+
+  <article class="step" id="s0-1">
+    <div class="head"><span class="num">0-1</span><h3>確認你有這幾個帳號</h3></div>
+    <ul class="sub">
+      <li><b>GitHub 與 Netlify</b>：還沒有的話，先照<a href="../netlify-github/index.html" target="_blank">《GitHub ＋ Netlify 操作手冊》</a>做完。那份手冊的最後，你會有一個自己的網站。</li>
+      <li><b>Google 帳號</b>：等一下要用它登入 Google AI Studio 拿 Gemini 的金鑰（第 6 課）。</li>
+      <li><b>Suno 帳號</b>：到 <code>suno.com</code> 用 Google 帳號登入就好（第 8 課）。</li>
+    </ul>
+    <div class="see stuck"><span class="k">卡住了？</span><div>學校的 Google 帳號有時候不能用 AI Studio。改用自己的個人 Gmail 帳號試試看；還是不行就找老師。</div></div>
+    <label class="check"><input type="checkbox" data-step="0-1"> 帳號都準備好了</label>
+  </article>
+
+  <article class="step" id="s0-2">
+    <div class="head"><span class="num">0-2</span><h3>下載 starter kit，解壓縮</h3></div>
+    <p class="do">按這份手冊最上面的 <b>⬇ 下載 starter kit</b>。下載的是一個 zip 檔，對它按右鍵選「解壓縮」（Mac 直接雙擊）。會出現一個叫 <code>starter-kit</code> 的資料夾。</p>
+    <p>把資料夾搬到你找得到的地方（例如「文件」），名字可以改成你的作品名，例如 <code>my-lesson</code>。之後我們都叫它「專案資料夾」。</p>
+    <div class="see"><span class="k">你會看到</span><div>資料夾裡有 <code>index.html</code>、<code>studio.html</code>、<code>README.md</code>，和 <code>content</code>、<code>assets</code>、<code>engine</code>、<code>tools</code> 四個資料夾。</div></div>
+    <label class="check"><input type="checkbox" data-step="0-2"> 我有專案資料夾了</label>
+  </article>
+
+  <article class="step" id="s0-3">
+    <div class="head"><span class="num">0-3</span><h3>雙擊 index.html，玩一次兩個範例</h3></div>
+    <p class="do">用 Chrome 打開 <code>index.html</code>（雙擊；如果被別的程式打開，就按右鍵 →「開啟方式」→ Chrome）。點 <b>KK01 Two Apples</b>，按 <b>Start ▶</b> 玩到最後。再回目錄玩 <b>ME01 The Elevator</b>。</p>
+    <p>你會發現：圖的位置是色塊、聲音是電腦內建的語音。這是故意的。<b>素材還沒做，作品就已經可以玩了</b>，之後每做好一張圖、一句聲音，它就會自動換上去。</p>
+    <div class="see"><span class="k">你會看到</span><div>畫面下方有字幕和說話者的名字；遇到選擇題會跳出 2–3 張卡片；最後有「回顧」「單字卡」，和一張要填暱稱的學習成果表單。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>沒有聲音：檢查電腦音量、瀏覽器分頁有沒有被靜音。Chrome 內建語音偶爾不出聲，那時字幕還是會照時間往下走。</li><li>按下送出學習成果，只出現「本機測試模式」：正常。放上 Netlify 之後才會真的送出（第 10 課）。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="0-3"> 兩集都玩完了</label>
+  </article>
+
+  <article class="step" id="s0-4">
+    <div class="head"><span class="num">0-4</span><h3>打開「開發者模式」看看內部</h3></div>
+    <p class="do">在網址最後面加上 <code>?dev=1</code>（例如 <code>…/index.html?dev=1</code>），按 Enter，再點一集進去。</p>
+    <p>右下角會出現一個黑色小視窗：列出這一集的每一場，點一下就能直接跳過去；播放時也會告訴你「這一句要找哪個聲音檔」。之後做作品時，這是你最常用的工具。</p>
+    <label class="check"><input type="checkbox" data-step="0-4"> 我會用開發者模式跳場次</label>
+  </article>
+
+  <article class="step" id="s0-5">
+    <div class="head"><span class="num">0-5</span><h3>認識專案資料夾：引擎、題庫、素材</h3></div>
+    <p>整個專案分成三種東西，就像一間餐廳：</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>資料夾</th><th>像餐廳裡的</th><th>是什麼</th><th>你要改嗎</th></tr>
+      <tr><td><code>engine/</code></td><td>廚房設備</td><td>播放器和工作台的程式：怎麼播、怎麼出選項、怎麼送出成果</td><td>不用</td></tr>
+      <tr><td><code>content/</code></td><td>菜單</td><td>題庫：每一集的角色、台詞、選項、單字。一集一個檔案</td><td><b class="hl">主要改這裡</b></td></tr>
+      <tr><td><code>assets/</code></td><td>食材</td><td>圖、聲音、背景音樂。工作台會自動放進來</td><td>用工具產生</td></tr>
+    </table></div>
+    <p>換菜單不用換廚房。同樣的道理，<b>換一集、改題目，只要改 content</b>，引擎一行都不用動。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div><b>關注點分離</b>（separation of concerns）：把「怎麼做」和「做什麼」分開放。好處是兩邊可以各自修改，不會改了題目卻把播放器弄壞。這也是你們這一季可以有很多集、很多組一起做的原因：大家共用同一個引擎，各自寫自己的題庫。</div></div>
+    <label class="check"><input type="checkbox" data-step="0-5"> 我知道三個資料夾各放什麼</label>
+  </article>
+  <div class="badge"><span class="medal">🏅</span><div><b>第一個成就：</b>互動教材在你的電腦上跑起來了。工程師把這叫「先求能跑」：先有一個可以運作的版本，再一點一點變好。</div></div>
+</section>
+
+<!-- ───────────────────────────── 第 1 課 ───────────────────────────── -->
+<section class="part" id="p1">
+  <h2><span class="n">1</span>企劃：一集只教一件事 <span class="time">約 45 分鐘</span></h2>
+  <p class="intro">大部分做壞的教材，不是技術不好，而是一集想教太多東西。這一課要寫出一張「企劃單」：學習者是誰、這一集學完會什麼、故事發生在哪裡。後面所有決定都會回來對照這張單。</p>
+  <div class="goal"><span>這一課的成果：<b>一頁企劃單</b>（組員和老師都看過）</span></div>
+
+  <article class="step" id="s1-1">
+    <div class="head"><span class="num">1-1</span><h3>寫下你的學習者是誰</h3></div>
+    <p class="do">越具體越好。不是「小朋友」，而是「<b>國小二年級、剛學會 26 個字母、睡前跟爸媽一起看 2 分鐘</b>」。</p>
+    <div class="grid-2">
+      <div class="card"><span class="tag">範例：KK01</span><h4>6–10 歲的小朋友</h4><p>全英文也聽得懂一點點，注意力大約兩分鐘；被糾正會不開心，答錯被擋下來重選就會直接關掉。</p></div>
+      <div class="card"><span class="tag">範例：ME01</span><h4>剛進職場的上班族</h4><p>英文程度中等（B1–B2），早上通勤時用手機看三分鐘；最怕的不是文法，而是「不知道這時候該說什麼」。</p></div>
+    </div>
+    <label class="check"><input type="checkbox" data-step="1-1"> 我寫好學習者了</label>
+  </article>
+
+  <article class="step" id="s1-2">
+    <div class="head"><span class="num">1-2</span><h3>只選一個學習目標</h3></div>
+    <p class="do">一集只教<b>一件事</b>。用「學完之後，學習者能……」造句，而且要看得出來有沒有做到。</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>太大（不要）</th><th>剛好（要）</th></tr>
+      <tr><td>學會水果的英文</td><td>知道兩個以上要加 s：two apple<b>s</b></td></tr>
+      <tr><td>學會職場英文</td><td>在電梯裡遇到主管，三十秒內說出合適的開場、自我介紹與收尾</td></tr>
+      <tr><td>學會中文量詞（華語教材）</td><td>在飲料店點餐時，分得出「一<b>杯</b>」和「一<b>瓶</b>」</td></tr>
+    </table></div>
+    <div class="see idea"><span class="k">小技巧</span><div>KK01 選「複數 s」，是因為它是台灣小朋友最早、最常犯的錯，而且<b>畫面上放兩顆蘋果就講得通</b>。看得見的文法，才教得動。</div></div>
+    <label class="check"><input type="checkbox" data-step="1-2"> 我的學習目標只有一個</label>
+  </article>
+
+  <article class="step" id="s1-3">
+    <div class="head"><span class="num">1-3</span><h3>決定故事發生的地方和長度</h3></div>
+    <p class="do">情境要是學習者<b>真的會遇到</b>的：廚房、電梯、夜市、捷運站、視訊會議。長度建議：兒童 1.5–2 分鐘、成人 3–4 分鐘（重玩不同選項自然會變長）。</p>
+    <label class="check"><input type="checkbox" data-step="1-3"> 情境和長度決定了</label>
+  </article>
+
+  <article class="step" id="s1-4">
+    <div class="head"><span class="num">1-4</span><h3>填企劃單，給組員和老師看</h3></div>
+    <p class="do">把下面這張複製到你的筆記或共用文件，填好。<b>「怎樣算成功」那一格最重要</b>，第 9 課測試時會拿它來檢查。</p>
+<pre class="code">【企劃單】
+作品名稱：
+這一集的代號：（英文小寫＋數字，例如 kk02、me03、hy01）
+學習者：（年齡、程度、在什麼時間用、用多久）
+學習目標（只有一個）：學完之後，學習者能……
+情境：故事發生在哪裡？誰跟誰？
+語言：英語／華語／英語對話＋中文解說
+長度：大約幾分鐘
+三個選擇點打算考什麼：
+  1.
+  2.
+  3.（這一題是測驗，有標準答案）
+怎樣算成功：（例如：玩完的人，測驗題答對率超過 70%；或最後一題選對的人比第一次多）
+分工：（小組才要填，見作業說明）</pre>
+    <div class="see why"><span class="k">工程師的說法</span><div>這張單就是<b>需求</b>。工程師常用一句話寫需求：「身為<u>國小二年級的學生</u>，我想要<u>知道兩個蘋果怎麼說</u>，這樣我就能<u>在英文課上說對</u>。」「怎樣算成功」則叫做<b>驗收條件</b>：先寫好，做完才有辦法說「做到了」。</div></div>
+    <label class="check"><input type="checkbox" data-step="1-4"> 企劃單完成，也給人看過了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 2 課 ───────────────────────────── -->
+<section class="part" id="p2">
+  <h2><span class="n">2</span>角色：讓學習者一聽就知道是誰 <span class="time">約 45 分鐘</span></h2>
+  <p class="intro">學習者是透過角色在學。角色要有個性、有分工、有代表色，連聲音和長相都要前後一致。這一課做「角色卡」，它同時會被拿去產生語音和圖片。</p>
+  <div class="goal"><span>這一課的成果：<b>2–3 張角色卡</b>，寫進題庫的 <code>cast</code></span></div>
+
+  <article class="step" id="s2-1">
+    <div class="head"><span class="num">2-1</span><h3>2–3 個角色，每個角色有一個任務</h3></div>
+    <p class="do">角色不是越多越好。每個角色在教學裡要有一個<b>清楚的任務</b>：</p>
+    <div class="grid-3">
+      <div class="card"><span class="tag">示範的人</span><h4>Captain A</h4><p>英文很好、溫柔有耐心。他不糾正別人，而是把對的說法自然地再說一次。</p></div>
+      <div class="card"><span class="tag">會犯錯的人</span><h4>Funky 阿姨</h4><p>發音很好但沒自信，常常講錯。測驗題出在她身上：孩子是在「幫她」，不是「被考」。</p></div>
+      <div class="card"><span class="tag">愛現的人</span><h4>Rex 小恐龍</h4><p>單字都會、愛小小炫耀。負責拼字、負責說出正確答案。</p></div>
+    </div>
+    <p>ME01 則是：Leo（就是學習者自己）、Diane（主管）、旁白（說故事）、Mia 老師（用中文解說）。</p>
+    <label class="check"><input type="checkbox" data-step="2-1"> 我的角色和任務決定了</label>
+  </article>
+
+  <article class="step" id="s2-2">
+    <div class="head"><span class="num">2-2</span><h3>兩條保護學習者的規則</h3></div>
+    <ol class="sub">
+      <li><b>犯錯的是角色，不是學習者。</b>答錯時，被修正的是 Funky 阿姨，不是螢幕前的孩子。沒有人被指正，但每個人都聽到了正確答案。</li>
+      <li><b>角色不可以讓人害怕。</b>ME01 的 Diane 是執行長，但她和藹、溫暖、會開玩笑。學習者每天早上都要面對這個角色，令人生畏的主管會讓人不想打開這一集。很有經驗不代表要刻薄。</li>
+    </ol>
+    <p>還有一條是給「示範的人」的：<b>用示範代替糾正</b>。Funky 說「Super… Big Smart!」，Captain A 只是笑著說「Very smart, Funky. Very smart.」，一個字都沒有糾正她。</p>
+    <label class="check"><input type="checkbox" data-step="2-2"> 我檢查過我的角色符合這兩條</label>
+  </article>
+
+  <article class="step" id="s2-3">
+    <div class="head"><span class="num">2-3</span><h3>做角色卡</h3></div>
+    <p class="do">每個角色填七格。<b>外型和語氣用英文寫</b>，因為它們會直接交給 Gemini，英文描述的效果最穩定。</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>欄位</th><th>用途</th><th>Funky 的例子</th></tr>
+      <tr><td>代號</td><td>寫台詞時用，只能英文小寫</td><td><code>funky</code></td></tr>
+      <tr><td>名字 name</td><td>字幕上顯示</td><td>Funky</td></tr>
+      <tr><td>emoji</td><td>字幕和目錄上的小圖示</td><td>🌸</td></tr>
+      <tr><td>代表色 color</td><td>字幕膠囊的顏色。從角色身上挑，孩子不用教就認得</td><td><code>#e0707a</code>（她花冠的粉紅）</td></tr>
+      <tr><td>語氣 style</td><td>給語音：個性與說話方式</td><td>an excited, funny and very enthusiastic auntie; not confident</td></tr>
+      <tr><td>外型 look</td><td>給圖片：每一張圖都會帶上，長相才會一致</td><td>A cheerful Taiwanese woman in her fifties, wavy auburn hair, an enormous crown of flowers…</td></tr>
+      <tr><td>聲音 voice</td><td>Gemini 的聲音名稱（第 7 課再試聽挑選）</td><td><code>Laomedeia</code></td></tr>
+    </table></div>
+    <div class="see idea"><span class="k">小技巧</span><div>外型描述寫「<b>一定不會變的東西</b>」：髮型、髮色、衣服顏色、配件。不要寫表情和動作，那是每一場自己的事。</div></div>
+    <label class="check"><input type="checkbox" data-step="2-3"> 每個角色都有角色卡</label>
+  </article>
+
+  <article class="step" id="s2-4">
+    <div class="head"><span class="num">2-4</span><h3>把角色卡寫進題庫</h3></div>
+    <p class="do">打開 <code>content/template.js</code>（用 VS Code，或按右鍵用「記事本」「文字編輯」打開），找到 <code>cast:</code> 那一段，照格式改成你的角色：</p>
+<pre class="code">cast: {
+  <span class="k">funky</span>: {                              <span class="c">// ← 代號：寫台詞時用</span>
+    name: <span class="s">"Funky"</span>, emoji: <span class="s">"🌸"</span>, color: <span class="s">"#e0707a"</span>,
+    voice: <span class="s">"Laomedeia"</span>, lang: <span class="s">"en"</span>,           <span class="c">// ← 講華語的角色寫 "zh-TW"</span>
+    style: <span class="s">"an excited, funny and very enthusiastic auntie"</span>,
+    look: <span class="s">"A cheerful Taiwanese woman in her fifties, ..."</span>,
+  },
+  <span class="k">rex</span>: { ... },
+},</pre>
+    <p>這一步先不用存成新檔，第 5 課會正式建立你自己的題庫檔。現在先把角色卡內容準備好。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>角色卡就是一個<b>物件</b>（object），每一格是它的<b>屬性</b>。注意「代號」和「名字」是兩回事：代號 <code>funky</code> 給機器看，永遠不變；名字「Funky」給人看，想改就改。這叫<b>識別碼</b>和<b>顯示名稱</b>分開。</div></div>
+    <label class="check"><input type="checkbox" data-step="2-4"> 角色卡整理成 cast 的格式了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 3 課 ───────────────────────────── -->
+<section class="part" id="p3">
+  <h2><span class="n">3</span>腳本：用流程圖想故事 <span class="time">約 90 分鐘</span></h2>
+  <p class="intro">互動教材的腳本不是一條直線，而是一條主線加上幾個岔路。先畫流程圖，再寫台詞。</p>
+  <div class="goal"><span>這一課的成果：<b>流程圖＋完整台詞</b>（寫成「角色: 台詞」的格式）</span></div>
+
+  <article class="step" id="s3-1">
+    <div class="head"><span class="num">3-1</span><h3>認識骨架：主線＋岔路</h3></div>
+    <div class="flow">
+      <svg viewBox="0 0 1000 250" role="img" aria-label="腳本骨架：暖場、選擇一、選擇二、測驗，每個選擇分成三條分支後再回到主線，最後是結局、回顧、單字卡">
+        <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6F7D72"/></marker></defs>
+        <g font-family="Noto Sans TC, sans-serif" text-anchor="middle" font-size="14">
+          <g stroke="#6F7D72" stroke-width="1.6" fill="none" marker-end="url(#arr2)">
+            <path d="M100 125 H126"/>
+            <path d="M216 125 C232 125 232 75 248 75"/><path d="M216 125 H248"/><path d="M216 125 C232 125 232 175 248 175"/>
+            <path d="M302 75 C318 75 318 125 330 125"/><path d="M302 125 H330"/><path d="M302 175 C318 175 318 125 330 125"/>
+            <path d="M420 125 C436 125 436 75 452 75"/><path d="M420 125 H452"/><path d="M420 125 C436 125 436 175 452 175"/>
+            <path d="M506 75 C522 75 522 125 534 125"/><path d="M506 125 H534"/><path d="M506 175 C522 175 522 125 534 125"/>
+            <path d="M624 125 C640 125 640 75 656 75"/><path d="M624 125 H656"/><path d="M624 125 C640 125 640 175 656 175"/>
+            <path d="M710 75 C726 75 726 125 738 125"/><path d="M710 125 H738"/><path d="M710 175 C726 175 726 125 738 125"/>
+            <path d="M808 125 H822"/><path d="M892 125 H906"/>
+          </g>
+          <g fill="#fff" stroke="#1C2A1F" stroke-width="2">
+            <rect x="10" y="103" width="90" height="44" rx="10"/><rect x="738" y="103" width="70" height="44" rx="10"/><rect x="822" y="103" width="70" height="44" rx="10"/><rect x="906" y="103" width="84" height="44" rx="10"/>
+          </g>
+          <g fill="#E8EFF8" stroke="#2060B0" stroke-width="2"><rect x="126" y="103" width="90" height="44" rx="10"/><rect x="330" y="103" width="90" height="44" rx="10"/></g>
+          <rect x="534" y="103" width="90" height="44" rx="10" fill="#FBEAE7" stroke="#C8321F" stroke-width="2"/>
+          <g fill="#F3F6F2" stroke="#6F7D72" stroke-width="1.5">
+            <rect x="248" y="61" width="54" height="28" rx="8"/><rect x="248" y="111" width="54" height="28" rx="8"/><rect x="248" y="161" width="54" height="28" rx="8"/>
+            <rect x="452" y="61" width="54" height="28" rx="8"/><rect x="452" y="111" width="54" height="28" rx="8"/><rect x="452" y="161" width="54" height="28" rx="8"/>
+            <rect x="656" y="61" width="54" height="28" rx="8"/><rect x="656" y="111" width="54" height="28" rx="8"/><rect x="656" y="161" width="54" height="28" rx="8"/>
+          </g>
+          <g font-weight="700" fill="#1C2A1F">
+            <text x="55" y="130">暖場</text><text x="171" y="130">選擇一</text><text x="375" y="130">選擇二</text><text x="579" y="130">測驗</text>
+            <text x="773" y="130">結局</text><text x="857" y="130">回顧</text><text x="948" y="130">單字卡</text>
+          </g>
+          <g font-size="13" fill="#1C2A1F">
+            <text x="275" y="80">A</text><text x="275" y="130">B</text><text x="275" y="180">C</text>
+            <text x="479" y="80">A</text><text x="479" y="130">B</text><text x="479" y="180">C</text>
+            <text x="683" y="80" fill="#C8321F">✗</text><text x="683" y="130" fill="#1F7A52">✓</text><text x="683" y="180" fill="#C8321F">✗</text>
+          </g>
+          <g font-size="12" fill="#6F7D72"><text x="171" y="222">劇情選擇</text><text x="375" y="222">劇情選擇</text><text x="579" y="222">有標準答案</text><text x="857" y="222">重播你選的句子</text></g>
+        </g>
+      </svg>
+      <p class="legend">每個選擇點像車站的岔路：三條路走完，<b>都回到同一條主線</b>。所以 3 個選擇點 × 3 個選項 = 27 種走法，但你只要寫 9 條分支。</p>
+    </div>
+    <p>兩個範例都是這個骨架。KK01：一人主持一關（Captain A → Rex → Funky）；ME01：職場英語的三段（開口 → 介紹自己 → 收尾）。</p>
+    <label class="check"><input type="checkbox" data-step="3-1"> 我看懂骨架了</label>
+  </article>
+
+  <article class="step" id="s3-2">
+    <div class="head"><span class="num">3-2</span><h3>在紙上畫你的流程圖</h3></div>
+    <p class="do">拿一張 A4 橫放，照上面的形狀畫：每一場一個方框，寫上<b>場次代號</b>（<code>s01</code>、<code>q1</code>…）和一句話說明發生什麼事。每個選擇點畫出三個選項，寫上選項的那一句話。</p>
+    <p>代號的習慣：一般的場用 <code>s01</code>、<code>s02</code>；選擇題用 <code>q1</code>、<code>q2</code>；回顧用 <code>recap</code>；單字卡用 <code>words</code>。</p>
+    <label class="check"><input type="checkbox" data-step="3-2"> 流程圖畫好了</label>
+  </article>
+
+  <article class="step" id="s3-3">
+    <div class="head"><span class="num">3-3</span><h3>寫台詞的三條規則</h3></div>
+    <ol class="sub">
+      <li><b>一句一個念頭。</b>英文 6–18 個字、中文 30 個字以內。每一句都會變成一個聲音檔、一行字幕，太長的句子字幕放不下，學習者也跟不上。</li>
+      <li><b>角色說的話要獨立成句。</b>旁白歸旁白，台詞歸台詞。</li>
+      <li><b>岔路要回得來。</b>主線上的下一場，對三條分支都要說得通；分支裡不能提到「其他分支才發生的事」。</li>
+    </ol>
+<pre class="code"><span class="c">// ✗ 旁白和台詞寫在同一句：Diane 永遠發不出自己的聲音</span>
+<span class="bad">"narrator: Diane turns. 'So, what are you working on?'"</span>
+
+<span class="c">// ✓ 拆開：旁白一句、Diane 一句</span>
+<span class="s">"narrator: Then she does something she doesn't have to do."</span>,
+<span class="s">"diane: So, what are you working on?"</span>,</pre>
+    <div class="see idea"><span class="k">真實案例</span><div>ME01 早期的版本，選擇二前面寫著「Diane 主動問你在忙什麼」，可是如果學習者在選擇一選了最冷淡的「Good morning.」，故事剛說完「沉默回來了，而且更沉重」，她突然熱情地問問題就很奇怪。後來改成「她做了一件她不必做的事」：對聊開的人是自然延續，對冷場的人是她給的第二次機會。<b>主線要對每一條岔路都成立</b>，就是這個意思。</div></div>
+    <label class="check"><input type="checkbox" data-step="3-3"> 我檢查過三條規則</label>
+  </article>
+
+  <article class="step" id="s3-4">
+    <div class="head"><span class="num">3-4</span><h3>把台詞寫成「角色代號: 台詞」</h3></div>
+    <p class="do">把每一場的台詞，用這個格式寫在流程圖旁邊或共用文件裡。<b>冒號前面是角色代號</b>（不是名字）。</p>
+<pre class="code">s01（暖場）
+captain: Pssst... Rex. Come here.
+captain: Funky is so crazy today!
+rex: Shhh! Don't let her hear!</pre>
+    <p>如果某一句需要特別的語氣，或想在字幕下面加中文翻譯，先在旁邊註記，第 5 課會教你怎麼寫進去。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>你剛剛畫的是<b>流程圖</b>，播放器其實就是照著它走：每一場是一個<b>狀態</b>，選擇題是<b>分岔</b>。27 種走法也提醒了我們一件事：每一條路都可能出錯，所以第 9 課要有計畫地把每一條路都走過。</div></div>
+    <label class="check"><input type="checkbox" data-step="3-4"> 所有台詞都寫好了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 4 課 ───────────────────────────── -->
+<section class="part" id="p4">
+  <h2><span class="n">4</span>互動題目設計 <span class="time">約 60 分鐘</span></h2>
+  <p class="intro">選擇題是互動教材的心臟。好的選擇讓學習者覺得「我做的決定有意義」；好的測驗讓答錯的人也學到東西。</p>
+  <div class="goal"><span>這一課的成果：<b>三個選擇點的題目、選項和回饋</b></span></div>
+
+  <article class="step" id="s4-1">
+    <div class="head"><span class="num">4-1</span><h3>分清楚兩種題目</h3></div>
+    <div class="grid-2">
+      <div class="card"><span class="tag">type: "choice"</span><h4>劇情選擇：三個都對</h4><p>同一件事的三種說法，各有各的代價與時機。目的是讓學習者知道「英文不只一種講法」，以及每一種會帶來什麼結果。選項卡上可以加小標籤（FORMAL、CASUAL）。</p></div>
+      <div class="card"><span class="tag">type: "quiz"</span><h4>測驗題：只有一個正確答案</h4><p>檢查學習目標有沒有學到。會計分，結果會送到學習成果裡。選項卡<b>不顯示</b>標籤，因為標籤等於把答案寫在旁邊。</p></div>
+    </div>
+    <p>建議：前兩題是劇情選擇，讓學習者暖身、喜歡上角色；最後一題是測驗，考這一集的學習目標。</p>
+    <label class="check"><input type="checkbox" data-step="4-1"> 我決定好每一題是哪一種</label>
+  </article>
+
+  <article class="step" id="s4-2">
+    <div class="head"><span class="num">4-2</span><h3>錯的選項，要錯得「很真實」</h3></div>
+    <p class="do">測驗題的錯誤選項，要來自<b>學習者真的會犯的錯</b>，而不是一看就知道不對的選項。</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>KK01 的三個選項</th><th>為什麼放這個</th></tr>
+      <tr><td>Two apple!</td><td>少了 s：台灣小朋友最常犯的錯</td></tr>
+      <tr><td>Two apples! ✓</td><td>正確答案</td></tr>
+      <tr><td>Apple two!</td><td>順序反了：受中文「蘋果兩個」影響的錯</td></tr>
+    </table></div>
+    <label class="check"><input type="checkbox" data-step="4-2"> 我的錯誤選項都來自真實的錯</label>
+  </article>
+
+  <article class="step" id="s4-3">
+    <div class="head"><span class="num">4-3</span><h3>五條硬規則（工作台會幫你檢查其中幾條）</h3></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>#</th><th>規則</th><th>為什麼</th></tr>
+      <tr><td>1</td><td><b>題目和前面的台詞，不可以出現正確答案</b></td><td>KK01 原本的題目是「How do you say two apples?」，答案直接印在題目上。改成「Funky has 2. What does she say?」</td></tr>
+      <tr><td>2</td><td><b>答錯的分支裡，也要有人說出正確答案</b>（最好兩次）</td><td>答錯的人最需要聽到正解。三條分支結束前，「two apples」都會被完整念出來</td></tr>
+      <tr><td>3</td><td><b>答錯不擋路，不要求重選</b></td><td>6 歲的孩子被擋下來重選，會直接關掉。答錯也繼續往下走，正解在分支裡就聽到了</td></tr>
+      <tr><td>4</td><td><b>測驗出在角色身上，不出在學習者身上</b></td><td>「幫 Funky 說對」，而不是「你答對了嗎」。錯的是阿姨，不是孩子</td></tr>
+      <tr><td>5</td><td><b>用示範代替糾正</b></td><td>回饋不說「錯了」，而是把對的說法自然地再說一次</td></tr>
+    </table></div>
+    <label class="check"><input type="checkbox" data-step="4-3"> 我的題目符合五條規則</label>
+  </article>
+
+  <article class="step" id="s4-4">
+    <div class="head"><span class="num">4-4</span><h3>設計每個選項之後的「回饋台詞」</h3></div>
+    <p class="do">每個選項選了之後，接 2–4 句回饋。模式可以固定下來：</p>
+    <ul class="sub">
+      <li><b>劇情選擇</b>：被選的那一句 → 對方的反應 → 一兩句說明這個說法的「代價與時機」（ME01 由 Mia 老師用中文解說）。</li>
+      <li><b>測驗答對</b>：被選的那一句 → 慶祝 → 再說一次正解。</li>
+      <li><b>測驗答錯</b>：被選的那一句 → 溫和地說「差一點」 → 說出正解 → 說明差在哪裡。</li>
+    </ul>
+    <div class="see why"><span class="k">工程師的說法</span><div>你正在設計<b>每一條路徑的預期結果</b>。工程師寫測試時也是這樣：先列出「如果使用者做 A，應該看到什麼」，再一條一條確認。你的回饋台詞，就是每一條路徑的預期結果。</div></div>
+    <label class="check"><input type="checkbox" data-step="4-4"> 每個選項都有回饋台詞</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 5 課 ───────────────────────────── -->
+<section class="part" id="p5">
+  <h2><span class="n">5</span>把腳本變成題庫檔 <span class="time">約 90 分鐘</span></h2>
+  <p class="intro">這一課你會第一次「寫給機器看」。題庫檔就是把你的腳本，照固定的格式整理好。格式對了，播放器就能播。</p>
+  <div class="goal"><span>這一課的成果：<b>你自己的一集，在播放器裡從頭跑到尾</b>（用電腦語音）</span></div>
+
+  <article class="step" id="s5-1">
+    <div class="head"><span class="num">5-1</span><h3>複製範本，取一個新檔名</h3></div>
+    <ol class="sub">
+      <li>在 <code>content</code> 資料夾裡，把 <code>template.js</code> 複製一份。</li>
+      <li>改名成「集代號-英文短名.js」，例如 <code>kk02-colors.js</code>。<b>只用英文小寫、數字和 -</b>，不要有空格和中文。</li>
+      <li>打開檔案，把最上面的 <code>id: "xx01"</code> 改成你的集代號，例如 <code>id: "kk02"</code>。</li>
+    </ol>
+    <label class="check"><input type="checkbox" data-step="5-1"> 我有自己的題庫檔了</label>
+  </article>
+
+  <article class="step" id="s5-2">
+    <div class="head"><span class="num">5-2</span><h3>把新的一集登記到清單上</h3></div>
+    <p class="do">打開 <code>content/episodes.js</code>，把你的檔名加進清單（<b>用引號包起來，後面加逗號</b>）：</p>
+<pre class="code">window.EPISODES = [
+  <span class="s">"kk01-two-apples.js"</span>,
+  <span class="s">"me01-elevator.js"</span>,
+  <span class="s">"kk02-colors.js"</span>,        <span class="c">// ← 新加的這一行</span>
+];</pre>
+    <p>存檔，重新整理 <code>index.html</code>。目錄上會多一張你的卡片（內容還是範本的）。</p>
+    <label class="check"><input type="checkbox" data-step="5-2"> 目錄上看得到我的這一集</label>
+  </article>
+
+  <article class="step" id="s5-3">
+    <div class="head"><span class="num">5-3</span><h3>看懂題庫檔的四種符號</h3></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>符號</th><th>意思</th><th>例子</th></tr>
+      <tr><td><code>{ }</code></td><td>一個「東西」，裡面是「欄位: 值」</td><td><code>{ name: "Funky", emoji: "🌸" }</code></td></tr>
+      <tr><td><code>[ ]</code></td><td>一串「清單」，依序排好</td><td><code>lines: [ "…", "…" ]</code></td></tr>
+      <tr><td><code>" "</code></td><td>文字，要用半形雙引號包起來</td><td><code>"It's an apple."</code></td></tr>
+      <tr><td><code>,</code></td><td>分隔每一項。每一項後面都要有逗號</td><td><code>"a", "b", "c",</code></td></tr>
+    </table></div>
+    <p>還有一個：<code>//</code> 後面是<b>註解</b>，寫給人看的，機器會跳過。你可以用它寫筆記。</p>
+    <div class="see stuck"><span class="k">最常見的錯</span><div><ul><li>用了中文輸入法打出來的全形符號：<code>，</code>、<code>：</code>、<code>“ ”</code>。在引號<b>外面</b>一律要用半形。</li><li>少了逗號：上一行結尾忘了 <code>,</code>。</li><li>台詞裡有英文的雙引號：改用單引號，例如 <code>"funky: You put an 'an' in front!"</code>。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="5-3"> 我認得四種符號</label>
+  </article>
+
+  <article class="step" id="s5-4">
+    <div class="head"><span class="num">5-4</span><h3>一段一段搬進去：基本資料 → 角色 → 每一場</h3></div>
+    <p class="do">照範本的順序，從上到下把 ✏️ 的地方換成你的內容。<b>每改完一段就存檔、重新整理播放器</b>，不要一次改完才測試。</p>
+    <p>一般的一場：</p>
+<pre class="code">{
+  id: <span class="s">"s01"</span>, title: <span class="s">"The secret"</span>, caption: <span class="s">"Shhh..."</span>,
+  image: <span class="s">"Captain A leans down, whispering a secret to Rex."</span>,   <span class="c">// 第 6 課產生圖用</span>
+  lines: [
+    <span class="s">"captain: Pssst... Rex. Come here."</span>,
+    { who: <span class="s">"rex"</span>, say: <span class="s">"Shhh! Don't let her hear!"</span>, hint: <span class="s">"噓！別讓她聽到！"</span>, style: <span class="s">"whispering"</span> },
+  ],
+},</pre>
+    <p>台詞有兩種寫法：簡單的就寫 <code>"角色: 台詞"</code>；要加中文翻譯（<code>hint</code>，顯示在字幕下面）或特別語氣（<code>style</code>）時，改寫成 <code>{ who, say, hint, style }</code>。</p>
+    <p>選擇題：</p>
+<pre class="code">{
+  id: <span class="s">"q3"</span>, type: <span class="s">"quiz"</span>,                         <span class="c">// 劇情選擇寫 "choice"</span>
+  ask: <span class="s">"Funky has 2. What does she say?"</span>,          <span class="c">// 題目：不可以出現答案</span>
+  lines: [<span class="s">"funky: Wait... I have 2. How do I say it?"</span>],   <span class="c">// 選項出現之前的台詞</span>
+  options: [
+    { say: <span class="s">"funky: Two apple!"</span>,
+      then: [<span class="s">"rex: Ooh! Almost! Two apples."</span>, <span class="s">"funky: Ohhh! I need an s!"</span>] },
+    { say: <span class="s">"funky: Two apples!"</span>, correct: <span class="k">true</span>,          <span class="c">// 正確答案只有一個</span>
+      then: [<span class="s">"rex: Yes! Two apples!"</span>] },
+    { say: <span class="s">"funky: Apple two!"</span>,
+      then: [<span class="s">"rex: Hmm! Number first. Two apples."</span>] },
+  ],
+},</pre>
+    <p><code>say</code> 是「選了之後角色說的那一句」，它也是選項卡上的文字、回顧時重播的句子；<code>then</code> 是接下來的回饋台詞。</p>
+    <label class="check"><input type="checkbox" data-step="5-4"> 我的每一場都搬進去了</label>
+  </article>
+
+  <article class="step" id="s5-5">
+    <div class="head"><span class="num">5-5</span><h3>用工作台檢查題庫</h3></div>
+    <p class="do">雙擊打開 <code>studio.html</code>，上方選你的這一集，點 <b>② 檢查題庫</b>。</p>
+    <ul class="sub">
+      <li><b>❌ 一定要修</b>：不修，播放器不會播（例如角色代號打錯、測驗沒有標正確答案）。</li>
+      <li><b>⚠️ 建議修</b>：通常是教學設計的地雷（例如題目裡出現了答案、答錯的分支沒有說出正解、句子太長）。</li>
+      <li><b>💡 小提醒</b>：之後再處理也可以（例如還沒寫畫面描述）。</li>
+    </ul>
+    <p>如果你的檔案整個讀不進來（目錄上沒有出現、或出現紅色的錯誤框），按那個檔案旁邊的 <b>檢查語法</b>，它會告訴你是<b>第幾行</b>少了逗號或用了全形符號。</p>
+    <p>最下面有「劇本總覽」，可以印出來給組員審稿。</p>
+    <div class="see stuck"><span class="k">卡住了？</span><div>「檢查語法」問你要選檔案：因為雙擊打開的網頁不能自己讀檔案，選你正在寫的那個題庫檔就好。第 6 課連接資料夾之後就不用再選了。</div></div>
+    <label class="check"><input type="checkbox" data-step="5-5"> 沒有紅色錯誤了</label>
+  </article>
+
+  <article class="step" id="s5-6">
+    <div class="head"><span class="num">5-6</span><h3>從頭玩一次你的這一集</h3></div>
+    <p class="do">打開 <code>index.html?dev=1</code>，點你的這一集，從頭玩到尾。這時候是電腦語音、色塊畫面，但<b>故事、選項、回顧、單字卡、成果表單都已經是你的了</b>。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>你剛剛做的叫<b>資料驅動</b>：程式不變，換資料就換內容。你遵守的格式叫<b>規格</b>（schema），工作台的檢查叫<b>自動檢查</b>（lint），它在你存檔後馬上找錯，而不是等學習者發現。還有，聲音和圖的檔名都是從代號自動算出來的（<code>s01</code> 的第 1 句就是 <code>s01-1.mp3</code>），這叫<b>約定優於設定</b>：大家遵守同一個命名約定，就不用一個一個設定。</div></div>
+    <label class="check"><input type="checkbox" data-step="5-6"> 我的這一集可以從頭玩到尾</label>
+  </article>
+  <div class="badge"><span class="medal">🏆</span><div><b>第二個成就：</b>你寫的教材在播放器裡動起來了。從這裡開始，剩下的都是「讓它更好看、更好聽」。</div></div>
+</section>
+
+<!-- ───────────────────────────── 第 6 課 ───────────────────────────── -->
+<section class="part" id="p6">
+  <h2><span class="n">6</span>圖像製作（Gemini） <span class="time">約 90 分鐘</span></h2>
+  <p class="intro">用 Gemini 的圖片模型（<code>gemini-3.1-flash-image</code>）幫每一場畫一張圖。重點不是「畫得漂亮」，而是<b>整集的畫風和角色長相要一致</b>。</p>
+  <div class="goal"><span>這一課的成果：<b>角色設定圖＋每一場的插圖</b></span></div>
+
+  <article class="step" id="s6-1">
+    <div class="head"><span class="num">6-1</span><h3>拿到 Gemini API 金鑰</h3></div>
+    <ol class="sub">
+      <li>打開 <code>aistudio.google.com/apikey</code>，用 Google 帳號登入。</li>
+      <li>按 <b>Create API key</b>（建立 API 金鑰）。如果要你選專案，選預設的就好。</li>
+      <li>畫面會出現一串 <code>AIza</code> 開頭的文字，按旁邊的複製。</li>
+    </ol>
+    <div class="see stuck"><span class="k">金鑰守則</span><div><ul><li>金鑰就像信用卡號碼，別人拿到就能用你的額度。</li><li><b>不要</b>把它寫進題庫檔、README，或任何會上傳到 GitHub 的檔案。</li><li><b>不要</b>貼到群組或傳給同學。小組裡由一個人負責產生，或每個人各用自己的金鑰。</li><li>如果不小心外流：回到同一頁把那把金鑰刪掉，再建立一把新的。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="6-1"> 我有金鑰了，也知道不能外流</label>
+  </article>
+
+  <article class="step" id="s6-2">
+    <div class="head"><span class="num">6-2</span><h3>在工作台貼上金鑰、連接資料夾</h3></div>
+    <ol class="sub">
+      <li>打開 <code>studio.html</code> → <b>① 準備</b>，把金鑰貼進「API 金鑰」。自己的電腦可以勾「記住」。</li>
+      <li>按 <b>🔊 測試連線</b>，聽到一句「Hello! 你好…」就代表金鑰可以用。</li>
+      <li>按 <b>📁 選擇 starter-kit 資料夾</b>，選你的專案資料夾（打開後看得到 index.html 的那一層），瀏覽器問要不要允許編輯時按「允許」。</li>
+    </ol>
+    <div class="see"><span class="k">你會看到</span><div>上方的兩個標籤變成綠色：「🔑 金鑰已貼上」「📁 已連接：你的資料夾名稱」。之後產生的檔案都會自動存進 <code>assets/</code>。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div><ul><li>測試連線出現 403 或要求開啟帳單：這把金鑰還不能用這個模型，請找老師（老師可以提供有預算上限的課堂專案）。</li><li>沒有「選擇資料夾」的功能：Safari 和 Firefox 不支援，請改用 Chrome 或 Edge。真的不行就用「下載模式」：產生完按「下載 zip」，把裡面的 <code>assets</code> 資料夾合併進專案資料夾。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="6-2"> 兩個標籤都是綠色的</label>
+  </article>
+
+  <article class="step" id="s6-3">
+    <div class="head"><span class="num">6-3</span><h3>寫「畫風句」：整集共用的一段描述</h3></div>
+    <p class="do">題庫裡的 <code>art.style</code> 會加在<b>每一張圖</b>的描述前面。用英文寫，照這個公式：</p>
+    <p style="text-align:center;font-weight:700">媒材＋線條＋顏色＋光線與氣氛＋給誰看＋<span style="color:var(--seal)">No text</span></p>
+<pre class="code"><span class="c">// 兒童繪本風</span>
+<span class="s">"Bright full-colour cartoon illustration in a clean modern storybook style, bold dark-brown outlines, flat colours with soft cel shading, warm cream background, friendly rounded shapes. Children's English-learning material for six to ten year olds. No written words, speech bubbles or signage anywhere in the image."</span>
+
+<span class="c">// 黑白日漫風</span>
+<span class="s">"Black-and-white Japanese manga panel art, confident ink linework, screentone shading, dramatic camera angles, high contrast. No text, no speech bubbles, no lettering."</span></pre>
+    <div class="see idea"><span class="k">為什麼一定要寫 No text</span><div>AI 畫的字幾乎都是亂碼。字幕和題目由播放器顯示就好，圖裡一個字都不要有。</div></div>
+    <label class="check"><input type="checkbox" data-step="6-3"> 我的畫風句寫好了</label>
+  </article>
+
+  <article class="step" id="s6-4">
+    <div class="head"><span class="num">6-4</span><h3>先做角色設定圖</h3></div>
+    <p class="do">到 <b>③ 角色與聲音</b>，每個有外型描述的角色都有一個 <b>🎨 產生角色設定圖</b>。一個一個按，看看長得對不對。不滿意就再按一次，或回題庫修改 <code>look</code>。</p>
+    <p>角色設定圖會存成 <code>assets/你的集代號/images/cast-角色代號.jpg</code>。之後每一張場次圖，都會把<b>出現在畫面裡的角色</b>的設定圖一起送給 Gemini 當參考，角色才會長得一樣。</p>
+    <label class="check"><input type="checkbox" data-step="6-4"> 每個角色都有滿意的設定圖</label>
+  </article>
+
+  <article class="step" id="s6-5">
+    <div class="head"><span class="num">6-5</span><h3>先畫一張，確認了再全部畫</h3></div>
+    <ol class="sub">
+      <li>到 <b>⑤ 圖片</b>，只按<b>第一張</b>的「產生」。</li>
+      <li>看它：畫風對嗎？角色像設定圖嗎？地點對嗎？有沒有字？</li>
+      <li>不對就修改畫風句、外型或這一場的 <code>image</code> 描述，存檔、重新整理工作台，再試一次。</li>
+      <li>確定沒問題了，才按 <b>產生所有還沒有的圖</b>。</li>
+    </ol>
+    <p>每張圖的描述會自動組成：<b>畫風句＋出現角色的外型＋這一場的描述</b>。展開「完整送出的描述」就看得到真正送出去的文字。至於畫面裡有誰，工作台會從描述裡提到的角色名字判斷，所以描述裡請直接寫角色的名字（例如 <code>Funky holds two apples</code>）。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>這叫<b>冒煙測試</b>：正式大量執行之前，先跑一次最小的測試，確定不會「冒煙」。畫風錯了卻一口氣畫完 13 張，等於 13 張一起重來，時間和額度都浪費掉。</div></div>
+    <label class="check"><input type="checkbox" data-step="6-5"> 每一場都有圖了</label>
+  </article>
+
+  <article class="step" id="s6-6">
+    <div class="head"><span class="num">6-6</span><h3>用檢查清單看每一張圖</h3></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>檢查</th><th>真實案例</th><th>怎麼修</th></tr>
+      <tr><td>地點有沒有跑掉</td><td>KK01 有 7 張圖跑到戶外公園，但對話明明在廚房</td><td>在畫風句裡固定地點：<code>The scene takes place in the same bright cosy home kitchen…</code></td></tr>
+      <tr><td>表情對不對</td><td>Funky 有一張被畫成皺眉吐舌的兇臉</td><td>在外型或描述裡寫明 <code>always joyful and kind, never frowning</code></td></tr>
+      <tr><td>角色比例</td><td>小恐龍 Rex 被畫成跟人一樣大</td><td>寫明 <code>about the size of a house cat, always on Captain A's shoulder</code></td></tr>
+      <tr><td>有沒有字、亂碼、多一隻手指</td><td>常見</td><td>單張重新產生</td></tr>
+      <tr><td>文化與刻板印象</td><td>角色的膚色、服裝、場所有沒有冒犯人</td><td>組員一起看，有疑慮就改描述</td></tr>
+    </table></div>
+    <div class="see idea"><span class="k">AI 倫理</span><div>不要拿真人照片（包括同學、名人）當角色參考，也不要在描述裡寫「某位在世畫家的風格」或品牌角色名字。作品介紹頁請註明「插圖由 Gemini 產生」。</div></div>
+    <label class="check"><input type="checkbox" data-step="6-6"> 每一張圖都檢查過了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 7 課 ───────────────────────────── -->
+<section class="part" id="p7">
+  <h2><span class="n">7</span>聲音製作（Gemini 3.8 TTS） <span class="time">約 90 分鐘</span></h2>
+  <p class="intro">用 Gemini 的語音模型（<code>gemini-3.8-flash-tts</code>）幫每一句台詞配音。它可以念英語，也可以念<b>台灣口音的國語</b>，還聽得懂「用興奮的語氣」「小聲說」這種語氣說明。</p>
+  <div class="goal"><span>這一課的成果：<b>每一句台詞都有自己的聲音檔</b></span></div>
+
+  <article class="step" id="s7-1">
+    <div class="head"><span class="num">7-1</span><h3>先看懂：工作台到底送了什麼給 Gemini</h3></div>
+    <p>這是 Gemini 官方的語音範例：一段 Joe 和 Jane 的對話。它是一個 <b>API 請求</b>，就像你在餐廳填的點餐單：</p>
+<pre class="code">curl -X POST <span class="s">"https://generativelanguage.googleapis.com/v1beta/interactions"</span> \   <span class="c">← 送到哪個櫃台</span>
+  -H <span class="s">"x-goog-api-key: $GEMINI_API_KEY"</span> \                        <span class="c">← 你的會員卡（金鑰）</span>
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d '{
+    <span class="k">"model"</span>: <span class="s">"gemini-3.8-flash-tts"</span>,                            <span class="c">← 找哪位廚師（模型）</span>
+    <span class="k">"input"</span>: [{ <span class="s">"type"</span>: <span class="s">"user_input"</span>, <span class="s">"content"</span>: [
+      { <span class="s">"type"</span>: <span class="s">"text"</span>, <span class="s">"text"</span>: <span class="s">"How'\''s it going today Jane?"</span>,     <span class="c">← 要念的台詞</span>
+        <span class="s">"annotations"</span>: [{ <span class="s">"type"</span>: <span class="s">"speech_metadata"</span>,
+          <span class="s">"speaker"</span>: <span class="s">"Joe"</span>, <span class="s">"style"</span>: <span class="s">"cheerful and friendly"</span> }] },   <span class="c">← 誰說、用什麼語氣</span>
+      { <span class="s">"type"</span>: <span class="s">"text"</span>, <span class="s">"text"</span>: <span class="s">"Not too bad, how about you? Ready to test these new voices?"</span>,
+        <span class="s">"annotations"</span>: [{ <span class="s">"type"</span>: <span class="s">"speech_metadata"</span>,
+          <span class="s">"speaker"</span>: <span class="s">"Jane"</span>, <span class="s">"style"</span>: <span class="s">"calm and relaxed"</span> }] }
+    ]}],
+    <span class="k">"response_format"</span>: { <span class="s">"type"</span>: <span class="s">"audio"</span> },                        <span class="c">← 我要的是聲音</span>
+    <span class="k">"generation_config"</span>: { <span class="s">"speech_config"</span>: {
+      <span class="s">"mode"</span>: <span class="s">"conversational"</span>,
+      <span class="s">"speakers"</span>: [ { <span class="s">"speaker"</span>: <span class="s">"Joe"</span>, <span class="s">"voice"</span>: <span class="s">"Puck"</span> },          <span class="c">← 每個角色用哪個聲音</span>
+                    { <span class="s">"speaker"</span>: <span class="s">"Jane"</span>, <span class="s">"voice"</span>: <span class="s">"Kore"</span> } ] } }
+  }'</pre>
+    <p>工作台做的事情一模一樣，只是<b>一次只送一句</b>：把台詞放進 <code>text</code>、角色名字放進 <code>speaker</code>、角色的 <code>style</code> 放進語氣、角色的 <code>voice</code> 放進聲音，再把 Gemini 回傳的聲音存成 <code>assets/集代號/audio/句子代號.mp3</code>。</p>
+    <div class="see idea"><span class="k">為什麼一句一個檔</span><div>官方範例是一整段對話一個檔。但我們的教材有<b>分支</b>（選 A 和選 B 接下來的台詞不一樣）、有<b>字幕</b>（要知道每一句什麼時候開始）、還會<b>只修改一句</b>。一句一個檔，這三件事才做得到。</div></div>
+    <div class="see why"><span class="k">工程師的說法</span><div><b>API</b>（應用程式介面）就是「程式跟程式之間的點餐單」：格式說好，對方就照單出菜。這個 API 還在 beta（測試）階段，欄位偶爾會調整，所以工作台準備了幾種備案寫法，第一種被拒絕就自動換下一種。</div></div>
+    <label class="check"><input type="checkbox" data-step="7-1"> 我看懂這張「點餐單」了</label>
+  </article>
+
+  <article class="step" id="s7-2">
+    <div class="head"><span class="num">7-2</span><h3>幫每個角色挑聲音</h3></div>
+    <p class="do">到 <b>③ 角色與聲音</b>，每個角色都有一個聲音選單（Gemini 有 30 個聲音，括號裡是官方給的形容）。選一個 → 按 <b>▶ 試聽</b>，它會用那個角色的第一句台詞念給你聽。</p>
+    <p>喜歡的話，照畫面提示把題庫裡那個角色的 <code>voice</code> 改成新的名字，存檔，重新整理工作台。</p>
+    <ul class="sub">
+      <li>兩個角色<b>不要用同一個聲音</b>，學習者會分不出是誰在講話。</li>
+      <li>講華語的角色，記得 <code>lang: "zh-TW"</code>。工作台會自動要求「台灣口音的國語」。</li>
+    </ul>
+    <label class="check"><input type="checkbox" data-step="7-2"> 每個角色的聲音都挑好了</label>
+  </article>
+
+  <article class="step" id="s7-3">
+    <div class="head"><span class="num">7-3</span><h3>用「語氣說明」導戲</h3></div>
+    <p class="do">語氣說明有三層，會自動合在一起送出：</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>寫在哪裡</th><th>管多大範圍</th><th>例子</th></tr>
+      <tr><td>角色的 <code>style</code></td><td>這個角色的每一句</td><td><code>a gentle, shy and patient young man</code></td></tr>
+      <tr><td>台詞的 <code>style</code></td><td>只有這一句</td><td><code>{ who: "funky", say: "Captain A~~~~!", style: "calling out loudly and happily" }</code></td></tr>
+      <tr><td>整集的 <code>speech.note</code></td><td>整集每一句</td><td><code>Clear, friendly English for young children, a little slower than normal.</code></td></tr>
+    </table></div>
+    <p>到 <b>④ 語音</b>，每一句下面那行 🎭 斜體字，就是實際送出的語氣說明。</p>
+    <label class="check"><input type="checkbox" data-step="7-3"> 需要特別語氣的句子都標好了</label>
+  </article>
+
+  <article class="step" id="s7-4">
+    <div class="head"><span class="num">7-4</span><h3>產生全部語音，然後一句一句聽</h3></div>
+    <ol class="sub">
+      <li>到 <b>④ 語音</b>，先挑三句按「產生」，聽聽看。</li>
+      <li>沒問題，就按 <b>產生所有還沒有聲音的句子</b>。中途可以按「停止」；已經做好的不會重做，下次再按只會補上缺的。</li>
+      <li>做完後，用 ▶ 一句一句聽。不滿意的句子按「重新產生」，或改語氣說明再產生。</li>
+    </ol>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>聽的時候檢查</th><th>怎麼修</th></tr>
+      <tr><td>拼字太快，跟不上</td><td>字母中間加空格：寫 <code>A - P - P - L - E</code>，不要寫 <code>A-P-P-L-E</code>（實測速度差一倍）</td></tr>
+      <tr><td>華語的破音字念錯（行、長、重、了、還）</td><td>換一個說法，或在 style 裡寫「『銀行』的行念 háng」</td></tr>
+      <tr><td>數字、時間念法怪怪的（8:52）</td><td>直接寫成要念的樣子，例如 <code>eight fifty-two</code></td></tr>
+      <tr><td>語氣太平、太誇張</td><td>改那一句的 <code>style</code>，再重新產生</td></tr>
+      <tr><td>中英夾雜的句子口音怪</td><td>拆成兩句，或請角色改用一種語言說</td></tr>
+    </table></div>
+    <div class="see why"><span class="k">工程師的說法</span><div>你剛剛跑了一次<b>建置流程</b>（build）：把原始資料（題庫）自動轉成成品（聲音檔）。「只補缺的，不重做已經有的」叫<b>漸進式建置</b>；遇到「太頻繁」的錯誤時等一下再試，叫<b>重試</b>。這些都是工作台幫你做好的。</div></div>
+    <label class="check"><input type="checkbox" data-step="7-4"> 每一句都有聲音，而且聽過了</label>
+  </article>
+
+  <article class="step" id="s7-5">
+    <div class="head"><span class="num">7-5</span><h3>（選做）用一行指令產生整集</h3></div>
+    <p>如果你有裝 Node.js（18 版以上），也可以在終端機用一行指令產生整集的語音和圖片。金鑰用環境變數 <code>$GEMINI_API_KEY</code> 傳進去，不寫進任何檔案：</p>
+<pre class="code"><span class="c"># Mac／Linux：在專案資料夾裡執行</span>
+export GEMINI_API_KEY=<span class="s">"你的金鑰"</span>
+node tools/generate.mjs content/kk02-colors.js --dry     <span class="c"># 先看要做哪些，不花錢</span>
+node tools/generate.mjs content/kk02-colors.js           <span class="c"># 補齊語音和圖片</span>
+
+<span class="c"># Windows PowerShell</span>
+$env:GEMINI_API_KEY=<span class="s">"你的金鑰"</span>
+node tools/generate.mjs content/kk02-colors.js</pre>
+    <label class="check"><input type="checkbox" data-step="7-5"> （選做）我用指令產生過</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 8 課 ───────────────────────────── -->
+<section class="part" id="p8">
+  <h2><span class="n">8</span>背景音樂（Suno） <span class="time">約 45 分鐘</span></h2>
+  <p class="intro">背景音樂讓教材有「節目感」，但它有一個絕對的原則：<b>不能蓋過人聲</b>。學習內容是那些話，音樂只是墊在下面。</p>
+  <div class="goal"><span>這一課的成果：<b>一首放在 <code>assets/bgm/</code> 的背景音樂，音量調好了</b></span></div>
+
+  <article class="step" id="s8-1">
+    <div class="head"><span class="num">8-1</span><h3>在工作台產生 Suno 提示詞</h3></div>
+    <p class="do">到 <b>⑥ 背景音樂</b>。「音樂風格」會先放入題庫 <code>bgm.suno.style</code> 的內容，你可以直接改，或點下面的小按鈕加入關鍵字（樂器、情緒、速度）。工作台會自動補上 <code>instrumental, no vocals</code>。</p>
+    <div class="grid-2">
+      <div class="card"><span class="tag">兒童教材</span><p><code>cheerful marimba and ukulele, light hand claps, bouncy children's cartoon, 100 bpm, simple happy melody, instrumental, no vocals</code></p></div>
+      <div class="card"><span class="tag">晨間職場</span><p><code>soft lo-fi morning jazz, mellow electric piano, brushed drums, calm office morning, 80 bpm, instrumental, no vocals</code></p></div>
+    </div>
+    <label class="check"><input type="checkbox" data-step="8-1"> 提示詞準備好了</label>
+  </article>
+
+  <article class="step" id="s8-2">
+    <div class="head"><span class="num">8-2</span><h3>到 Suno 做音樂、下載</h3></div>
+    <ol class="sub">
+      <li>登入 <code>suno.com</code>，按左邊的 <b>Create</b>。</li>
+      <li>切到 <b>Custom</b>（自訂），打開 <b>Instrumental</b>（純音樂）。</li>
+      <li>在工作台按「複製」，把 Style of Music、Title 分別貼進 Suno，按 <b>Create</b>。</li>
+      <li>Suno 一次會給兩首。都聽聽看，挑<b>最不搶戲</b>的那一首（旋律簡單、沒有突然的大鼓）。</li>
+      <li>按那首旁邊的 ⋯ → <b>Download</b> → <b>MP3 Audio</b>。</li>
+      <li>把下載的檔案改名成題庫裡 <code>bgm.file</code> 寫的名字（例如 <code>kk02.mp3</code>），放進專案的 <code>assets/bgm/</code>。</li>
+    </ol>
+    <div class="see idea"><span class="k">授權</span><div>Suno 免費方案做的音樂，一般只能用在非商業用途（課堂作業可以）。如果之後要拿去販售或商用，請先看 Suno 最新的使用條款。作品介紹頁請註明「背景音樂由 Suno 產生」。</div></div>
+    <label class="check"><input type="checkbox" data-step="8-2"> 音樂檔放進 assets/bgm/ 了</label>
+  </article>
+
+  <article class="step" id="s8-3">
+    <div class="head"><span class="num">8-3</span><h3>調音量：人聲優先</h3></div>
+    <p class="do">回到工作台 ⑥，按「重新檢查」，看到 ✅ 後按 <b>▶ 播放音樂</b>，再按 <b>▶ 加一句台詞一起聽</b>。拉動音量滑桿，直到<b>台詞完全聽得清楚、音樂只是背景</b>。</p>
+    <p>把滑桿旁邊顯示的數字（例如 <code>volume: 0.11</code>）抄到題庫的 <code>bgm.volume</code>。大部分落在 0.08–0.15 之間；敲擊樂器（木琴、馬林巴）比較會穿透人聲，要再小一點。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>Suno 是你的專案的<b>外部相依</b>：你不能控制它什麼時候改版、改條款。所以把它產生的檔案下載下來放進專案，而不是在網頁上連過去；也記得留意它的<b>授權</b>。</div></div>
+    <label class="check"><input type="checkbox" data-step="8-3"> 音量調好，也寫進題庫了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 9 課 ───────────────────────────── -->
+<section class="part" id="p9">
+  <h2><span class="n">9</span>整合與測試 <span class="time">約 90 分鐘</span></h2>
+  <p class="intro">每一塊都做好了，接下來要確定「合在一起」也沒問題。有計畫地測試，比隨便玩十次有用。</p>
+  <div class="goal"><span>這一課的成果：<b>一份測試紀錄</b>，所有找到的問題都修好了</span></div>
+
+  <article class="step" id="s9-1">
+    <div class="head"><span class="num">9-1</span><h3>用三輪走過每一個選項</h3></div>
+    <p class="do">27 種走法不用全部走。只要<b>每一個選項都至少被選過一次</b>就好，三輪就夠：</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>第幾輪</th><th>選擇一</th><th>選擇二</th><th>測驗</th><th>要檢查</th></tr>
+      <tr><td>第 1 輪</td><td>1</td><td>1</td><td>1</td><td rowspan="3">每一句有沒有聲音、字幕和說話者對不對、圖對不對、分支接回主線順不順、回顧重播的句子對不對、最後的分數對不對</td></tr>
+      <tr><td>第 2 輪</td><td>2</td><td>2</td><td>2</td></tr>
+      <tr><td>第 3 輪</td><td>3</td><td>3</td><td>3</td></tr>
+    </table></div>
+    <p>用 <code>index.html?dev=1</code> 測：右下角會顯示每一句用了哪個聲音檔；如果寫著「🔈 還沒有聲音檔，用電腦語音代替」，就是那一句的檔案缺了或檔名不對。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>這叫<b>測試覆蓋</b>：用最少的測試次數，讓每一個部分都至少被執行過一次。這種「把各部分合在一起測」的測試，叫做<b>整合測試</b>。</div></div>
+    <label class="check"><input type="checkbox" data-step="9-1"> 三輪都測完了</label>
+  </article>
+
+  <article class="step" id="s9-2">
+    <div class="head"><span class="num">9-2</span><h3>問題對照表</h3></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>看到的狀況</th><th>通常的原因</th><th>怎麼修</th></tr>
+      <tr><td>目錄上沒有我的這一集</td><td>episodes.js 沒加上檔名，或檔名打錯</td><td>檢查兩邊的檔名一模一樣（含大小寫）</td></tr>
+      <tr><td>出現紅色「題庫需要修正的地方」</td><td>語法錯誤或內容錯誤</td><td>工作台 ② →「檢查語法」，看第幾行</td></tr>
+      <tr><td>某一句是電腦語音</td><td>那一句的聲音檔不存在</td><td>工作台 ④ 產生那一句；或檢查檔名有沒有被改過</td></tr>
+      <tr><td>某一場是色塊</td><td>圖不存在，或那一場沒有寫 image</td><td>工作台 ⑤ 產生那一張</td></tr>
+      <tr><td>改了台詞，聲音還是舊的</td><td>聲音檔不會自己更新</td><td>工作台 ④ 那一句按「重新產生」</td></tr>
+      <tr><td>音樂沒有出來</td><td>檔名和 bgm.file 不一樣，或還沒按過「開始」</td><td>工作台 ⑥「重新檢查」</td></tr>
+      <tr><td>改了檔案，畫面沒變</td><td>瀏覽器還在用舊的</td><td>重新整理；Mac 按 <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>，Windows 按 <kbd>Ctrl</kbd>+<kbd>F5</kbd></td></tr>
+    </table></div>
+    <p>還找不到原因時，按 <kbd>F12</kbd>（Mac：<kbd>⌥</kbd>+<kbd>⌘</kbd>+<kbd>I</kbd>）打開開發人員工具，點 <b>Console</b>。紅字就是錯誤訊息，截圖給老師或組員看。</p>
+    <label class="check"><input type="checkbox" data-step="9-2"> 我知道遇到問題先查哪裡</label>
+  </article>
+
+  <article class="step" id="s9-3">
+    <div class="head"><span class="num">9-3</span><h3>請一位同學（或真的學習者）試玩</h3></div>
+    <p class="do">自己測不出「看不懂」的地方。請一位沒看過你作品的人玩一次，<b>你在旁邊看、不要解釋</b>。記下他停下來、皺眉、問問題的地方。</p>
+    <p>回報問題時用四個欄位，別人才修得了：</p>
+<pre class="code">在哪裡：第 2 場（q1），選項 B 之後
+做了什麼：選了「Apple. A - P - P - L - E.」
+看到什麼：Funky 的那一句是電腦語音
+應該看到什麼：Funky 自己的聲音</pre>
+    <div class="see why"><span class="k">工程師的說法</span><div>這叫<b>使用者測試</b>。工程師最常說的一句話是「在我的電腦上是好的」，所以一定要讓別人、用別台裝置（手機！）測。</div></div>
+    <label class="check"><input type="checkbox" data-step="9-3"> 有人試玩過，回報的問題都處理了</label>
+  </article>
+</section>
+
+<!-- ───────────────────────────── 第 10 課 ───────────────────────────── -->
+<section class="part" id="p10">
+  <h2><span class="n">10</span>上線，收集學習成果（Netlify Forms） <span class="time">約 60 分鐘</span></h2>
+  <p class="intro">把作品放上網路，讓任何人用手機就能玩。玩完的學習者會送出暱稱、分數、選了哪些選項和評價，全部出現在你的 Netlify 後台，還可以匯出成試算表。</p>
+  <div class="goal"><span>這一課的成果：<b>一個網址，加上第一筆真的學習成果</b></span></div>
+
+  <article class="step" id="s10-1">
+    <div class="head"><span class="num">10-1</span><h3>上線前整理</h3></div>
+    <ol class="sub">
+      <li>打開 <code>index.html</code>，把兩個「我的互動語言教材」改成你的作品名稱（<code>&lt;title&gt;</code> 和 <code>&lt;h1&gt;</code>）。</li>
+      <li>不想放範例的話，在 <code>content/episodes.js</code> 把範例那兩行刪掉或在前面加 <code>//</code>。</li>
+      <li>工作台 ② 再看一次「完成度」：題庫沒有錯誤、語音和圖都齊了。</li>
+    </ol>
+    <label class="check"><input type="checkbox" data-step="10-1"> 上線前整理完了</label>
+  </article>
+
+  <article class="step" id="s10-2">
+    <div class="head"><span class="num">10-2</span><h3>上傳到 GitHub</h3></div>
+    <p class="do">照<a href="../netlify-github/index.html" target="_blank">《GitHub ＋ Netlify 操作手冊》</a>的步驟 9 建立一個新的 repo（例如 <code>my-lesson</code>），然後用 <b>Add file → Upload files</b> 上傳。</p>
+    <ul class="sub">
+      <li>打開你的專案資料夾，<b>選取裡面的全部東西</b>（不是資料夾本身），拖進 GitHub 的上傳區。資料夾的結構會保留。</li>
+      <li>GitHub 網頁<b>一次最多上傳 100 個檔案</b>。素材多的話分兩批：先拖 <code>index.html</code>、<code>studio.html</code>、<code>README.md</code>、<code>engine</code>、<code>content</code>、<code>tools</code>，按 Commit；再拖 <code>assets</code>。</li>
+      <li>上傳前再確認一次：<b>沒有任何檔案裡有你的 API 金鑰</b>。</li>
+    </ul>
+    <div class="see"><span class="k">你會看到</span><div>repo 首頁出現 <code>index.html</code>、<code>content</code>、<code>assets</code>……跟你電腦上的專案資料夾一樣。</div></div>
+    <label class="check"><input type="checkbox" data-step="10-2"> 程式和素材都在 GitHub 上了</label>
+  </article>
+
+  <article class="step" id="s10-3">
+    <div class="head"><span class="num">10-3</span><h3>接上 Netlify，部署</h3></div>
+    <p class="do">照操作手冊的步驟 15–19：Netlify → Import from Git → GitHub → 選這個 repo → 取專案名稱 → Deploy。Build command 和 Publish directory 都<b>留空</b>。</p>
+    <p>部署完成後打開網址，玩一次，確定圖和聲音都正常。</p>
+    <label class="check"><input type="checkbox" data-step="10-3"> 網站上線了</label>
+  </article>
+
+  <article class="step" id="s10-4">
+    <div class="head"><span class="num">10-4</span><h3>開啟表單偵測，重新部署一次</h3></div>
+    <p class="do">Netlify 的新專案預設<b>不會</b>收表單。要開啟：</p>
+    <ol class="sub">
+      <li>Netlify 專案頁左邊選 <b>Forms</b>，按 <b>Enable form detection</b>。</li>
+      <li>到 <b>Deploys</b>，按 <b>Trigger deploy</b> → <b>Deploy project</b>（或對 GitHub 上任何檔案做一個小修改並 Commit），讓 Netlify 重新部署一次。</li>
+      <li>部署完成後回到 <b>Forms</b>，會看到一個叫 <code>learning-results</code> 的表單。</li>
+    </ol>
+    <div class="see why"><span class="k">為什麼要重新部署</span><div>Netlify 是在<b>部署的時候</b>掃描你的 HTML，找到 <code>&lt;form data-netlify="true"&gt;</code> 才幫你建立表單。開啟偵測之前的那次部署沒有被掃描，所以要再部署一次。</div></div>
+    <div class="see stuck"><span class="k">卡住了？</span><div>Forms 頁一直沒有出現 <code>learning-results</code>：確認 <code>index.html</code> 裡那段 <code>&lt;form name="learning-results" … data-netlify="true"&gt;</code> 沒有被你改到，而且最新的一次部署是在開啟偵測<b>之後</b>。</div></div>
+    <label class="check"><input type="checkbox" data-step="10-4"> Forms 頁看得到 learning-results</label>
+  </article>
+
+  <article class="step" id="s10-5">
+    <div class="head"><span class="num">10-5</span><h3>送出第一筆學習成果，到後台看</h3></div>
+    <ol class="sub">
+      <li>用手機打開你的網址，玩完一集，填暱稱、按「送出學習成果」，看到「送出了，謝謝你」。</li>
+      <li>回到 Netlify → <b>Forms</b> → <code>learning-results</code>，那一筆就在上面。</li>
+      <li>右上角可以 <b>Download as CSV</b>，用 Google 試算表或 Excel 打開。</li>
+      <li>想要每收到一筆就寄 email 通知你：Forms 設定裡的 <b>Form notifications</b> → Add notification → Email notification。</li>
+    </ol>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>欄位</th><th>內容</th></tr>
+      <tr><td><code>nickname</code>、<code>class_code</code></td><td>學習者填的暱稱、班級代號</td></tr>
+      <tr><td><code>episode</code>、<code>episode_title</code></td><td>玩的是哪一集</td></tr>
+      <tr><td><code>score</code>、<code>quiz_detail</code></td><td>測驗答對幾題；每一題選了什麼、對或錯（例如 <code>q3:B✓</code>）</td></tr>
+      <tr><td><code>choices</code></td><td>每一個選擇點選了哪一句</td></tr>
+      <tr><td><code>stars</code>、<code>comment</code></td><td>評價（1–5 顆星）、想說的話</td></tr>
+      <tr><td><code>duration_sec</code>、<code>finished_at</code>、<code>page</code></td><td>花了幾秒、完成時間、在哪個網址玩的</td></tr>
+    </table></div>
+    <div class="see idea"><span class="k">班級代號連結</span><div>把網址加上 <code>?class=A01</code>（例如 <code>https://你的網址.netlify.app/?class=A01</code>）分享出去，那個連結進來的人，班級代號會自動填好。發給不同班級不同的連結，就能分開統計。</div></div>
+    <div class="see stuck"><span class="k">送出失敗？</span><div><ul><li>顯示 HTTP 404 或 405：表單偵測還沒開，或開了之後還沒重新部署。</li><li>送出成功、後台卻看不到：看看 Forms 頁的 <b>Spam submissions</b>，測試時亂打的內容可能被當成垃圾訊息。</li></ul></div></div>
+    <label class="check"><input type="checkbox" data-step="10-5"> 我在後台看到第一筆學習成果了</label>
+  </article>
+
+  <article class="step" id="s10-6">
+    <div class="head"><span class="num">10-6</span><h3>個人資料：只收需要的</h3></div>
+    <ul class="sub">
+      <li>只收<b>暱稱</b>，不要收全名、學號、電話、email。表單上已經寫了「填暱稱就好」。</li>
+      <li>給兒童用的教材，請在網頁或分享時說明「請家長陪同，不要填真實姓名」。</li>
+      <li>告訴學習者這些資料用來做什麼（例如「用來改進教材」），課程結束後把 Netlify 上的資料刪掉。</li>
+    </ul>
+    <div class="see why"><span class="k">工程師的說法</span><div>你的網站分成<b>前端</b>（學習者看到、在瀏覽器裡跑的播放器）和<b>後端</b>（接收資料的伺服器，這裡由 Netlify 代勞）。按下送出時，播放器把欄位用 <b>HTTP POST</b> 送到 Netlify。「只收需要的」叫<b>資料最小化</b>：沒收的資料，就不會外洩。</div></div>
+    <label class="check"><input type="checkbox" data-step="10-6"> 我的作品符合個資原則</label>
+  </article>
+  <div class="badge"><span class="medal">🚀</span><div><b>第三個成就：</b>你的教材上線了，而且真的有人在學、有資料回來。這就是一個完整的產品。</div></div>
+</section>
+
+<!-- ───────────────────────────── 第 11 課 ───────────────────────────── -->
+<section class="part" id="p11">
+  <h2><span class="n">11</span>發表與改版 <span class="time">課堂發表</span></h2>
+  <p class="intro">上線不是結束。看資料、找出學習者卡住的地方、改一版，這才是做產品的日常。</p>
+
+  <article class="step" id="s11-1">
+    <div class="head"><span class="num">11-1</span><h3>看資料，回答三個問題</h3></div>
+    <p class="do">把 CSV 匯出到試算表，回答：</p>
+    <ol class="sub">
+      <li><b>測驗答對的比例是多少？</b>回頭對照企劃單的「怎樣算成功」，有達到嗎？</li>
+      <li><b>哪一個錯誤選項最多人選？</b>那就是學習者最常犯的錯，下一集可以專門教它。</li>
+      <li><b>劇情選擇最多人選哪一個？</b>大家喜歡哪一種角色反應？評價和留言說了什麼？</li>
+    </ol>
+    <label class="check"><input type="checkbox" data-step="11-1"> 三個問題都有答案</label>
+  </article>
+
+  <article class="step" id="s11-2">
+    <div class="head"><span class="num">11-2</span><h3>改一版，再上線</h3></div>
+    <p class="do">根據資料改題庫（例如換掉沒人選的選項、補強大家答錯的地方），在工作台補產生改過的句子，再上傳到 GitHub。</p>
+    <p>在 GitHub 按 Commit 時，<b>commit message 寫清楚改了什麼、為什麼</b>，例如「q3 的選項 A 改寫：太多人選錯，回饋多說一次正解」。Netlify 會自動重新部署，幾十秒後網站就是新版。</p>
+    <div class="see why"><span class="k">工程師的說法</span><div>GitHub 記下每一次修改，叫<b>版本控制</b>：哪一版改了什麼都查得到，改壞了也能回到上一版。推上 GitHub 就自動更新網站，叫<b>持續部署</b>。根據使用者的資料一版一版改，叫<b>迭代</b>。</div></div>
+    <label class="check"><input type="checkbox" data-step="11-2"> 我上線了第二版</label>
+  </article>
+
+  <article class="step" id="s11-3">
+    <div class="head"><span class="num">11-3</span><h3>三分鐘發表</h3></div>
+    <ol class="sub">
+      <li><b>30 秒</b>：學習者是誰、這一集只教哪一件事。</li>
+      <li><b>90 秒</b>：現場玩一次（請台下同學決定選項）。</li>
+      <li><b>60 秒</b>：學習成果的資料告訴你什麼、你因此改了什麼。</li>
+    </ol>
+    <label class="check"><input type="checkbox" data-step="11-3"> 發表完成</label>
+  </article>
+
+  <div class="final">
+    <h3>你做到了 🎉</h3>
+    <p>從一張企劃單開始，你設計了角色、寫了有分支的腳本、整理成機器看得懂的題庫、指揮 AI 產生插圖與配音、配上音樂、上線、收集真的學習成果，再根據資料改版。
+      這就是一個軟體產品的完整生命週期。作業的細節、題材和評分方式，請看 <a href="assignments.html">作業說明</a>。</p>
+  </div>
+</section>
+
+<!-- ───────────────────────────── 附錄 ───────────────────────────── -->
+<section class="part" id="appendix">
+  <h2>附錄　速查表與小辭典</h2>
+
+  <h3 style="font:900 20px/1.4 var(--serif);margin:20px 0 6px">A. 題庫欄位速查</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>欄位</th><th>寫在哪</th><th>意思</th></tr>
+    <tr><td><code>id</code></td><td>整集</td><td>集代號，英文小寫＋數字，也是素材資料夾名稱</td></tr>
+    <tr><td><code>title</code>、<code>subtitle</code>、<code>learner</code>、<code>goal</code></td><td>整集</td><td>標題、副標、給誰學、學什麼（顯示在封面和目錄）</td></tr>
+    <tr><td><code>lang</code>／<code>ui</code></td><td>整集</td><td>主要語言／按鈕文字的語言：<code>"en"</code> 或 <code>"zh-TW"</code></td></tr>
+    <tr><td><code>theme</code></td><td>整集</td><td>顏色 <code>main</code>、<code>accent</code>、<code>paper</code>、<code>ink</code>，字體 <code>font</code>：<code>"rounded"</code>、<code>"sans"</code>、<code>"serif"</code></td></tr>
+    <tr><td><code>bgm</code></td><td>整集</td><td><code>file</code> 音樂檔、<code>volume</code> 音量、<code>suno</code> 提示詞</td></tr>
+    <tr><td><code>art</code>／<code>speech</code></td><td>整集</td><td>畫風句與畫面比例／全部台詞共用的語音要求</td></tr>
+    <tr><td><code>cast</code></td><td>整集</td><td>角色：<code>name</code>、<code>emoji</code>、<code>color</code>、<code>voice</code>、<code>lang</code>、<code>style</code>、<code>look</code></td></tr>
+    <tr><td><code>id</code>、<code>type</code>、<code>title</code></td><td>每一場</td><td>場次代號；種類（不寫、choice、quiz、recap、words）；標題</td></tr>
+    <tr><td><code>image</code>、<code>caption</code>、<code>people</code></td><td>每一場、每個選項</td><td>畫面描述；圖上的小字；（選填）畫面裡有誰</td></tr>
+    <tr><td><code>lines</code></td><td>每一場</td><td>台詞清單：<code>"代號: 台詞"</code> 或 <code>{ who, say, hint, style, show }</code></td></tr>
+    <tr><td><code>ask</code>、<code>options</code></td><td>choice／quiz</td><td>題目；選項清單</td></tr>
+    <tr><td><code>say</code>、<code>then</code>、<code>tag</code>、<code>correct</code></td><td>每個選項</td><td>選了之後說的那一句；之後的台詞；小標籤；正確答案（只有 quiz 用）</td></tr>
+    <tr><td><code>words</code>、<code>voice</code></td><td>words</td><td>單字清單 <code>{ word, note, hint }</code>；由哪個角色念</td></tr>
+  </table></div>
+
+  <h3 style="font:900 20px/1.4 var(--serif);margin:24px 0 6px">B. 工程師小辭典</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>詞</th><th>白話</th><th>在這門課哪裡出現</th></tr>
+    <tr><td>需求、驗收條件</td><td>要做什麼；怎樣算做到</td><td>第 1 課企劃單</td></tr>
+    <tr><td>物件、屬性</td><td>一個東西，和描述它的每一格</td><td>第 2 課角色卡</td></tr>
+    <tr><td>識別碼、顯示名稱</td><td>給機器看的代號；給人看的名字</td><td><code>funky</code> 和「Funky」</td></tr>
+    <tr><td>流程圖、狀態</td><td>事情怎麼一步一步走；現在走到哪一步</td><td>第 3 課</td></tr>
+    <tr><td>關注點分離</td><td>「怎麼做」和「做什麼」分開放</td><td>engine／content／assets</td></tr>
+    <tr><td>資料驅動、規格（schema）</td><td>程式不變，換資料就換內容；資料要照固定的格式</td><td>第 5 課題庫檔</td></tr>
+    <tr><td>自動檢查（lint）</td><td>存檔後馬上由程式找錯</td><td>工作台 ② 檢查題庫</td></tr>
+    <tr><td>約定優於設定</td><td>大家遵守同一個命名規則，就不用一個一個設定</td><td><code>s01-1.mp3</code> 自動對到第 s01 場第 1 句</td></tr>
+    <tr><td>API</td><td>程式跟程式之間的點餐單</td><td>第 7 課 Gemini 語音</td></tr>
+    <tr><td>建置、漸進式建置</td><td>把原始資料自動轉成成品；只做缺的部分</td><td>工作台產生語音和圖</td></tr>
+    <tr><td>冒煙測試</td><td>先跑一次最小的，確定不會出大問題</td><td>第 6 課先畫一張</td></tr>
+    <tr><td>外部相依、授權</td><td>你用了別人的服務；可以怎麼用</td><td>第 8 課 Suno</td></tr>
+    <tr><td>整合測試、測試覆蓋</td><td>合在一起測；每個部分都至少測到一次</td><td>第 9 課三輪測試</td></tr>
+    <tr><td>前端、後端、HTTP POST</td><td>瀏覽器裡的部分、伺服器的部分、把資料送過去的方式</td><td>第 10 課學習成果</td></tr>
+    <tr><td>資料最小化</td><td>只收需要的資料</td><td>只收暱稱</td></tr>
+    <tr><td>版本控制、持續部署、迭代</td><td>記下每次修改；推上去就自動更新；根據回饋一版一版改</td><td>第 11 課</td></tr>
+  </table></div>
+
+  <h3 style="font:900 20px/1.4 var(--serif);margin:24px 0 6px">C. Gemini 的 30 個聲音</h3>
+  <p class="hint">括號裡是官方的一字形容。男聲、女聲、音高沒有官方標示，請用工作台的「試聽」自己聽。</p>
+  <p style="font-size:15px;margin-top:8px">Zephyr（明亮）、Puck（輕快）、Charon（知性）、Kore（堅定）、Fenrir（興奮）、Leda（年輕）、Orus（堅定）、Aoede（輕鬆）、Callirrhoe（隨和）、Autonoe（明亮）、Enceladus（氣音）、Iapetus（清晰）、Umbriel（隨和）、Algieba（圓潤）、Despina（柔順）、Erinome（清晰）、Algenib（沙啞）、Rasalgethi（知性）、Laomedeia（輕快）、Achernar（輕柔）、Alnilam（沉穩）、Schedar（平穩）、Gacrux（成熟）、Pulcherrima（直率）、Achird（友善）、Zubenelgenubi（隨性）、Vindemiatrix（溫和）、Sadachbia（活潑）、Sadaltager（博學）、Sulafat（溫暖）。</p>
+
+  <h3 style="font:900 20px/1.4 var(--serif);margin:24px 0 6px">D. 額度與費用</h3>
+  <p style="font-size:15px">Gemini 的語音和圖片是依用量計費（或用免費額度）。價格會變動，請以 Google AI Studio 的計價頁為準。工作台「② 檢查題庫」會告訴你這一集有幾句、幾個字元、幾張圖，拿這幾個數字乘上當時的單價就能估算。兩個範例大約都是 60 句、13–14 張圖。<b>省錢的方法</b>：先用電腦語音把腳本改到滿意，再產生正式語音；圖先畫一張確認，再畫全部。</p>
+
+  <footer class="note">這份手冊搭配 <code>starter-kit</code> 使用。範例 KK01 改編自「Captain A 互動英語 EP.01」，ME01 改編自「Morning English：The Elevator」。</footer>
+</section>
+</main>
+</div>
+
+<script>
+(() => {
+  // 打勾進度：存在自己的瀏覽器裡
+  const KEY = "lesson-course-progress-v1";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { saved = {}; }
+  const boxes = [...document.querySelectorAll(".check input[data-step]")];
+  const update = () => {
+    const done = boxes.filter((b) => b.checked).length;
+    document.getElementById("bar").style.width = (boxes.length ? (done / boxes.length) * 100 : 0) + "%";
+    document.getElementById("pct").textContent = done + " / " + boxes.length;
+  };
+  boxes.forEach((b) => {
+    b.checked = !!saved[b.dataset.step];
+    b.closest(".step").classList.toggle("done", b.checked);
+    b.addEventListener("change", () => {
+      saved[b.dataset.step] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) { /* 私密模式 */ }
+      b.closest(".step").classList.toggle("done", b.checked);
+      update();
+    });
+  });
+  update();
+  // 程式碼框加上「複製」按鈕
+  document.querySelectorAll("pre.code").forEach((pre) => {
+    const btn = document.createElement("button");
+    btn.className = "copy"; btn.textContent = "複製";
+    btn.onclick = () => {
+      const text = pre.innerText.replace(/^複製\n?/, "").replace(/\s+←.*$/gm, "").replace(/複製$/, "");
+      navigator.clipboard.writeText(text.trim()).then(() => { btn.textContent = "已複製 ✓"; setTimeout(() => (btn.textContent = "複製"), 1500); });
+    };
+    pre.appendChild(btn);
+  });
+})();
+</script>
+</body>
+</html>

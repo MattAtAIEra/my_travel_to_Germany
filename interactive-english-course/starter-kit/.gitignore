@@ -1,0 +1,7 @@
+# 金鑰或個人設定不要上傳
+.env
+*.key
+# 系統自動產生的檔案
+.DS_Store
+Thumbs.db
+node_modules/

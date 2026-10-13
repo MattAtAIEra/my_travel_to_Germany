@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>製作工作台</title>
+<link rel="stylesheet" href="engine/studio.css">
+</head>
+<body>
+<header class="bar">
+  <h1>🎬 製作工作台</h1>
+  <label class="ep">這一集 <select id="ep-select"></select></label>
+  <span id="key-status" class="pill">🔑 還沒有金鑰</span>
+  <span id="folder-status" class="pill">📁 還沒連接資料夾</span>
+  <a class="open-player" href="index.html?dev=1" target="_blank">▶ 打開播放器（開發者模式）</a>
+</header>
+
+<nav class="tabs">
+  <button data-tab="setup">① 準備</button>
+  <button data-tab="check">② 檢查題庫</button>
+  <button data-tab="cast">③ 角色與聲音</button>
+  <button data-tab="voice">④ 語音</button>
+  <button data-tab="image">⑤ 圖片</button>
+  <button data-tab="music">⑥ 背景音樂</button>
+</nav>
+
+<main>
+  <section id="tab-setup">
+    <h2>① 準備</h2>
+    <div class="card">
+      <h3>1. 貼上 Gemini API 金鑰</h3>
+      <p>到 <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a> 登入 Google 帳號，按 <b>Create API key</b>，把那一整串複製下來貼在這裡。</p>
+      <label>API 金鑰 <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="AIza 開頭的一長串"></label>
+      <label class="inline"><input id="remember" type="checkbox"> 記住在這台電腦（自己的電腦才勾；公用電腦不要勾，關掉分頁就會忘記）</label>
+      <div class="warn-box">🔒 金鑰就像你的信用卡號碼。工作台只把它存在這個瀏覽器裡，<b>不會寫進任何檔案</b>。
+        請不要把金鑰貼到題庫檔、README 或任何會上傳到 GitHub 的地方，也不要傳給別人。</div>
+      <div class="row"><button class="primary" id="btn-test">🔊 測試連線（念一句中英文）</button> <span id="test-result" class="note"></span></div>
+    </div>
+
+    <div class="card">
+      <h3>2. 連接專案資料夾（建議用 Chrome 或 Edge）</h3>
+      <p>按下面的按鈕，選擇 <b>starter-kit</b> 這一層資料夾（打開後會看到 index.html、studio.html、content、assets）。
+        連接之後，產生的聲音和圖片會<b>直接存進正確的位置</b>，檔名也會自動取好。</p>
+      <div class="row"><button class="primary" id="btn-folder">📁 選擇 starter-kit 資料夾</button> <button id="btn-reconnect" hidden></button></div>
+      <p class="hint">瀏覽器會問「要允許這個網站編輯檔案嗎？」，請按允許。不連接也可以用（下載模式）：產生的檔案會先留在這一頁，最後打包成一個 zip 下載，
+        再自己解壓縮到 starter-kit 資料夾裡。</p>
+    </div>
+
+    <div class="card">
+      <h3>3. 模型（通常不用改）</h3>
+      <label>語音模型 <input id="model-tts" spellcheck="false"></label>
+      <label>圖片模型 <input id="model-image" spellcheck="false"></label>
+      <p class="hint">Google 推出新模型時，只要把名字換掉就好，其他都不用改。這就是把「設定」和「程式」分開的好處。</p>
+    </div>
+  </section>
+
+  <section id="tab-check" hidden></section>
+  <section id="tab-cast" hidden></section>
+  <section id="tab-voice" hidden></section>
+  <section id="tab-image" hidden></section>
+  <section id="tab-music" hidden></section>
+</main>
+
+<script src="engine/lesson.js"></script>
+<script src="engine/checker.js"></script>
+<script src="engine/gemini.js"></script>
+<script src="content/episodes.js"></script>
+<script src="engine/studio.js"></script>
+</body>
+</html>
