@@ -81,6 +81,9 @@ node tools/generate.mjs content/kk01-two-apples.js
 node tools/generate.mjs content/me01-elevator.js
 ```
 
+在 Claude Code 雲端環境裡跑：金鑰建議放在環境設定的 **Network secret**（標頭 `x-goog-api-key`、網站 `generativelanguage.googleapis.com`），
+指令改加 `--proxy-key`（不設定 `GEMINI_API_KEY`）。工具偵測到代理設定時，會自動讓 Node.js 走代理。
+
 背景音樂的 Suno 提示詞已經存在 `starter-kit/assets/bgm/kk01-suno.txt` 和 `me01-suno.txt`（用 `node tools/generate.mjs <題庫> --suno` 或工作台「⑥ 背景音樂」的存檔按鈕產生）。
 照檔案裡的步驟到 Suno 做好，存成 `assets/bgm/kk01.mp3`、`assets/bgm/me01.mp3`。
 `starter-kit.zip` 不會打包 `assets/` 裡的圖與聲音（學生要自己產生，也避開 GitHub 網頁一次只能上傳 100 個檔案的限制）。

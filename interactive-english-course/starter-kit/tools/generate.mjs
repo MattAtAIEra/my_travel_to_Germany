@@ -14,6 +14,7 @@
      node tools/generate.mjs content/kk01-two-apples.js --dry      # 只列出要做什麼，不花錢
      node tools/generate.mjs content/kk01-two-apples.js --test     # 只念一句，確認金鑰和 API 格式都沒問題
      node tools/generate.mjs content/kk01-two-apples.js --suno     # 把 Suno 提示詞存進 assets/bgm/（不需要金鑰）
+     node tools/generate.mjs content/kk01-two-apples.js --test --proxy-key   # 金鑰由網路層自動加上時（不設定 GEMINI_API_KEY）
 
    金鑰只從環境變數讀，不要寫進任何檔案。
    ========================================================================== */
@@ -21,7 +22,15 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { createRequire } from "node:module";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+
+// 學校、公司或雲端環境如果要透過代理伺服器上網，Node.js 內建的 fetch 預設不會走代理。
+// 偵測到代理設定時，自動加上 NODE_USE_ENV_PROXY=1 重新執行一次自己（Node.js 22.21 以上支援）。
+if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_USE_ENV_PROXY) {
+  const r = spawnSync(process.execPath, ["--no-warnings"].concat(process.argv.slice(1)), { stdio: "inherit", env: { ...process.env, NODE_USE_ENV_PROXY: "1" } });
+  process.exit(r.status === null ? 1 : r.status);
+}
 
 const require = createRequire(import.meta.url);
 const KIT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -35,8 +44,10 @@ const flag = (n) => args.includes("--" + n);
 const value = (n) => { const i = args.indexOf("--" + n); return i >= 0 ? args[i + 1] : null; };
 if (!file) { console.log("用法：node tools/generate.mjs content/某一集.js [--audio|--images] [--only id1,id2] [--force] [--dry]"); process.exit(1); }
 
-const key = process.env.GEMINI_API_KEY;
-if (!key && !flag("dry") && !flag("suno")) { console.error("找不到環境變數 GEMINI_API_KEY。請先 export GEMINI_API_KEY=\"你的金鑰\"。"); process.exit(1); }
+// --proxy-key：金鑰不經過這支程式，由網路層自動加上（例如 Claude Code 雲端環境的 Network secret）
+const viaProxy = flag("proxy-key") || process.env.GEMINI_KEY_FROM_PROXY === "1";
+const key = process.env.GEMINI_API_KEY || "";
+if (!key && !viaProxy && !flag("dry") && !flag("suno")) { console.error("找不到環境變數 GEMINI_API_KEY。請先 export GEMINI_API_KEY=\"你的金鑰\"（金鑰由網路層自動加上的話，改加 --proxy-key）。"); process.exit(1); }
 
 // 讀題庫：題庫檔會呼叫 LESSON.add(...)
 global.LESSON = LESSON;
@@ -70,7 +81,7 @@ if (flag("test")) {
     console.log("   聽聽看這個檔案，沒問題就可以拿掉 --test 正式產生。");
     process.exit(0);
   } catch (e) {
-    console.error("❌ 失敗：" + e.message + (e.detail ? "\n   原始訊息：" + e.detail : ""));
+    console.error("❌ 失敗：" + e.message + (e.detail && !e.message.includes(e.detail) ? "\n   原始訊息：" + e.detail : ""));
     process.exit(1);
   }
 }

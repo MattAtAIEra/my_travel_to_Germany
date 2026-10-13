@@ -103,7 +103,10 @@
     for (let attempt = 0; ; attempt++) {
       let res, text;
       try {
-        res = await fetcher(url, { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) });
+        // 金鑰是空的時候不帶標頭：例如雲端環境用 Network secret，由系統在送出時自動加上
+        const headers = { "Content-Type": "application/json" };
+        if (key) headers["x-goog-api-key"] = key;
+        res = await fetcher(url, { method: "POST", headers, body: JSON.stringify(body) });
         text = await res.text();
       } catch (e) {
         if (attempt < 2) { await sleep(2000 * (attempt + 1)); continue; }
@@ -126,6 +129,7 @@
 
   function explain(status, msg) {
     if (status === 400 && /API key/i.test(msg)) return "API 金鑰不對。請到 Google AI Studio 重新複製一次（整串，不要多空格）。";
+    if ((status === 401 || status === 403) && /unregistered callers|API key|API_KEY/i.test(msg)) return "Gemini 沒有收到金鑰（" + status + "）。請確認金鑰有設定好：工作台要貼上金鑰；指令工具要設定 GEMINI_API_KEY，或在雲端環境的 Network secret 加上 x-goog-api-key 標頭。原始訊息：" + msg;
     if (status === 401 || status === 403) return "這把金鑰沒有權限使用這個模型（" + status + "）。可能是金鑰被停用、專案沒開帳單，或這個模型在你的地區還不能用。原始訊息：" + msg;
     if (status === 404) return "找不到這個模型（404）。請確認模型名稱有沒有打錯。原始訊息：" + msg;
     if (status === 429) return "用量超過上限（429）。休息一分鐘再試，或檢查專案的額度。";
@@ -155,7 +159,7 @@
   async function mediaBytes(media, key, kind, opts) {
     if (media.data) return b64ToBytes(media.data);
     const fetcher = (opts && opts.fetch) || root.fetch.bind(root);
-    const res = await fetcher(media.uri, { headers: { "x-goog-api-key": key } });
+    const res = await fetcher(media.uri, { headers: key ? { "x-goog-api-key": key } : {} });
     if (!res.ok) throw new GeminiError(res.status, "下載" + (kind === "tts" ? "聲音" : "圖片") + "失敗（" + res.status + "）");
     return new Uint8Array(await res.arrayBuffer());
   }
